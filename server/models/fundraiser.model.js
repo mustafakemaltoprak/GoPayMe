@@ -10,7 +10,8 @@ const fundraiserSchema = new Schema ({
     deadlineDate: Date,
     description: String,
     categories: [String],
-    backers: Number
+    backers: Number,
+    image: String
 });
 
 const Fundraiser = mongoose.model("Fundraiser", fundraiserSchema)

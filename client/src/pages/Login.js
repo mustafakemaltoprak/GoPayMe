@@ -1,44 +1,69 @@
-import React, {useState} from 'react'
-import { Segment, Form, Button, Container } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { googleLogin } from '../services/user-services';
 
-
 const Login = () => {
+  const defaultValues = {
+    email: '',
+    password: '',
+  };
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('');
-  const submitHandler = (e)=> {
-    console.log(e.target.value)
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues,
+    delayError: 500,
+    mode: 'onChange',
+  });
+
+   const onSubmit = (e) => {
+     console.log('fired');
+     // navigate('/login')
+   };
+
   return (
-    <Segment>
-      <Container>
-        <Form size="big" onSubmit={submitHandler}>
+    <Grid Grid style={{ height: '100vh' }}>
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
           <Form.Field>
             <label>Email</label>
             <input
-              placeholder="First Name"
-              value={email}
+              placeholder="Email"
+              // value={email}
               type="text"
-              onChange={(e) => setEmail(e.target.value)}
+              {...register('email', { required: 'Email is required.' })}
             />
+            <p style={{ color: 'red' }}>{errors.email?.message}</p>
           </Form.Field>
           <Form.Field>
             <label>Password</label>
             <input
               placeholder="password"
-              value={password}
+              // value={password}
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              // onChange={(e) => setPassword(e.target.value)}
+              {...register('password', { required: 'Password is required.' })}
             />
+            <p style={{ color: 'red' }}>{errors.password?.message}</p>
           </Form.Field>
-
           <Button type="submit" fluid size="large" color="teal" content="Login" />
+          <Button
+            fluid
+            size="large"
+            color="teal"
+            content="Login with Google?"
+            onClick={googleLogin}
+            style={{ marginTop: '1.2rem' }}
+          />
+          
         </Form>
-        <Button fluid size="large" color="teal" content="Login with Google" onClick={googleLogin} />
       </Container>
-    </Segment>
+    </Grid>
   );
-}
+};
 
-export default Login
+export default Login;

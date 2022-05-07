@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Segment, Form, Button, Container } from 'semantic-ui-react';
+import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { googleLogin } from '../services/user-services';
-import { useNavigate} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 const Register = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   // const [email, setEmail] = useState('');
   // const [name, setName] = useState('');
   // const [password, setPassword] = useState('');
@@ -15,8 +15,15 @@ const Register = () => {
     password: '',
   };
 
-  const { register, handleSubmit, errors, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     defaultValues,
+    delayError: 500,
+    mode: 'onChange',
   });
 
   const onSubmit = (e) => {
@@ -24,19 +31,24 @@ const Register = () => {
     // navigate('/login')
   };
   return (
-    <Segment>
-      <Container>
-        <Form size="big" onSubmit={handleSubmit(onSubmit)}>
+    <Grid style={{ height: '100vh' }}>
+      <Container
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
           <Form.Field>
-            <label>Email</label>
+            <label>Name</label>
             <input
               placeholder="First Name"
               // value={email}
               type="text"
               // onChange={(e) => setEmail(e.target.value)}
-              {...register('name')}
+              {...register('name', {
+                required: 'Name is required.',
+              })}
             />
-            <p style={{ color: 'red' }}>{errors.name && 'Name is required.'}</p>
+
+            <p style={{ color: 'red' }}>{errors.name?.message}</p>
           </Form.Field>
           <Form.Field>
             <label>Email</label>
@@ -44,9 +56,9 @@ const Register = () => {
               placeholder="Email"
               // value={email}
               type="text"
-              {...register('email')}
+              {...register('email', { required: 'Email is required.' })}
             />
-            <p style={{ color: 'red' }}>{errors.email && 'Email is required.'}</p>
+            <p style={{ color: 'red' }}>{errors.email?.message}</p>
           </Form.Field>
           <Form.Field>
             <label>Password</label>
@@ -55,15 +67,23 @@ const Register = () => {
               // value={password}
               type="password"
               // onChange={(e) => setPassword(e.target.value)}
-              {...register('email')}
+              {...register('password', { required: 'Password is required.' })}
             />
+            <p style={{ color: 'red' }}>{errors.password?.message}</p>
           </Form.Field>
 
-          <Button type="submit" fluid size="large" color="teal" content="Login" />
+          <Button type="submit" fluid size="large" color="teal" content="Register" />
+          <Button
+            fluid
+            size="large"
+            color="teal"
+            content="Sign in instead?"
+            onClick={() => history.push('/login')}
+            style={{ marginTop: '2rem' }}
+          />
         </Form>
-        <Button fluid size="large" color="teal" content="Sign in instead?" onClick={googleLogin} />
       </Container>
-    </Segment>
+    </Grid>
   );
 };
 
