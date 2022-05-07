@@ -58,6 +58,7 @@ export const googleLogin = async () => {
       );
 
       if (!data) throw new Error('Server Email signin error');
+      toast.success('Signed in')
       return data;
     }
   } catch (error) {

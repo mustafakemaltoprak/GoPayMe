@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { registerUser, loginUser } = require('../controllers/user.controller');
+const { registerUser, loginUser, createCategories } = require('../controllers/user.controller');
 
 // Show all the fundraisers
 
@@ -16,7 +16,11 @@ const { registerUser, loginUser } = require('../controllers/user.controller');
 // login
 router.post('/login', loginUser);
 
-//register
+// register
 router.post('/register', registerUser);
+
+// createCategories
+
+router.post('/createCategories', createCategories)
 
 module.exports = router;

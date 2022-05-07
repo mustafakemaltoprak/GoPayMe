@@ -27,7 +27,7 @@ const Login = () => {
     console.log('fired');
     const data = emailLogin(formObj);
     if (data) {
-      history.push('/');
+      history.push('/categories');
       reset();
     }
   };

@@ -2,6 +2,19 @@ const User = require('../models/user.model');
 
 const { generateToken } = require('../utils/generatewebtoken');
 
+const createCategories = async (req, res) => {
+      User.findById(req.params.id)
+      .then(user => {
+      
+      user.categories = req.body.categories;
+  
+      user.save()
+      .then(() => res.json("Categories added"))
+      .catch(err => res.status(400).json("Error: " + err))
+      })
+      .catch(err => res.status(400).json("Error: " + err))
+  }
+
 const loginUser = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -78,4 +91,5 @@ module.exports = {
   //   deleteUser,
   registerUser,
   loginUser,
+  createCategories
 };
