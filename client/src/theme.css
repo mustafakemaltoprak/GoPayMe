@@ -1,5 +1,42 @@
 :root {
   --color-login-button: #00b5ad;
+  /* blueish  */
+  --color-blueish-light: #00a59c;
+  --color-blueish-middle: #057a69;
+  --color-blueish-dark: #003e39;
+  /* white  */
+  --color-white-000: #FFFFFF;
+  --color-white-100: #9AA5B0;
+  --color-white-200: #E5E5E5;
+  /* green  */
+  --color-green-000: #219653;
+  --color-green-100: #54DBB2;
+  --color-green-200: #41B592;
+  --color-green-300: #67E4D5;
+  --color-green-400: #00c117;
+  --color-green-500: #009426;
+  /* orange  */
+  --color-orange-000: #DD4530;
+  --color-orange-100: #e7a6a6;
+  --color-orange-200: #EB6B57;
+  --color-orange-300: #f00100;
+  /* yellow  */
+  --color-orange-000: #EFB776;
+  --color-orange-100: #FFD12E;
+  --color-orange-200: #FF9900;
+  /* blue  */
+  --color-blue-000: #11226D;
+  --color-blue-100: #0D4BD0;
+  --color-blue-200: #1D9BE1;
+  --color-blue-300: #A3DDFE;
+  --color-blue-400: #3F50E5;
+  /* grey  */
+  --color-grey-000: #62656F;
+  --color-grey-100: #757575;
+  --color-grey-200: #464847;
+  --color-grey-300: #B2BBC3;
+  --color-grey-400: #EEEEEE;
+
 } 
  
  /* Fonts 

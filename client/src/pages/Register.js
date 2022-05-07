@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
+
 import { FormProvider, useForm } from 'react-hook-form';
-import { googleLogin } from '../services/user-services';
+import { creatEmailAccount, googleLogin } from '../services/user-services';
 import { useHistory } from 'react-router-dom';
 const Register = () => {
   const history = useHistory();
@@ -26,16 +27,16 @@ const Register = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (e) => {
-    console.log('fired');
+  const onSubmit = (formObj) => {
+    console.log(formObj);
+    if (creatEmailAccount(formObj)) history.push('/categories');
     // navigate('/login')
   };
   return (
     <Grid style={{ height: '100vh' }}>
-      <Container
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
+          <h1>Register</h1>
           <Form.Field>
             <label>Name</label>
             <input
@@ -76,7 +77,7 @@ const Register = () => {
           <Button
             fluid
             size="large"
-            color="teal"
+            color="blue"
             content="Sign in instead?"
             onClick={() => history.push('/login')}
             style={{ marginTop: '2rem' }}

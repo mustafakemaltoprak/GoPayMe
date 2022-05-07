@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { googleLogin } from '../services/user-services';
+import { emailLogin, googleLogin } from '../services/user-services';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
+  const history = useHistory();
   const defaultValues = {
     email: '',
     password: '',
@@ -20,15 +23,21 @@ const Login = () => {
     mode: 'onChange',
   });
 
-   const onSubmit = (e) => {
-     console.log('fired');
-     // navigate('/login')
-   };
+  const onSubmit = (formObj) => {
+    console.log('fired');
+    const data = emailLogin(formObj);
+    if (data) {
+      history.push('/');
+      reset();
+    }
+  };
 
   return (
-    <Grid Grid style={{ height: '100vh' }}>
+    <Grid style={{ height: '100vh' }}>
       <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      
         <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
+          <h1>Login</h1>
           <Form.Field>
             <label>Email</label>
             <input
@@ -59,7 +68,14 @@ const Login = () => {
             onClick={googleLogin}
             style={{ marginTop: '1.2rem' }}
           />
-          
+          <Button
+            fluid
+            size="large"
+            color="blue"
+            content="Sign In?"
+            onClick={() => history.push('/register')}
+            style={{ marginTop: '1.2rem' }}
+          />
         </Form>
       </Container>
     </Grid>
