@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Categories from './pages/Categories';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
+import SideBar from './components/SideBar';
+import { Container } from 'semantic-ui-react';
 
 function App() {
   return (
@@ -22,8 +24,11 @@ function App() {
             render={() => (
               <>
                 <Navbar />
-                <Route path="/home" component={Home} exact/>
-                <Route path="/dashboard" component={Dashboard} />
+                <Container style={{border: 'red solid 3px'}}>
+                  <SideBar />
+                  <Route path="/home" component={Home} exact />
+                  <Route path="/dashboard" component={Dashboard} />
+                </Container>
               </>
             )}
           />

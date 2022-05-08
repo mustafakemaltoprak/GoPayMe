@@ -1,8 +1,9 @@
 import React from 'react'
+import { Container, Grid } from 'semantic-ui-react'
 
 const Home = () => {
   return (
-    <div style={{paddingTop: '50rem'}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque nulla, ea accusamus, reprehenderit assumenda molestiae a laboriosam deleniti natus quo accusantium ipsam, impedit rem dolore delectus aliquid autem tempora? Doloremque!
+    <div >Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque nulla, ea accusamus, reprehenderit assumenda molestiae a laboriosam deleniti natus quo accusantium ipsam, impedit rem dolore delectus aliquid autem tempora? Doloremque!
     Similique quasi fugiat quas eos cumque. Porro possimus ducimus vitae pariatur, ullam similique officiis soluta deleniti, nulla voluptas, id tenetur ex? In, dolorem veritatis. Laudantium quaerat impedit deleniti vel atque.
     Molestias similique sed officiis laudantium vel aliquid ad autem voluptatum ipsa, in error eveniet alias modi, quo voluptates illum aperiam fugit tempore fugiat eligendi quasi! Laudantium asperiores debitis est necessitatibus.
     Animi quas iste reprehenderit nihil voluptatum sit eos magnam itaque enim dicta rerum, laboriosam minus aut totam blanditiis fugit tempora dignissimos repellendus culpa molestiae necessitatibus numquam? Dolore tenetur labore odio.

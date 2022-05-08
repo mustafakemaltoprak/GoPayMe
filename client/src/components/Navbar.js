@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Menu, Container, Button, Icon, Label } from 'semantic-ui-react';
+import { Menu, Container, Button, Icon, Label, Header } from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
 
@@ -10,11 +10,12 @@ const Navbar = () => {
     document.title = `Welcome ${user.loginSuccess.name}`;
   }, []);
   return (
-    <Menu inverted fixed="top">
+    <Menu  fixed="top" style={{ zIndex: 10000 }}>
       <Container>
         <Menu.Item as={NavLink} exact to="/home" header>
           <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
-          goPayMe <Icon name="money" />
+          GoPayME
+          <Icon name="money" />
         </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
