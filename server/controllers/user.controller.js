@@ -3,16 +3,24 @@ const User = require('../models/user.model');
 const { generateToken } = require('../utils/generatewebtoken');
 
 const createCategories = async (req, res) => {
-  User.findById(req.params.id)
-    .then((user) => {
-      user.categories = req.body.categories;
+  // User.findOne(req.params.id)
+  //   .then((user) => {
+  //     user.categories = req.body.categories;
+  //     user.save().then(() => res.status(201).send({ success: true }));
+  //   })
+  //   .catch((err) => res.status(400).send({ error: err.message }));
 
-      user
-        .save()
-        .then(() => res.json('Categories added'))
-        .catch((err) => res.status(400).json('Error: ' + err));
-    })
-    .catch((err) => res.status(400).json('Error: ' + err));
+  try {
+    const user = await User.findOneAndUpdate(
+      { userId: req.params.id },
+      { categories: req.body.categories },
+      { new: true },
+    );
+
+    if (user) res.status(201).send({ success: true });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
 };
 
 const loginUser = async (req, res) => {
@@ -20,21 +28,25 @@ const loginUser = async (req, res) => {
     const { userId } = req.body;
 
     const userExists = await User.findOne({ userId });
-    console.log('userexists', userExists);
+
     if (!userExists) {
       //has not signed in before
       //uses google sign-in
-      console.log('doesnt exist fired');
+
       const userCreated = await User.create(req.body);
       const token = generateToken(userId);
 
-      res.status(201).send({ ...userCreated, token, newUser: true });
+      res.status(201).send({
+        image: userCreated.image,
+        categories: userCreated.categories,
+        userId: userCreated.userId,
+        newUser: true,
+        token,
+      });
     } else {
-      console.log('token fired');
-
       const token = generateToken({ userId });
       // JSON.stringify(userExists);
-      console.log('userexists new', userExists);
+
       // console.log('userexists new', JSON.stringify(userExists));
 
       res.status(201).send({
@@ -50,13 +62,18 @@ const loginUser = async (req, res) => {
   }
 };
 
+//users/register
 const registerUser = async (req, res) => {
   //   const { userId } = req.body;
   try {
     //conso
     console.log('registering', req.body);
     const userCreated = await User.create(req.body);
-    res.status(201).send(userCreated);
+    res.status(201).send({
+      image: userCreated.image,
+      categories: userCreated.categories,
+      userId: userCreated.userId,
+    });
   } catch (error) {
     res.status(404).send({ error: error.message });
   }

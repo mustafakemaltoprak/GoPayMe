@@ -1,8 +1,9 @@
 import { REGISTER_USER, LOGIN_USER, LOGOUT_USER } from '../constants/userConstants';
 
-export const registerUser = () => {
+export const registerUser = (payload) => {
   return {
     type: REGISTER_USER,
+    payload
   };
 };
 

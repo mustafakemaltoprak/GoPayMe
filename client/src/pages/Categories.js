@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Segment, Form, Button, Container, Grid, Label, Icon } from 'semantic-ui-react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { postCategories } from '../services/user-services';
+import { useHistory } from 'react-router-dom';
 
 const Categories = () => {
+  const user = useSelector((state) => state.user);
+  const history = useHistory();
   const [categories, setCategories] = useState({
     charity: false,
     healthcare: false,
@@ -11,7 +16,6 @@ const Categories = () => {
     animals: false,
   });
 
-  
   const handleClick = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
     setCategories((prev) => {
@@ -19,7 +23,7 @@ const Categories = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let categoriesArr = [];
     for (let key in categories) {
       if (categories[key]) {
@@ -28,6 +32,10 @@ const Categories = () => {
     }
 
     console.log('ARRAYY', categoriesArr);
+
+    if (await postCategories({ categories: categoriesArr, userId: user.loginSuccess.userId })) {
+      history.push('/');
+    }
   };
 
   return (

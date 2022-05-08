@@ -6,19 +6,20 @@ import { emailLogin, googleLogin } from '../services/user-services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/actions/userActions'
+import { loginUser } from '../redux/actions/userActions';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const history = useHistory();
-  const user = useSelector(state => state.user);
-  const dispatch = useDispatch()
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const defaultValues = {
     email: '',
     password: '',
   };
 
-
-  console.log('store user', user)
+  console.log('store user', user);
   const {
     register,
     handleSubmit,
@@ -30,23 +31,30 @@ const Login = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = async(formObj) => {
+  const onSubmit = async (formObj) => {
     console.log('fired', formObj);
-    const data = await emailLogin(formObj)
+    const data = await emailLogin(formObj);
     console.log('final data', data);
     if (data) {
-      
-      dispatch(loginUser(data))
+      if (user.register) {
+        console.log('should go to categories', data);
+        dispatch(loginUser(data));
+        history.push('/categories');
+      } else {
+        console.log('should not categories', data);
+        dispatch(loginUser(data));
+        history.push('/');
+      }
 
       // history.push('/categories');
       // reset();
+      toast.success('login successful!')
     }
   };
 
   return (
     <Grid style={{ height: '100vh' }}>
       <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      
         <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
           <h1>Login</h1>
           <Form.Field>
@@ -83,7 +91,7 @@ const Login = () => {
             fluid
             size="large"
             color="blue"
-            content="Sign In?"
+            content="Register?"
             onClick={() => history.push('/register')}
             style={{ marginTop: '1.2rem' }}
           />

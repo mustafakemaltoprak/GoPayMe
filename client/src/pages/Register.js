@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { creatEmailAccount, googleLogin } from '../services/user-services';
 import { useHistory } from 'react-router-dom';
+import { registerUser } from '../redux/actions/userActions';
+import { toast } from 'react-toastify';
 const Register = () => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch()
   const history = useHistory();
   // const [email, setEmail] = useState('');
   // const [name, setName] = useState('');
@@ -30,10 +33,27 @@ const Register = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (formObj) => {
+  const onSubmit = async (formObj) => {
     console.log(formObj);
-    if (creatEmailAccount(formObj)) history.push('/categories');
-    // navigate('/login')
+    try {
+       console.log('registerObj');
+      const registerObj = await creatEmailAccount(formObj);
+      console.log('registerObj', registerObj)
+      if (registerObj) {
+        toast.success('successfully registered');
+        const newFormObj = delete formObj['password']
+        dispatch(registerUser(newFormObj));
+        history.push('/login');
+        reset();
+      }
+      else {
+        throw new Error('User details exist')
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+    
+   
   };
   return (
     <Grid style={{ height: '100vh' }}>

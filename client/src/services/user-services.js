@@ -20,12 +20,13 @@ export const creatEmailAccount = async (payload) => {
         'Content-Type': 'application/json',
       },
     };
-    const { data } = axios.post(
+    const { data } = await axios.post(
       '/users/register',
       { userId: response.user.uid, email: payload.email, name: payload.name },
       config,
     );
     console.log('register data', data);
+
     if (!data) throw new Error('Server error');
     return data;
   } catch (error) {
@@ -101,6 +102,26 @@ export const emailLogin = async (payload) => {
   //   axios.post('/users/register', { userId: response.user.id }, config);
   // } catch (error) {
   //   console.log('Signup error', error);
+};
+
+export const postCategories = async (payload) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const { data } = await axios.post(
+    `/users/categories/${payload.userId}`,
+    { categories: payload.categories },
+    config,
+  );
+
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 // axios.post('/users/login', )
