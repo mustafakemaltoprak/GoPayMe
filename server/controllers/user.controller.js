@@ -39,6 +39,7 @@ const loginUser = async (req, res) => {
       res.status(201).send({
         image: userCreated.image,
         categories: userCreated.categories,
+        name: userCreated.name,
         userId: userCreated.userId,
         newUser: true,
         token,
@@ -47,11 +48,12 @@ const loginUser = async (req, res) => {
       const token = generateToken({ userId });
       // JSON.stringify(userExists);
 
-      // console.log('userexists new', JSON.stringify(userExists));
+      console.log('userexists new', userExists)
 
       res.status(201).send({
         image: userExists.image,
         categories: userExists.categories,
+        name: userExists.name,
         userId: userExists.userId,
         token,
       });

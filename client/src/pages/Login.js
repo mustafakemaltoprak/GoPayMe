@@ -43,7 +43,7 @@ const Login = () => {
       } else {
         console.log('should not categories', data);
         dispatch(loginUser(data));
-        history.push('/');
+        history.push('/home');
       }
 
       // history.push('/categories');

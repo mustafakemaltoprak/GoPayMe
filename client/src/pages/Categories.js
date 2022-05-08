@@ -34,7 +34,7 @@ const Categories = () => {
     console.log('ARRAYY', categoriesArr);
 
     if (await postCategories({ categories: categoriesArr, userId: user.loginSuccess.userId })) {
-      history.push('/');
+      history.push('/home');
     }
   };
 
