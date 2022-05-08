@@ -3,17 +3,17 @@ const User = require('../models/user.model');
 const { generateToken } = require('../utils/generatewebtoken');
 
 const createCategories = async (req, res) => {
-      User.findById(req.params.id)
-      .then(user => {
-      
+  User.findById(req.params.id)
+    .then((user) => {
       user.categories = req.body.categories;
-  
-      user.save()
-      .then(() => res.json("Categories added"))
-      .catch(err => res.status(400).json("Error: " + err))
-      })
-      .catch(err => res.status(400).json("Error: " + err))
-  }
+
+      user
+        .save()
+        .then(() => res.json('Categories added'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+};
 
 const loginUser = async (req, res) => {
   try {
@@ -33,10 +33,18 @@ const loginUser = async (req, res) => {
       console.log('token fired');
 
       const token = generateToken({ userId });
-      //   console.log('token', token);
-      res.status(201).send({ ...userExists, token });
+      // JSON.stringify(userExists);
+      console.log('userexists new', userExists);
+      // console.log('userexists new', JSON.stringify(userExists));
+
+      res.status(201).send({
+        image: userExists.image,
+        categories: userExists.categories,
+        userId: userExists.userId,
+        token,
+      });
       // jwt.sign({ _id }, process.env.SECRET, { expiresIn: '10d' }),
-    } 
+    }
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
@@ -91,5 +99,5 @@ module.exports = {
   //   deleteUser,
   registerUser,
   loginUser,
-  createCategories
+  createCategories,
 };

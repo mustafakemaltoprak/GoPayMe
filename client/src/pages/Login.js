@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
+
 import { FormProvider, useForm } from 'react-hook-form';
 import { emailLogin, googleLogin } from '../services/user-services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions'
 
 const Login = () => {
   const history = useHistory();
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch()
   const defaultValues = {
     email: '',
     password: '',
   };
 
+
+  console.log('store user', user)
   const {
     register,
     handleSubmit,
@@ -23,12 +30,16 @@ const Login = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (formObj) => {
-    console.log('fired');
-    const data = emailLogin(formObj);
+  const onSubmit = async(formObj) => {
+    console.log('fired', formObj);
+    const data = await emailLogin(formObj)
+    console.log('final data', data);
     if (data) {
-      history.push('/categories');
-      reset();
+      
+      dispatch(loginUser(data))
+
+      // history.push('/categories');
+      // reset();
     }
   };
 

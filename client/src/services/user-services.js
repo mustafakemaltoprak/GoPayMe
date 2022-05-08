@@ -25,7 +25,7 @@ export const creatEmailAccount = async (payload) => {
       { userId: response.user.uid, email: payload.email, name: payload.name },
       config,
     );
-    console.log('data', data);
+    console.log('register data', data);
     if (!data) throw new Error('Server error');
     return data;
   } catch (error) {
@@ -58,7 +58,7 @@ export const googleLogin = async () => {
       );
 
       if (!data) throw new Error('Server Email signin error');
-      toast.success('Signed in')
+      toast.success('Signed in');
       return data;
     }
   } catch (error) {
@@ -76,17 +76,20 @@ export const emailLogin = async (payload) => {
     },
   };
 
-  await signInWithEmailAndPassword(auth, payload.email, payload.password)
+  const data = await signInWithEmailAndPassword(auth, payload.email, payload.password)
     .then(async (response) => {
       console.log('userCred', response);
       const { data } = await axios.post('/users/login', { userId: response.user.uid }, config);
 
       if (!data) throw new Error('Server Email signin error');
+      console.log('userCredegege', data);
       return data;
     })
     .catch((error) => {
       toast.error(error.message);
     });
+
+  return data;
 
   //   if (!response) throw new Error('server error');
 

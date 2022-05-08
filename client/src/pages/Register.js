@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { Segment, Form, Button, Container, Grid } from 'semantic-ui-react';
 
 import { FormProvider, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { creatEmailAccount, googleLogin } from '../services/user-services';
 import { useHistory } from 'react-router-dom';
 const Register = () => {
+  const user = useSelector((state) => state.user);
   const history = useHistory();
   // const [email, setEmail] = useState('');
   // const [name, setName] = useState('');
   // const [password, setPassword] = useState('');
-
+  console.log('register page', user);
   const defaultValues = {
     name: '',
     email: '',
