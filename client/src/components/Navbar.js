@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Menu, Container, Button, Icon, Label, Header } from 'semantic-ui-react';
+import {
+  Menu,
+  Container,
+  Button,
+  Icon,
+  Label,
+  Header,
+} from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
 
 const Navbar = () => {
   const user = useSelector((state) => state.user);
   useEffect(() => {
-    document.title = `Welcome ${user.loginSuccess.name}`;
+    document.title = `Welcome ${user.loginSuccess?.name}`;
   }, []);
   return (
-    <Menu  fixed="top" style={{ zIndex: 10000 }}>
+    <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
         <Menu.Item as={NavLink} exact to="/home" header>
           <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
