@@ -9,7 +9,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoriesError, setCategoriesError] = useState(false);
-  const { user: loginSuccess } = useSelector((state) => state.user);
+  const {loginSuccess} = useSelector((state) => state.user);
 
   const images = [
     'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',

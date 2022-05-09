@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Image, Progress } from 'semantic-ui-react';
+import { Card, Icon, Image, Label, Progress } from 'semantic-ui-react';
 
 const CardItem = ({ data }) => {
   // <Label color="red" floating>
@@ -9,6 +9,10 @@ const CardItem = ({ data }) => {
     <div>
       {data !== {} && (
         <Card>
+          <Label color="green" floating>
+          active
+          </Label>
+
           <Image
             src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
             wrapped
@@ -16,14 +20,17 @@ const CardItem = ({ data }) => {
           />
           <Card.Content>
             <Card.Header>{data.title}</Card.Header>
-            <Card.Meta>Joined in 2016</Card.Meta>
+            <Card.Meta>created: days ago</Card.Meta>
             <Card.Description>{data.description?.substring(1, 20) + '...'}</Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <a>
-              <Icon name="user" />
-              <Progress color="blue" percent={70} />
-            </a>
+            {/* <Icon name="user" size='small'/> */}
+            <Progress
+              color="purple"
+              percent={data.currentAmount ? (data.currentAmount / data.targetAmount) * 100 : 0}
+              progress
+              content="Raised"
+            />
           </Card.Content>
         </Card>
       )}
@@ -32,4 +39,3 @@ const CardItem = ({ data }) => {
 };
 
 export default CardItem;
-
