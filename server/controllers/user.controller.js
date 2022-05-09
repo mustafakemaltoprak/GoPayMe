@@ -47,7 +47,7 @@ const loginUser = async (req, res) => {
     } else {
       const token = generateToken({ userId });
       // JSON.stringify(userExists);
-
+       console.log('userexists new', userExists);
       console.log('userexists new', userExists)
 
       res.status(201).send({

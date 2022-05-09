@@ -44,5 +44,5 @@ code {
 .ui.left.visible.sidebar, .ui.right.visible.sidebar {
   box-shadow: none !important;
   border-left: none;
-    border: none !important;
+  border: none !important;
 }

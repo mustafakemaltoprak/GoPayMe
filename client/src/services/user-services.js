@@ -39,7 +39,7 @@ export const creatEmailAccount = async (payload) => {
 // export const login (email, password) => {
 
 //   }
-
+ 
 export const googleLogin = async () => {
   const googleAuthProvider = new GoogleAuthProvider();
   try {
