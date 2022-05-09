@@ -1,24 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Card, Icon, Image, Label, Progress } from 'semantic-ui-react';
+import CreateModal from './CreateModal';
+import {useLocation} from 'react-router-dom'
 
 const CardItem = ({ data }) => {
+  const [open, setOpen] = useState(false)
+  const location = useLocation()
   // <Label color="red" floating>
   //   22
   // </Label>;
+  console.log('locat',location)
   return (
     <div>
       {data !== {} && (
         <div>
-          <Card style={{ height: '20rem', width: '13rem' }}>
-            <Label color="green" floating>
-              active
-            </Label>
+          <Card style={{ height: '23rem', width: '13rem' }}>
+            {location.pathname === '/fundraisers' ? (
+              <Label color="green" floating onClick={() => setOpen(true)}>
+                Edit
+              </Label>
+            ) : (
+              <Label color="green" floating >
+               Active
+              </Label>
+            )}
+            {open && <CreateModal open={open} setOpen={setOpen} editData={data} />}
 
             <Image
-            src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
-            wrapped
-            ui={false}
-          />
+              src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
+              wrapped
+              ui={false}
+            />
             <Card.Content>
               <Card.Header>{data.title}</Card.Header>
               <Card.Meta>created: days ago</Card.Meta>

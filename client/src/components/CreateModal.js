@@ -98,6 +98,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     // reset();
   };
 
+  console.log('editmode', editData)
   const handleSelectChange = (valuesArr) => {
     setCategories(valuesArr);
 
@@ -150,7 +151,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                 Categories<span style={{ color: 'red' }}>*</span>
               </label>
               <Select
-                defaultValue={[]}
+                defaultValue={editData ? editData.categories : []}
                 isMulti
                 name="colors"
                 options={categoryOptions}

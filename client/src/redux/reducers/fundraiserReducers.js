@@ -15,7 +15,7 @@ import {
 //   };
 // };
 
-const fundraiserReducer = (state = { fundraisers: [] }, action) => {
+const fundraiserReducer = (state = {}, action) => {
   switch (action.type) {
     case FUNDRAISER_CREATED:
       return { ...state, fundraisers: [state.fundraisers, action.payload] };

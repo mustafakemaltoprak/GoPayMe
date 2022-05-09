@@ -32,29 +32,40 @@ const SideBar = () => {
         style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden' }}
       >
         <Grid>
-          <Menu.Item as={Link} active={location.pathname === '/home'}>
+          <Menu.Item
+            as={Link}
+            to="/home"
+            active={location.pathname === '/home'}
+            // onClick={() => {
+            //   history.push('/home');
+            // }}
+          >
             <Icon name="home" />
             Home
           </Menu.Item>
         </Grid>
 
-        <Menu.Item as="a" active={location.pathname === '/fundraisers'}>
+        <Menu.Item as={Link} to="/fundraisers" active={location.pathname === '/fundraisers'}>
           <Icon name="home" />
           My fundraisers
         </Menu.Item>
+
         <Menu.Item
-          as="a"
-          active={location.pathname === '/fundraisers'}
-          onClick={() => {
-            history.push('/fundraisers');
-          }}
+          as={Link}
+          active={location.pathname === '/profile'}
+          to='/profile'
+          // onClick={() => {
+          //   history.push('/fundraisers');
+          // }}
         >
           <Icon name="home" />
           Profile
         </Menu.Item>
+
         <Menu.Item
           as="a"
-          active={location.pathname === '/profile'}
+          // active={location.pathname === '/l'}
+          to="/login"
           onClick={() => {
             dispatch(logoutUser());
             history.push('/login');

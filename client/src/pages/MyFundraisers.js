@@ -1,18 +1,31 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Grid, Button } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import CreateModal from '../components/CreateModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 const Myfundraisers = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [data, setData] = useState({});
+  const { fundraisers } = useSelector((state) => state.fundraiser);
+  const { loginSuccess } = useSelector((state) => state.user);
+  const [data, setData] = useState([]);
 
-  console.log('data', data)
+  console.log('data', loginSuccess);
+  useEffect(() => {
+    if (fundraisers.length > 0) {
+      console.log('fired');
+      const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
+      setData(filteredFundraisers);
+    }
+  }, [fundraisers, loginSuccess]);
+
+  console.log('loginsucesss', loginSuccess.userId, fundraisers[1].writer);
+  console.log('data', data);
+
   return (
-    <div style={{border: 'red solid 1px', minHeight: '80vh'}}>
-      <Grid.Row>
-        {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
-      </Grid.Row>
+    <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
+      <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
       <Grid.Row>
         <h1>Active Fundraisers</h1>
         <Button
@@ -20,7 +33,6 @@ const Myfundraisers = () => {
             setOpenModal(true);
           }}
         >
-          
           Create a fundraiser
         </Button>
       </Grid.Row>
@@ -30,7 +42,9 @@ const Myfundraisers = () => {
       </Grid.Row>
 
       <Grid.Row>
-        {data !== true && <CardItem data={data} />}
+        {data.length > 0 ? data.map(dataItem => (<CardItem data={dataItem} />)) : <p>You havent published any data yet</p>}
+
+        {/* // } */}
       </Grid.Row>
     </div>
   );
