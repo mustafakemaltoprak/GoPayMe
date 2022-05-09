@@ -9,7 +9,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
 import { Container, Grid } from 'semantic-ui-react';
-import Profile from './pages/Profile';
+import MyFundraisers from './pages/MyFundraisers';
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
                       <Grid.Column width={13}>
                         <Route path="/home" component={Home} exact />
                         <Route path="/dashboard" component={Dashboard} />
-                        <Route path="/profile" component={Profile} />
+                        <Route path="/fundraisers" component={MyFundraisers} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

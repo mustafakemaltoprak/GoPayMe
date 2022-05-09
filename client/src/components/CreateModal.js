@@ -1,29 +1,38 @@
 import React, { useState } from 'react';
 import { Button, Form, Grid, Icon, Image, Label, Modal } from 'semantic-ui-react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
+import { createFundraiser } from '../services/fundraisers-services';
+import { useSelector } from 'react-redux';
+import Select from 'react-select';
 
-const CreateModal = ({ open, setOpen, isEdit, editData,setData }) => {
+const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const [loading, setloading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [categoriesError, setCategoriesError] = useState(false);
+  const { user: loginSuccess } = useSelector((state) => state.user);
 
-   const images = [
-     'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',
-     'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-     'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
-     'https://react.semantic-ui.com/images/wireframe/square-image.png',
-   ];
-
+  const images = [
+    'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+    'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
+  ];
 
   const defaultValues = editData ?? {
-    name: '',
+    title: '',
     targetAmount: '',
     deadlineDate: '0:00',
     description: '',
     address: '',
-    image: images[Math.floor(Math.random * 3)],
+    image: '',
   };
 
- 
-
+  const categoryOptions = [
+    { value: 'charity', label: 'Charity', color: '#00B8D9' },
+    { value: 'healthcare', label: 'Healthcare', color: '#0052CC' },
+    { value: 'art', label: 'Art', color: '#5243AA' },
+    { value: 'humanitarian', label: 'Humanitarian', color: '#FF5630' },
+    { value: 'animals', label: 'Animals', color: '#FF8B00' },
+  ];
 
   const {
     register,
@@ -37,8 +46,35 @@ const CreateModal = ({ open, setOpen, isEdit, editData,setData }) => {
   });
 
   const onSubmit = async (formObj) => {
-    console.log(formObj);
-    setData(formObj)
+    console.log('looooa');
+
+    if(categories.length < 1) {
+      setCategoriesError(true)
+      setInterval(()=> {
+        setCategoriesError(false)
+      })
+      return
+    }
+
+    // setloading(true)
+    // createFundraiser(formObj)
+
+    if (formObj.image.length === 0) {
+      formObj = {
+        ...formObj,
+        image: images[Math.floor(Math.random() * 3)],
+        userId: loginSuccess.userId,
+        token: loginSuccess.token,
+        categories: categories
+      };
+      setData(formObj);
+    }
+  };
+
+  const handleSelectChange = (valuesArr) => {
+    setCategories(valuesArr);
+
+    // setDate(date);
   };
 
   return (
@@ -62,7 +98,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData,setData }) => {
                   required: 'Name is required.',
                 })}
               />
-              <p style={{ color: '#9d0f0f' }}>{errors.name?.message}</p>
+              <p style={{ color: '#9d0f0f' }}>{errors.title?.message}</p>
             </Form.Field>
 
             <Form.Field>
@@ -80,6 +116,22 @@ const CreateModal = ({ open, setOpen, isEdit, editData,setData }) => {
               />
               <p style={{ color: '#9d0f0f' }}>{errors.targetAmount?.message}</p>
             </Form.Field>
+
+            <Form.Field>
+              <label>
+                Categories<span style={{ color: 'red' }}>*</span>
+              </label>
+              <Select
+                defaultValue={[]}
+                isMulti
+                name="colors"
+                options={categoryOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                onChange={handleSelectChange}
+              />
+            </Form.Field>
+            {categoriesError && <p style={{ color: '#9d0f0f' }}>Categories is required.</p>}
 
             <Form.Field>
               <label>
