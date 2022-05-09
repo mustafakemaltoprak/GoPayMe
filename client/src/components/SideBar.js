@@ -8,7 +8,7 @@ const SideBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   return (
-    <Grid.Column floated="left">
+    
       <Sticky>
         {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
             <Link href="/notifications">
@@ -19,6 +19,7 @@ const SideBar = () => {
             </Link>
             <br /> */}
         {/* <Sidebar.Pushable as={Segment}> */}
+        {/* <div style={{border: 'solid 2px green'}}>coolfegfegegegegrgergegegegege egegegeg</div> */}
         <Sidebar
           as={Menu}
           animation="overlay"
@@ -27,18 +28,28 @@ const SideBar = () => {
           vertical
           visible
           // width={''}
+          // style={{ overflow: 'hidden' }}
           className="cool"
-          style={{ border: 'solid 1px gainsboro', paddingTop: '10rem' }}
+          style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden' }}
         >
-          <Menu.Item as={Link} active={location.pathname === '/home'}>
-            <Icon name="home" />
-            Home
-          </Menu.Item>
+          <Grid>
+            <Menu.Item as={Link} active={location.pathname === '/home'}>
+              <Icon name="home" />
+              Home
+            </Menu.Item>
+          </Grid>
+
           <Menu.Item as="a" active={location.pathname === '/fundraisers'}>
             <Icon name="home" />
             My fundraisers
           </Menu.Item>
-          <Menu.Item as="a" active={location.pathname === '/profile'}>
+          <Menu.Item
+            as="a"
+            active={location.pathname === '/profile'}
+            onClick={() => {
+              history.push('/profile');
+            }}
+          >
             <Icon name="home" />
             Profile
           </Menu.Item>
@@ -81,7 +92,7 @@ const SideBar = () => {
             </List.Item> */}
         {/* </List> */}
       </Sticky>
-    </Grid.Column>
+    
   );
 };
 
