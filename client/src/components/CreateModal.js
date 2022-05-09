@@ -2,16 +2,28 @@ import React, { useState } from 'react';
 import { Button, Form, Grid, Icon, Image, Label, Modal } from 'semantic-ui-react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
 
-const CreateModal = ({ open, setOpen, isEdit, editData }) => {
+const CreateModal = ({ open, setOpen, isEdit, editData,setData }) => {
   const [loading, setloading] = useState(false);
+
+   const images = [
+     'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',
+     'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+     'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
+     'https://react.semantic-ui.com/images/wireframe/square-image.png',
+   ];
+
+
   const defaultValues = editData ?? {
     name: '',
     targetAmount: '',
     deadlineDate: '0:00',
     description: '',
     address: '',
-    image: '',
+    image: images[Math.floor(Math.random * 3)],
   };
+
+ 
+
 
   const {
     register,
@@ -26,6 +38,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData }) => {
 
   const onSubmit = async (formObj) => {
     console.log(formObj);
+    setData(formObj)
   };
 
   return (
@@ -109,9 +122,9 @@ const CreateModal = ({ open, setOpen, isEdit, editData }) => {
                 // value={email}
                 type="file"
                 // onChange={(e) => setEmail(e.target.value)}
-                {...register('address')}
+                {...register('image')}
               />
-              <p style={{ color: '#9d0f0f' }}>{errors.address?.message}</p>
+              <p style={{ color: '#9d0f0f' }}>{errors.image?.message}</p>
             </Form.Field>
 
             <Form.Field>
