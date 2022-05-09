@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import Login from './pages/Login.js';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import Categories from './pages/Categories';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import SideBar from './components/SideBar';
+import { Container } from 'semantic-ui-react';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+
+          <Route path="/categories" component={Categories} />
+          <Route path="/register" component={Register} />
+          <Route
+            path={'/(.+)'}
+            render={() => (
+              <>
+                <Navbar />
+                <Container style={{border: 'red solid 3px'}}>
+                  <SideBar />
+                  <Route path="/home" component={Home} exact />
+                  <Route path="/dashboard" component={Dashboard} />
+                </Container>
+              </>
+            )}
+          />
+        </Switch>
+        <ToastContainer position="bottom-right" autoClose={5000} />
+      </Router>
     </div>
   );
 }
