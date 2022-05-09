@@ -3,7 +3,7 @@ import { Container, Grid } from 'semantic-ui-react'
 
 const Home = () => {
   return (
-    <div>
+    <Container style={{padding: '20rem'}}>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque nulla, ea accusamus,
       reprehenderit assumenda molestiae a laboriosam deleniti natus quo accusantium ipsam, impedit
       rem dolore delectus aliquid autem tempora? Doloremque! Similique quasi fugiat quas eos cumque.
@@ -181,7 +181,7 @@ const Home = () => {
       perferendis quasi nam. Dolor, deleniti vitae porro distinctio pariatur asperiores. Nulla
       exercitationem architecto vero dicta ad, consequatur dignissimos minus saepe consequuntur.
       Veritatis quos modi debitis alias?
-    </div>
+    </Container>
   );
 }
 

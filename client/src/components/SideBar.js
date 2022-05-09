@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Grid, Header, Icon, Image, List, Menu, Segment, Sidebar, Sticky } from 'semantic-ui-react';
-
-const SideBar = () => {    
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../redux/actions/userActions';
+const SideBar = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const location = useLocation();
   return (
     <Grid.Column floated="left">
@@ -38,6 +41,17 @@ const SideBar = () => {
           <Menu.Item as="a" active={location.pathname === '/profile'}>
             <Icon name="home" />
             Profile
+          </Menu.Item>
+          <Menu.Item
+            as="a"
+            active={location.pathname === '/profile'}
+            onClick={() => {
+              dispatch(logoutUser());
+              history.push('/login');
+            }}
+          >
+            <Icon name="home" />
+            Logout
           </Menu.Item>
         </Sidebar>
 
