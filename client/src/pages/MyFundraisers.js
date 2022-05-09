@@ -7,8 +7,9 @@ const Myfundraisers = () => {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({});
 
+  console.log('data', data)
   return (
-    <Grid>
+    <div style={{border: 'red solid 1px', minHeight: '80vh'}}>
       <Grid.Row>
         {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
       </Grid.Row>
@@ -19,6 +20,7 @@ const Myfundraisers = () => {
             setOpenModal(true);
           }}
         >
+          
           Create a fundraiser
         </Button>
       </Grid.Row>
@@ -28,9 +30,9 @@ const Myfundraisers = () => {
       </Grid.Row>
 
       <Grid.Row>
-        <CardItem data={data} />
+        {data !== true && <CardItem data={data} />}
       </Grid.Row>
-    </Grid>
+    </div>
   );
 };
 

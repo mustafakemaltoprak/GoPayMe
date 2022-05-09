@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { Button, Form, Grid, Icon, Image, Label, Modal } from 'semantic-ui-react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { createFundraiser } from '../services/fundraisers-services';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 import Select from 'react-select';
+import { createFundraiserAction } from '../redux/actions/fundraiserActions';
+import {toast} from 'react-toastify'
 
 const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoriesError, setCategoriesError] = useState(false);
-  const {loginSuccess} = useSelector((state) => state.user);
+  const { loginSuccess } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const images = [
     'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',
@@ -45,9 +49,17 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     mode: 'onChange',
   });
 
-  const onSubmit = (formObj) => {
-    console.log('looooa');
-
+  const onSubmit = async (formObj) => {
+    setloading(true);
+    // console.log(
+    //   'first',
+    //   categories
+    // );
+    // console.log(
+    //   'looooa',
+    //   categories.map((category) => category.value),
+    // );
+    // return
     if (categories.length < 1) {
       console.log('yes');
       setCategoriesError(true);
@@ -58,6 +70,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     }
 
     // setloading(true)
+
     // createFundraiser(formObj)
 
     formObj = {
@@ -65,9 +78,24 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 3)] : formObj.image[0],
       writer: loginSuccess.userId,
       token: loginSuccess.token,
-      categories: categories,
+      targetAmount: Number(formObj.targetAmount),
+      deadlineDate: new Date(formObj.deadlineDate),
+      categories: categories.map((category) => category.value),
     };
-    setData(formObj);
+    console.log('formObject', formObj);
+    const  data  = await createFundraiser(formObj);
+    console.log('our data',data)
+    if (data) {
+      
+      dispatch(createFundraiserAction(data));
+      toast.success('Fundraiser created')
+    }
+
+
+    // setOpen(false);
+   
+    // setData(formObj);
+    // reset();
   };
 
   const handleSelectChange = (valuesArr) => {
@@ -86,7 +114,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Form.Field>
               <label>
-                Name<span style={{ color: 'red' }}>*</span>
+                Title<span style={{ color: 'red' }}>*</span>
               </label>
               <input
                 placeholder="First Name"
@@ -104,6 +132,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
               <label>
                 Target Amount<span style={{ color: 'red' }}>*</span>
               </label>
+             
               <input
                 placeholder="Target Amount"
                 // value={email}
@@ -165,9 +194,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
             </Form.Field>
 
             <Form.Field>
-              <label>
-                Image
-              </label>
+              <label>Image</label>
               <input
                 placeholder="Address"
                 // value={email}
