@@ -47,6 +47,8 @@ export default function PaymentForm(props) {
 
         if (response.data.success) {
           toast.success('Your payment was successful');
+        } else {
+          toast.error('Your payment failed');
         }
       } catch (error) {
         console.log('Error', error);
