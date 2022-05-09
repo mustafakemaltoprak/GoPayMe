@@ -3,7 +3,7 @@ import { confighelper } from './helpers-services';
 
 
 export const createFundraiser = async (formObj) => {
-  const config = confighelper(formObj.token, formObj.userId);
+  const config = confighelper(formObj.token);
   const {data} = await axios.post('/fundraiser/create', formObj, config);
 };
 

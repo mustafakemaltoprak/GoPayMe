@@ -7,10 +7,13 @@ router.route("/").get(controller.getAllFundraisers);
 
 // Create a fundraiser
 
-router.route("/add").post(controller.createFundraiser);
+router.route("/create").post(controller.createFundraiser);
 
 // Delete a fundraiser
 
 router.route("/:id").delete(controller.deleteFundraiser)
 
 module.exports = router;
+
+
+/fundraisers/create
