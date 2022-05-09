@@ -45,30 +45,29 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     mode: 'onChange',
   });
 
-  const onSubmit = async (formObj) => {
+  const onSubmit = (formObj) => {
     console.log('looooa');
 
-    if(categories.length < 1) {
-      setCategoriesError(true)
-      setInterval(()=> {
-        setCategoriesError(false)
-      })
-      return
+    if (categories.length < 1) {
+      console.log('yes');
+      setCategoriesError(true);
+      setTimeout(() => {
+        setCategoriesError(false);
+      }, 1000);
+      return;
     }
 
     // setloading(true)
     // createFundraiser(formObj)
 
-    if (formObj.image.length === 0) {
-      formObj = {
-        ...formObj,
-        image: images[Math.floor(Math.random() * 3)],
-        userId: loginSuccess.userId,
-        token: loginSuccess.token,
-        categories: categories
-      };
-      setData(formObj);
-    }
+    formObj = {
+      ...formObj,
+      image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 3)] : formObj.image[0],
+      writer: loginSuccess.userId,
+      token: loginSuccess.token,
+      categories: categories,
+    };
+    setData(formObj);
   };
 
   const handleSelectChange = (valuesArr) => {
@@ -94,7 +93,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                 // value={email}
                 type="text"
                 // onChange={(e) => setEmail(e.target.value)}
-                {...register('name', {
+                {...register('title', {
                   required: 'Name is required.',
                 })}
               />
@@ -167,7 +166,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
 
             <Form.Field>
               <label>
-                Image<span style={{ color: 'red' }}>*</span>
+                Image
               </label>
               <input
                 placeholder="Address"
