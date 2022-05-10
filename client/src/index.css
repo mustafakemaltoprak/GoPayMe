@@ -10,15 +10,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-*, body,
+*,
+body,
 *::after,
 *::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box !important;
- 
 }
-
 
 /* .cool {
   margin: auto !important;
@@ -27,7 +26,7 @@ code {
 .ui.cool.sidebar {
   /* width: 315px !important; */
   /* margin-left: 10vw !important; */
-    /* min-width: 10vw !important; */
+  /* min-width: 10vw !important; */
   box-shadow: none;
   border-left: none !important;
   border-right: none !important;
@@ -35,11 +34,10 @@ code {
 }
 
 /* .ui.cool.sidebar { */
-  /* width: 315px !important; */
-  /* margin-left: 5vw !important; */
+/* width: 315px !important; */
+/* margin-left: 5vw !important; */
 
-
-  /* width: 10vw !important;
+/* width: 10vw !important;
   box-shadow: none;
   border-left: none !important;
   border-right: none !important;
@@ -55,15 +53,204 @@ code {
    box-shadow: none;
 }  */
 
-.ui.left.visible.sidebar, .ui.right.visible.sidebar {
+.ui.left.visible.sidebar,
+.ui.right.visible.sidebar {
   box-shadow: none !important;
   border-left: none;
   border: none !important;
 }
 
-
 .cardgrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 6rem;
+}
+
+.fundraiserTitle {
+  text-align: center;
+}
+
+.fundraiserImage {
+  height: 300px;
+  width: 600px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
+  margin-top: 20px;
+  margin-left: 33px;
+}
+
+.fundraiserDescription {
+  height: 200px;
+  width: 500px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
+  margin-left: 150px;
+}
+
+.fundraiserDonation {
+  height: 400px;
+  width: 350px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
+  margin-left: 40px;
+}
+
+.fundraiserDonationDescription {
+  font-size: x-small;
+}
+
+.container {
+  display: flex;
+}
+
+.donationContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.donationMiniBox {
+  margin-left: 50px;
+}
+
+.donateButton {
+  width: 150px;
+  margin-left: 75px;
+  margin-top: 25px;
+}
+
+.previousDonations {
+  display: flex;
+  margin-top: 50px;
+  margin-left: 75px;
+  flex-direction: column;
+}
+
+.preFixedDonationButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+}
+
+.preFixedButton {
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.progressBar {
+  margin-top: 10px;
+}
+
+input {
+  border-radius: 5px;
+}
+
+.payButton {
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.FormGroup {
+  margin: 0 15px 20px;
+  padding: 0;
+  border-style: none;
+  background-color: #7795f8;
+  will-change: opacity, transform;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #829fff;
+  border-radius: 4px;
+}
+
+.FormRow {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 15px;
+  border-top: 1px solid #819efc;
+}
+
+.StripeElement--webkit-autofill {
+  background: transparent !important;
+}
+
+.StripeElement {
+  width: 100%;
+  padding: 11px 15px 11px 0;
+}
+
+.goPayButton {
+  display: block;
+  font-size: 16px;
+  width: calc(100% - 30px);
+  height: 40px;
+  margin: 40px 15px 0;
+  background-color: #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 100ms ease-in-out;
+  will-change: transform, background-color, box-shadow;
+  border: none;
+}
+
+button:active {
+  background-color: #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
+  transform: scale(0.99);
+}
+
+/* .overlay {
+  position: absolute; 
+  bottom: 0; 
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+/* color: #f1f1f1; 
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center; */
+/* } */
+
+.cardlabel:hover {
+  background: blue;
+}
+
+.homeg {
+  border: 3px solid purple;
+  width: 100% !important;
+  height: 100% !important;
+}
+.homegrid {
+  display: grid;
+  grid-template-columns: 10rem auto;
+  max-width: 100%;
+  border: 3px solid green;
+}
+
+.maps {
+  width: 90rem !important;
+  height: 200rem;
+}
+
+.leaflet-container {
+  /* height: 100%;    
+  width: 100%; */
+  width: 100%;
+  height: 60vh;
+  border: green 3px solid;
 }

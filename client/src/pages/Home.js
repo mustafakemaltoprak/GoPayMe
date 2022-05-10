@@ -2,20 +2,22 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Container, Grid, Menu, Input,Segment, Checkbox } from 'semantic-ui-react';
+import { Container, Grid, Menu, Input, Segment, Checkbox } from 'semantic-ui-react';
 import { fetchData } from '../services/fundraisers-services';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFundraisers } from '../redux/actions/fundraiserActions';
 import CardItem from '../components/Card';
+import Maps from '../components/Maps';
 
 const Home = () => {
-  const history = useHistory()
+  const history = useHistory();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [toggle, setToggle] = useState(false);
 
   const handleClick = (id) => {
-    history.push(`/fundraiser/${id}`)
-  }
+    history.push(`/fundraiser/${id}`);
+  };
   useEffect(() => {
     fetchData().then((response) => {
       dispatch(fetchFundraisers(response));
@@ -38,28 +40,42 @@ const Home = () => {
         {data.length > 0 && data.map((dataItem) => <CardItem data={dataItem} key={dataItem._id} />)}
       </div> */}
       <Menu attached="top" tabular>
-        <Menu.Item name="Explore" 
-        active={true} 
-        // onClick={this.handleItemClick} 
+        <Menu.Item
+          name="Explore"
+          active={true}
+          // onClick={this.handleItemClick}
         />
-        <Menu.Item name="Following" 
-        // onClick={this.handleItemClick} 
+        <Menu.Item
+          name="Following"
+          // onClick={this.handleItemClick}
         />
         <Menu.Menu position="right">
           <Menu.Item>
             <Checkbox
               toggle
-              label='Maps'
+              label="Maps"
+              onChange={() => setToggle((prev) => !prev)}
+              checked={toggle}
             />
           </Menu.Item>
         </Menu.Menu>
       </Menu>
 
-      <Segment attached="bottom" style={{padding: '2rem', border: '1px red solid'}} className='cardgrid'>
-       
-        {data.length > 0 && data.map((dataItem) => <CardItem data={dataItem} key={dataItem._id}  handleClick={handleClick}/> )}
-    
-      </Segment>
+      <div
+        attached="bottom"
+        style={{ padding: '2rem', border: '1px red solid' }}
+        className="cardgrid"
+      >
+        {!toggle && (
+          <>
+            {data.length > 0 &&
+              data.map((dataItem) => (
+                <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+              ))}
+          </>
+        )}
+      </div>
+      {toggle && <>{data.length > 0 && <Maps data={data} key={8888} />}</>}
     </>
   );
 };
