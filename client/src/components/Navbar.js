@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 const Navbar = () => {
   const user = useSelector((state) => state.user);
   useEffect(() => {
-    document.title = `Welcome ${user.loginSuccess.name}`;
+    document.title = `Welcome ${user.loginSuccess?.name}`;
   }, []);
   return (
     <Menu  fixed="top" style={{ zIndex: 10000 }}>

@@ -8,7 +8,8 @@ import Categories from './pages/Categories';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
-import { Container } from 'semantic-ui-react';
+import Profile from './pages/Profile';
+import { Container, Grid } from 'semantic-ui-react';
 
 function App() {
   return (
@@ -16,18 +17,26 @@ function App() {
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
-
           <Route path="/categories" component={Categories} />
           <Route path="/register" component={Register} />
           <Route
             path={'/(.+)'}
             render={() => (
               <>
-                <Navbar />
-                <Container style={{border: 'red solid 3px'}}>
-                  <SideBar />
-                  <Route path="/home" component={Home} exact />
-                  <Route path="/dashboard" component={Dashboard} />
+                <Container style={{ border: 'orange 2px solid', marginTop: '5rem' }}>
+                  <Navbar />
+                  <Grid>
+                    <Grid.Row>
+                      <Grid.Column width={3}>
+                        <SideBar />
+                      </Grid.Column>
+                      <Grid.Column width={13}>
+                        <Route path="/home" component={Home} exact />
+                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/profile" component={Profile} />
+                      </Grid.Column>
+                    </Grid.Row>
+                  </Grid>
                 </Container>
               </>
             )}
