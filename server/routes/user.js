@@ -6,6 +6,8 @@ const {
   selectCategories,
 } = require('../controllers/user.controller');
 
+
+
 // Show all the fundraisers
 
 // router.route("/").get(controller.getAllUsers);

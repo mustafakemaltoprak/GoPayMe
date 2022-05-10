@@ -1,13 +1,15 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Grid, Header, Icon, Image, List, Menu, Segment, Sidebar, Sticky } from 'semantic-ui-react';
-
-const SideBar = () => {    
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../redux/actions/userActions';
+const SideBar = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const location = useLocation();
   return (
-    <Grid.Column floated="left">
-      <Sticky>
-        {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
+    <Sticky>
+      {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
             <Link href="/notifications">
               <List.Item>
                 <Icon name="hand point right" size="large" />
@@ -15,41 +17,74 @@ const SideBar = () => {
               </List.Item>
             </Link>
             <br /> */}
-        {/* <Sidebar.Pushable as={Segment}> */}
-        <Sidebar
-          as={Menu}
-          animation="overlay"
-          icon="labeled"
-          // inverted
-          vertical
-          visible
-          // width={''}
-          className="cool"
-          style={{ border: 'solid 1px gainsboro', paddingTop: '10rem' }}
-        >
-          <Menu.Item as={Link} active={location.pathname === '/home'}>
+      {/* <Sidebar.Pushable as={Segment}> */}
+      {/* <div style={{border: 'solid 2px green'}}>coolfegfegegegegrgergegegegege egegegeg</div> */}
+      <Sidebar
+        as={Menu}
+        animation="overlay"
+        icon="labeled"
+        // inverted
+        vertical
+        visible
+        // width={''}
+        // style={{ overflow: 'hidden' }}
+        className="cool"
+        style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden' }}
+      >
+        <Grid>
+          <Menu.Item
+            as={Link}
+            to="/home"
+            active={location.pathname === '/home'}
+            // onClick={() => {
+            //   history.push('/home');
+            // }}
+          >
             <Icon name="home" />
             Home
           </Menu.Item>
-          <Menu.Item as="a" active={location.pathname === '/fundraisers'}>
-            <Icon name="home" />
-            My fundraisers
-          </Menu.Item>
-          <Menu.Item as="a" active={location.pathname === '/profile'}>
-            <Icon name="home" />
-            Profile
-          </Menu.Item>
-        </Sidebar>
+        </Grid>
 
-        {/* <Sidebar.Pusher>
+        <Menu.Item as={Link} to="/fundraisers" active={location.pathname === '/fundraisers'}>
+          <Icon name="home" />
+          My fundraisers
+        </Menu.Item>
+
+        <Menu.Item
+          as={Link}
+          active={location.pathname === '/profile'}
+          to='/profile'
+          // onClick={() => {
+          //   history.push('/fundraisers');
+          // }}
+        >
+          <Icon name="home" />
+          Profile
+        </Menu.Item>
+
+        <Menu.Item
+          as="a"
+          // active={location.pathname === '/l'}
+          to="/login"
+          onClick={() => {
+            dispatch(logoutUser());
+            history.push('/login');
+          }}
+        >
+          <Icon name="home" />
+          Logout
+        </Menu.Item>
+      </Sidebar>
+
+      {/* <Sidebar.Pusher>
               <Segment basic>
                 <Header as="h3">Application Content</Header>
                 <Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
               </Segment>
             </Sidebar.Pusher> */}
-        {/* </Sidebar.Pushable> */}
+      {/* </Sidebar.Pushable> */}
 
-        {/* <Link href={`/${username}`}>
+      {/* <Link href={`/${username}`}>
               <List.Item active={router.query.username === username}>
                 <Icon
                   name="user"
@@ -65,9 +100,8 @@ const SideBar = () => {
               <Icon name="log out" size="large" />
               <List.Content>{pc && <List.Header content="Logout" />}</List.Content>
             </List.Item> */}
-        {/* </List> */}
-      </Sticky>
-    </Grid.Column>
+      {/* </List> */}
+    </Sticky>
   );
 };
 

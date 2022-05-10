@@ -1,16 +1,25 @@
 const router = require("express").Router();
-const controller = require("../controllers/fundraiser.controller")
+const {
+  getAllFundraisers,
+  createFundraiser,
+  deleteFundraiser,
+} = require("../controllers/fundraiser.controller")
+const { authMiddleware } = require('../middlewares/auth');
 
 // Show all the fundraisers
+// console.log('authh', authMiddleware)
 
-router.route("/").get(controller.getAllFundraisers);
+router.get('/', authMiddleware, getAllFundraisers);
 
 // Create a fundraiser
+router.post('/create', authMiddleware, createFundraiser);
 
-router.route("/add").post(controller.createFundraiser);
+// router.route("/create").post(createFundraiser);
 
 // Delete a fundraiser
 
-router.route("/:id").delete(controller.deleteFundraiser)
+// router.route("/:id").delete(controller.deleteFundraiser)
 
 module.exports = router;
+
+
