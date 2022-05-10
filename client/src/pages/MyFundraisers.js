@@ -26,7 +26,7 @@ const Myfundraisers = () => {
   return (
     <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
       <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
-      <Grid.Row>
+      <Grid.Row style={{display: 'block'}}>
        
         <Button
           onClick={() => {
