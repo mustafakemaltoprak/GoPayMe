@@ -14,7 +14,7 @@ const CardItem = ({ data, handleClick }) => {
     <div>
       {data !== {} && (
         <div>
-          <Card style={{ height: '23rem', width: '13rem' }} onClick={()=> handleClick(data._id)}>
+          <Card style={{ height: '25rem', width: '15rem' }} onClick={()=> handleClick(data._id)}>
             {location.pathname === '/fundraisers' ? (
               <Label color="green" floating onClick={() => setOpen(true)}>
                 Edit
@@ -36,15 +36,16 @@ const CardItem = ({ data, handleClick }) => {
               <Card.Meta>created: days ago</Card.Meta>
               <Card.Description>{data.description?.substring(1, 20) + '...'}</Card.Description>
             </Card.Content>
-            <Card.Content extra>
+            {/* <Card.Content extra style={{height: '20rem'}}> */}
               {/* <Icon name="user" size='small'/> */}
               <Progress
                 color="purple"
                 percent={data.currentAmount ? (data.currentAmount / data.targetAmount) * 100 : 0}
                 progress
+                style={{margin: '0 2rem 2rem 2rem', height: '2rem'}}
                 content="Raised"
               />
-            </Card.Content>
+            {/* </Card.Content> */}
           </Card>
         </div>
       )}

@@ -55,10 +55,10 @@ const Home = () => {
         </Menu.Menu>
       </Menu>
 
-      <Segment attached="bottom" style={{padding: '2rem'}}>
-        <div style={{ display: 'grid', gridTemplateAreas: '1fr 1fr 1fr' }}>
+      <Segment attached="bottom" style={{padding: '2rem', border: '1px red solid'}} className='cardgrid'>
+       
         {data.length > 0 && data.map((dataItem) => <CardItem data={dataItem} key={dataItem._id}  handleClick={handleClick}/> )}
-      </div>
+    
       </Segment>
     </>
   );
