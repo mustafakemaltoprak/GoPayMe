@@ -11,6 +11,8 @@ import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
 import { Container, Grid } from 'semantic-ui-react';
 import MyFundraisers from './pages/MyFundraisers';
+import Profile from './pages/Profile';
+import ProfileChat from './pages/ProfileChat';
 
 function App() {
   return (
@@ -36,10 +38,12 @@ function App() {
                       </Grid.Column>
                       <Grid.Column width={13}>
                         <Route path="/home" component={Home} exact />
-                        <Route path="/profile" component={Dashboard} />
-                        
+                        <Route path="/dashboard" component={Dashboard} />
+
                         <Route path="/fundraisers" component={MyFundraisers} />
                         <Route path="/fundraiser/:id" component={DetailsPage} />
+                        <Route path="/profile" component={Profile} />
+                        <Route path="/messages" component={ProfileChat} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
