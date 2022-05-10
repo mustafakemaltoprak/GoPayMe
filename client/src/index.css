@@ -254,3 +254,13 @@ button:active {
   height: 60vh;
   border: green 3px solid;
 }
+
+.map-card{
+  transform: scale(1);
+}
+
+.map-card:hover {
+  background: gainsboro !important;
+  transform: scale(1.03);
+  transition: all 0.5ms linear;
+}
