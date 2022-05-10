@@ -5,7 +5,7 @@ import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Categories from './pages/Categories';
-import Test from './pages/Test';
+import DetailsPage from './pages/DetailsPage';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
@@ -36,9 +36,10 @@ function App() {
                       </Grid.Column>
                       <Grid.Column width={13}>
                         <Route path="/home" component={Home} exact />
-                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/profile" component={Dashboard} />
+                        
                         <Route path="/fundraisers" component={MyFundraisers} />
-                        <Route path="/fundraiser/:id" component={Test} />
+                        <Route path="/fundraiser/:id" component={DetailsPage} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

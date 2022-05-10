@@ -1,17 +1,139 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { Bar, Line, Pie } from 'react-chartjs-2';
 
-const Dashboard = () => {
+// import { Container } from 'semantic-ui-react';
+
+//Bar imports
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+// Pie imports
+// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+
+function Dashboard() {
+
+  //Pie chart data
+  // ChartJS.register(ArcElement, Tooltip, Legend);
+  // const data = {
+  //   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  //   datasets: [
+  //     {
+  //       label: '# Target Amount',
+  //       data: [12, 19, 3, 5, 2, 3],
+  //       backgroundColor: [
+  //         'rgba(255, 99, 132, 0.2)',
+  //         'rgba(54, 162, 235, 0.2)',
+  //         'rgba(255, 206, 86, 0.2)',
+  //         'rgba(75, 192, 192, 0.2)',
+  //         'rgba(153, 102, 255, 0.2)',
+  //         'rgba(255, 159, 64, 0.2)',
+  //       ],
+  //       borderColor: [
+  //         'rgba(255, 99, 132, 1)',
+  //         'rgba(54, 162, 235, 1)',
+  //         'rgba(255, 206, 86, 1)',
+  //         'rgba(75, 192, 192, 1)',
+  //         'rgba(153, 102, 255, 1)',
+  //         'rgba(255, 159, 64, 1)',
+  //       ],
+  //       borderWidth: 1,
+  //     },
+  //   ],
+  // };
+
+  /* BarChart */
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
+  const [chartData, setChartData] = useState({datasets: [],});
+
+  const [chartOptions, setChartOptions] = useState({});
+
+  useEffect(() => {
+    setChartData({
+      labels: ["John", "Kevin", "Geroge", "Micheal", "Oreo"],
+      datasets: [
+        {
+          label: "Whom'st let the dogs out",
+          data: [12, 55, 34, 120, 720],
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: "rgba(53, 162, 235, 0.4)",
+        },
+      ],
+    });
+    setChartOptions({
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Whom'st let the dogs out",
+        },
+      },
+    });
+  }, []);
+
   return (
-    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, aspernatur alias. Culpa commodi saepe eveniet aspernatur recusandae nostrum accusantium aliquid? Impedit, obcaecati. Quae totam cumque asperiores! Nostrum mollitia ipsa quod.
-    Nihil laboriosam quo cum temporibus commodi asperiores aut at unde velit, dolorem officiis! Ducimus accusamus voluptate earum. Velit omnis architecto nihil saepe perspiciatis nesciunt odio doloremque magni molestias, dolore cupiditate.
-    Est deleniti dignissimos eos rem inventore quae, maxime architecto dolores laudantium odit fugit tenetur sapiente at cum quibusdam excepturi quia quaerat neque. Quisquam saepe repellendus iusto nobis ipsa exercitationem voluptatum?
-    Provident tempora ex nostrum, eveniet voluptatem magnam reiciendis quisquam itaque iste tempore ipsa ab enim perferendis, qui error, distinctio repellendus molestias incidunt doloribus? Iure optio, eum harum nihil dolorum consectetur!
-    Atque officiis accusantium eligendi modi, alias, autem recusandae itaque molestias praesentium, unde vitae. Quo at amet nobis suscipit illo maxime laborum similique. Eum corrupti asperiores maxime reiciendis similique explicabo molestiae.
-    Corporis cum aliquid quis quibusdam, delectus officiis? Optio est corrupti quidem fuga eum autem aut numquam nesciunt distinctio pariatur, cum tempora natus hic. Dignissimos qui voluptatum officiis blanditiis velit quae!
-    Qui quasi temporibus explicabo molestiae, rem obcaecati! Reprehenderit praesentium placeat unde quasi culpa blanditiis a cupiditate, ipsam, quidem totam earum? Fuga id quam aperiam nam qui dicta nihil soluta consectetur.
-    Asperiores, molestias architecto. Tempora hic, labore sit cupiditate, in praesentium explicabo iste omnis cum ut doloremque nihil aut amet possimus facilis. Sunt exercitationem eum iure hic modi obcaecati, quaerat excepturi!
-    Labore dicta veniam placeat facilis quae facere? Deserunt beatae eveniet, obcaecati assumenda aspernatur atque id quisquam totam accusantium dolore recusandae labore ullam error quas repudiandae quidem, tempora non aliquam reiciendis?
-    Veritatis officiis culpa repudiandae consectetur repellendus libero asperiores in error ratione eius quae iure commodi mollitia quasi accusantium dicta enim, facilis accusamus unde. Reiciendis, soluta animi autem officiis quidem suscipit. Dashboard</div>
+    // <Container></Container>
+    <div className='profileContainer' style={{ border: 'red 2px solid', padding: '1rem' }}>
+      <div className='summaryHeaderContainer' style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div className='summaryCard' style={{ flex: '1', padding: '10px', 'border-radius': '5px', border: 'black 1px solid', gap: '5px', margin: '5px 5px' }}>
+          <div className='headerProjects'>
+            <div className='titleField'>
+              <span className='projectsText'>Projects Created</span>
+            </div>
+            <div className='dataField'>
+              <span className='projectsData'>10</span>
+            </div>
+          </div>
+        </div>
+        <div className='summaryCard' style={{ flex: '1', padding: '10px', 'border-radius': '5px', border: 'black 1px solid', gap: '5px', margin: '5px 5px' }}>
+          <div className='headerTotalRaised'>
+            <div className='titleField'>
+              <span className='totalRaisedText'>Total Raised</span>
+            </div>
+            <div className='dataField'>
+              <span className='moneyData'>$1000</span>
+            </div>
+          </div>
+        </div>
+        <div className='summaryCard' style={{ flex: '1', padding: '10px', 'border-radius': '5px', border: 'black 1px solid', gap: '5px', margin: '5px 5px' }}>
+          <div className='headerDonators'>
+            <div className='titleField'>
+              <span className='donatorsText'>Donators</span>
+            </div>
+            <div className='dataField'>
+              <span className='donatorsData'>187</span>
+            </div>
+          </div>
+        </div>
+        <div className='summaryCard' style={{ flex: '1', padding: '10px', 'border-radius': '5px', border: 'black 1px solid', gap: '5px', margin: '5px 5px' }}>
+          <div className='headerViews'>
+            <div className='titleField'>
+              <span className='viewsText'>Views</span>
+            </div>
+            <div className='dataField'>
+              <span className='viewsData'>9872</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='projectContentContainer' style={{ border: 'black 1px solid', padding: '1rem', 'margin-top': '30px', margin: '5px 5px' }}>
+        <div className='contentTitle'>
+          <span className='contentTitleField'>Your Projects</span>
+        </div>
+        <div className='projectContentDetails' style={{ display: 'flex', justifyContent: 'space-between', border: 'blue 1px solid'}}>
+          <div className='contentLeftDetails' style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px'}}>
+            <span>Awaiting project cards components</span>
+          </div>
+          <div className='contentRightCharts' style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px'}}>
+            <span>Charts Space</span>
+            {/* <Pie data={data} /> */}
+            <Bar options={chartOptions} data={chartData}/>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
