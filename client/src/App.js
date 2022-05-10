@@ -5,6 +5,7 @@ import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Categories from './pages/Categories';
+import Test from './pages/Test';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
@@ -24,7 +25,9 @@ function App() {
             path={'/(.+)'}
             render={() => (
               <>
-                <Container style={{ border: 'orange 2px solid', marginTop: '5rem' }}>
+                <Container
+                  style={{ border: 'orange 2px solid', marginTop: '5rem', minHeight: '80vh' }}
+                >
                   <Navbar />
                   <Grid>
                     <Grid.Row>
@@ -35,7 +38,7 @@ function App() {
                         <Route path="/home" component={Home} exact />
                         <Route path="/dashboard" component={Dashboard} />
                         <Route path="/fundraisers" component={MyFundraisers} />
-                        
+                        <Route path="/fundraiser/:id" component={Test} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

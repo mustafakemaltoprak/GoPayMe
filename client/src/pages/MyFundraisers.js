@@ -20,26 +20,25 @@ const Myfundraisers = () => {
     }
   }, [fundraisers, loginSuccess]);
 
-  console.log('loginsucesss', loginSuccess.userId, fundraisers[1].writer);
+  // console.log('loginsucesss', loginSuccess.userId, fundraisers[1].writer);
   console.log('data', data);
 
   return (
     <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
       <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
       <Grid.Row>
-        <h1>Active Fundraisers</h1>
+       
         <Button
           onClick={() => {
             setOpenModal(true);
           }}
+          floated='right'
         >
           Create a fundraiser
         </Button>
       </Grid.Row>
 
-      <Grid.Row>
-        <CreateModal />
-      </Grid.Row>
+      
 
       <Grid.Row>
         {data.length > 0 ? data.map(dataItem => (<CardItem data={dataItem} />)) : <p>You havent published any data yet</p>}

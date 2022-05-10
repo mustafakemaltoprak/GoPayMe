@@ -6,10 +6,11 @@ const getAllFundraisers = async (req, res) => {
   //     .catch((err) => res.status(400).json('Error: ' + err));
 
   try {
-    console.log('fired', req.body);
-    const foundUser = await Fundraiser.findOne({ writer: req.user });
+    console.log('fired', req.body, 'user', req.user.userId);
+    const foundUser = await Fundraiser.findOne({ writer: req.user.userId });
+    //  console.log('user', foundUser.categories);
     const allFundraisers = await Fundraiser.find({ categories: { $in: foundUser.categories } });
-    console.log('created', createdFundraiser);
+    // console.log('created', allFundraisers);
     res.status(201).send(allFundraisers);
   } catch (error) {
     res.status(400).send({ error: error.message });

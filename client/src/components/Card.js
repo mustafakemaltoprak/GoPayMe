@@ -3,18 +3,18 @@ import { Card, Icon, Image, Label, Progress } from 'semantic-ui-react';
 import CreateModal from './CreateModal';
 import {useLocation} from 'react-router-dom'
 
-const CardItem = ({ data }) => {
+const CardItem = ({ data, handleClick }) => {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   // <Label color="red" floating>
   //   22
   // </Label>;
-  console.log('locat',location)
+  console.log('locat',data._id)
   return (
     <div>
       {data !== {} && (
         <div>
-          <Card style={{ height: '23rem', width: '13rem' }}>
+          <Card style={{ height: '23rem', width: '13rem' }} onClick={()=> handleClick(data._id)}>
             {location.pathname === '/fundraisers' ? (
               <Label color="green" floating onClick={() => setOpen(true)}>
                 Edit

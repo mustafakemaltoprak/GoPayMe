@@ -8,8 +8,22 @@ const fundraiserSchema = new Schema({
   title: String,
   targetAmount: Number,
   address: String,
-  currentAmount: Number,
+  currentAmount: {
+    type: Number,
+    default: 0
+  },
   deadlineDate: Date,
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+    },
+    coordinates: {
+      type: [Number],
+      index: '2dsphere',
+    },
+    country: { type: String },
+  },
   description: String,
   categories: [String],
   backers: Number,

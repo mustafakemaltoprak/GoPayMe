@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, Container, Button, Icon, Label, Header, Dropdown, Image } from 'semantic-ui-react';
+import { Menu, Container, Button, Icon, Label, Header, Dropdown, Image, Search } from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
 
@@ -17,6 +17,18 @@ const Navbar = () => {
           GoPayME
           <Icon name="money" />
         </Menu.Item>
+        <Menu.Item header>
+          <Search
+            // loading={loading}
+            placeholder="Search..."
+            // onResultSelect={(e, data) =>
+            //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+            // }
+            // onSearchChange={handleSearchChange}
+            // results={results}
+            // value={value}
+          />
+        </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
           <Icon name="mail" /> Messages
@@ -26,7 +38,7 @@ const Navbar = () => {
           <Icon name="users" /> Notifications
           <Label color="teal">22</Label>
         </Menu.Item>
-        <Menu.Item position="right">
+        <Menu.Item>
           <Image
             avatar
             spaced="right"
