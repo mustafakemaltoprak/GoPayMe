@@ -2,6 +2,7 @@ import {
   FUNDRAISER_CREATED,
   FUNDRAISER_DELETED,
   FUNDRAISER_EDITED,
+  FUNDRAISER_FETCH
 } from '../constants/fundraiserConstants';
 // {
 //     type: 'LOGIN_USER',
@@ -15,8 +16,10 @@ import {
 //   };
 // };
 
-const fundraiserReducer = (state = {}, action) => {
+const fundraiserReducer = (state = { fundraisers: [] }, action) => {
   switch (action.type) {
+    case FUNDRAISER_FETCH:
+      return { ...state, fundraisers: action.payload };
     case FUNDRAISER_CREATED:
       return { ...state, fundraisers: [state.fundraisers, action.payload] };
     case FUNDRAISER_EDITED:

@@ -35,6 +35,7 @@ function App() {
                         <Route path="/home" component={Home} exact />
                         <Route path="/dashboard" component={Dashboard} />
                         <Route path="/fundraisers" component={MyFundraisers} />
+                        
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

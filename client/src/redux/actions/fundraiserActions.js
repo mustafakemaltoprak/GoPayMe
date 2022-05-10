@@ -1,8 +1,15 @@
-import { FUNDRAISER_DELETED,FUNDRAISER_CREATED,FUNDRAISER_EDITED } from '../constants/fundraiserConstants';
+import { FUNDRAISER_DELETED,FUNDRAISER_CREATED,FUNDRAISER_EDITED, FUNDRAISER_FETCH } from '../constants/fundraiserConstants';
 
 export const createFundraiserAction = (payload) => {
   return {
     type: FUNDRAISER_CREATED,
+    payload,
+  };
+};
+
+export const fetchFundraisers = (payload) => {
+  return {
+    type: FUNDRAISER_FETCH,
     payload,
   };
 };
@@ -16,6 +23,6 @@ export const editFundraiserAction = (payload) => {
 
 export const deleteFundraiserAction = () => {
   return {
-    type: FUNDRAISER_EDITED,
+    type: FUNDRAISER_DELETED,
   };
 };

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Menu, Container, Button, Icon, Label, Header } from 'semantic-ui-react';
+import { NavLink, Link } from 'react-router-dom';
+import { Menu, Container, Button, Icon, Label, Header, Dropdown, Image } from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
 
@@ -10,7 +10,7 @@ const Navbar = () => {
     document.title = `Welcome ${user.loginSuccess?.name}`;
   }, []);
   return (
-    <Menu  fixed="top" style={{ zIndex: 10000 }}>
+    <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
         <Menu.Item as={NavLink} exact to="/home" header>
           <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
@@ -25,6 +25,19 @@ const Navbar = () => {
         <Menu.Item as="a">
           <Icon name="users" /> Notifications
           <Label color="teal">22</Label>
+        </Menu.Item>
+        <Menu.Item position="right">
+          <Image
+            avatar
+            spaced="right"
+            src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+          />
+          <Dropdown pointing="top left" text={'User'}>
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/createEvent" text="Create Event" icon="plus" />
+              <Dropdown.Item as={Link} to={`/profile/:id`} text="My profile" icon="user" />
+            </Dropdown.Menu>
+          </Dropdown>
         </Menu.Item>
       </Container>
     </Menu>
