@@ -1,16 +1,20 @@
-const router = require("express").Router();
-const controller = require("../controllers/fundraiser.controller")
+const router = require('express').Router();
+const controller = require('../controllers/fundraiser.controller');
 
 // Show all the fundraisers
 
-router.route("/").get(controller.getAllFundraisers);
+router.route('/').get(controller.getAllFundraisers);
+
+// Get specific fundraiser
+
+router.route('/find/:id').get(controller.findSpecificFundraiser);
 
 // Create a fundraiser
 
-router.route("/add").post(controller.createFundraiser);
+router.route('/add').post(controller.createFundraiser);
 
 // Delete a fundraiser
 
-router.route("/:id").delete(controller.deleteFundraiser)
+router.route('/delete/:id').delete(controller.deleteFundraiser);
 
 module.exports = router;

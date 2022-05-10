@@ -42,7 +42,7 @@ function App() {
             )}
           />
         </Switch>
-        <Route path="/fundraiserDetails" component={FundraiserDetails} />
+        <Route path="/fundraiser/:id" component={FundraiserDetails} />
         <ToastContainer position="bottom-right" autoClose={5000} />
       </Router>
     </div>

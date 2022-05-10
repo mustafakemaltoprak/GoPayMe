@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../styles/fundraiserDtl.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Progressbar from 'react-bootstrap/ProgressBar';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../components/PaymentForm';
+import { useParams } from 'react-router-dom';
 
 export default function FundraiserDetails() {
   let testFundraiser = {
@@ -20,10 +21,19 @@ export default function FundraiserDetails() {
   };
 
   const [toggled, setToggled] = useState(false);
+  const [fundraiser, setFundraiser] = useState(testFundraiser);
 
   function toggle() {
     toggled ? setToggled(false) : setToggled(true);
   }
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetch(`http://localhost:5200/fundraiser/find/${id}`)
+      .then((response) => response.json())
+      .then((actualResponse) => setFundraiser(actualResponse));
+  }, []);
 
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
@@ -33,7 +43,7 @@ export default function FundraiserDetails() {
   today = mm + '/' + dd + '/' + yyyy;
 
   let progressBarPercentage =
-    (testFundraiser.current_amount * 100) / testFundraiser.target_amount;
+    (fundraiser.currentAmount * 100) / fundraiser.targetAmount;
 
   const dollarDonationAmount = useRef(0);
 
@@ -41,30 +51,30 @@ export default function FundraiserDetails() {
 
   return (
     <>
-      <h1 className="fundraiserTitle">{testFundraiser.title}</h1>
+      <h1 className="fundraiserTitle">{fundraiser.title}</h1>
       <div className="container">
         <div
           className="fundraiserImage"
-          style={{ backgroundImage: testFundraiser.imgUrl }}
+          style={{ backgroundImage: fundraiser.image }}
         >
-          Image goes here
+          Image goes here, test for params id: {id}
         </div>
         <div className="fundraiserDonation">
           <div className="donationContainer">
             <div>
-              {testFundraiser.current_amount}$<br></br>
+              {fundraiser.currentAmount}$<br></br>
               <p className="fundraiserDonationDescription">
-                of {testFundraiser.target_amount} raised
+                of {fundraiser.targetAmount} raised
               </p>
             </div>
             <div>
-              {testFundraiser.backers}
+              {fundraiser.backers}
               <br></br>
               <p className="fundraiserDonationDescription">total backers</p>
             </div>
             <div>
               {Math.floor(
-                (Date.parse(testFundraiser.deadline_date) - Date.parse(today)) /
+                (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) /
                   86400000
               )}
               <br></br>
@@ -97,9 +107,7 @@ export default function FundraiserDetails() {
           )}
         </div>
       </div>
-      <div className="fundraiserDescription">
-        {testFundraiser.short_descriptions}
-      </div>
+      <div className="fundraiserDescription">{fundraiser.description}</div>
 
       <div class="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
         <h3 class="ui dividing header">Comments</h3>
