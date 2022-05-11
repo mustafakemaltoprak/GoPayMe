@@ -26,18 +26,17 @@ const Home = () => {
 
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
-   
-      const currentPageCopy = { ...currentPage };
-      for (let i in currentPageCopy) {
-        if (i !== arg) {
-          currentPageCopy[i] = false;
-        } else {
-          currentPageCopy[i] = true;
-        }
+
+    const currentPageCopy = { ...currentPage };
+    for (let i in currentPageCopy) {
+      if (i !== arg) {
+        currentPageCopy[i] = false;
+      } else {
+        currentPageCopy[i] = true;
       }
-      setCurrentPage(currentPageCopy)
-      // return { ...prev, [arg]: true };
-  
+    }
+    setCurrentPage(currentPageCopy);
+    // return { ...prev, [arg]: true };
   };
   useEffect(() => {
     fetchData().then((response) => {
@@ -89,21 +88,25 @@ const Home = () => {
         </Menu.Menu>
       </Menu>
 
-      <div
-        attached="bottom"
-        style={{ padding: '2rem', border: '1px red solid' }}
-        className="cardgrid"
-      >
-        {!toggle && (
-          <>
-            {data.length > 0 &&
-              data.map((dataItem) => (
-                <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-              ))}
-          </>
-        )}
-      </div>
-      {toggle && <>{data.length > 0 && <Maps data={data} key={8888} />}</>}
+      {currentPage['Explore'] && (
+        <>
+          <div
+            attached="bottom"
+            style={{ padding: '2rem', border: '1px red solid' }}
+            className="cardgrid"
+          >
+            {!toggle && (
+              <>
+                {data.length > 0 &&
+                  data.map((dataItem) => (
+                    <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                  ))}
+              </>
+            )}
+          </div>
+          {toggle && <>{data.length > 0 && <Maps data={data} key={8888} />}</>}
+        </>
+      )}
     </>
   );
 };

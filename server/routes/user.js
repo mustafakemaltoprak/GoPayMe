@@ -4,7 +4,10 @@ const {
   loginUser,
   createCategories,
   selectCategories,
+  getUserDetails,
+  createNotification,
 } = require('../controllers/user.controller');
+const { authMiddleware } = require('../middlewares/auth');
 
 
 
@@ -27,6 +30,10 @@ router.post('/login', loginUser);
 router.post('/register', registerUser);
 //categories
 router.post('/categories/:id', createCategories);
+
+
+router.post('/notification', authMiddleware, createNotification);
+router.get('/:id', authMiddleware, getUserDetails);
 
 
 

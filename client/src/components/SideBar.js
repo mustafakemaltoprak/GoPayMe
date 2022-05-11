@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
+// import firebase from 'firebase'
 import { Grid, Header, Icon, Image, List, Menu, Segment, Sidebar, Sticky } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/actions/userActions';
@@ -7,6 +8,8 @@ const SideBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
+  // var uid = firebase.auth().currentUser.uid;
+  // console.log('userrrid', uid)
   return (
     <Sticky>
       {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
@@ -52,8 +55,8 @@ const SideBar = () => {
 
         <Menu.Item
           as={Link}
-          active={location.pathname === '/profile'}
-          to='/profile'
+          active={location.pathname === '/dashboard'}
+          to='/dashboard'
           // onClick={() => {
           //   history.push('/fundraisers');
           // }}

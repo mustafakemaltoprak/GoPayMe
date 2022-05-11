@@ -7,6 +7,7 @@ import {
 import { auth } from './firebase';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { confighelper } from './helpers-services';
 
 export const creatEmailAccount = async (payload) => {
   console.log('response', payload.email, payload.password);
@@ -39,7 +40,7 @@ export const creatEmailAccount = async (payload) => {
 // export const login (email, password) => {
 
 //   }
- 
+
 export const googleLogin = async () => {
   const googleAuthProvider = new GoogleAuthProvider();
   try {
@@ -124,5 +125,38 @@ export const postCategories = async (payload) => {
   }
 };
 
+export const createNotification = async (payload) => {
+  const { token, userId } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.post(`/users/notification`, payload, config);
+
+  console.log();
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const fetchUserDetails = async (id) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.get(`/users/${id}`, config);
+
+  console.log();
+  if (data) {
+    return data;
+  }
+};
+
+// ax
 // axios.post('/users/login', )
 // return

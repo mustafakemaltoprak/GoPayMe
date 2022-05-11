@@ -47,8 +47,8 @@ const loginUser = async (req, res) => {
     } else {
       const token = generateToken({ userId });
       // JSON.stringify(userExists);
-       console.log('userexists new', userExists);
-      console.log('userexists new', userExists)
+      console.log('userexists new', userExists);
+      console.log('userexists new', userExists);
 
       res.status(201).send({
         image: userExists.image,
@@ -76,6 +76,40 @@ const registerUser = async (req, res) => {
       categories: userCreated.categories,
       userId: userCreated.userId,
     });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+
+const createNotification = async (req, res) => {
+  //   const { userId } = req.body;
+  try {
+    //conso
+    console.log('registering', req.body, req.user);
+
+    const userFoundandUpdated = await User.findOneAndUpdate(
+      { userId: req.user.userId },
+      { $push: { notifications: req.body } },
+    );
+
+    console.log('user', userFoundandUpdated);
+    res.status(201).send({
+      success: true
+    });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+
+const getUserDetails = async (req, res) => {
+  //   const { userId } = req.body;
+  try {
+    console.log('registering', req.body, req.user);
+
+    const userFound = await User.findOne({ userId: req.params.id });
+
+    console.log('user', userFound);
+    res.status(201).send(userFound);
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
@@ -118,5 +152,8 @@ module.exports = {
   //   deleteUser,
   registerUser,
   loginUser,
+  getUserDetails,
   createCategories,
+  createNotification,
+  getUserDetails,
 };

@@ -5,6 +5,7 @@ import PaymentForm from '../components/PaymentForm';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ClapButton from 'react-clap-button';
+import { Progress } from 'semantic-ui-react';
 
 const DetailsPage = () => {
   const [toggled, setToggled] = useState(false);
@@ -67,10 +68,7 @@ const DetailsPage = () => {
     <>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
       <div className="container">
-        <div
-          className="fundraiserImage"
-          style={{ backgroundImage: fundraiserBackgroundImage }}
-        >
+        <div className="fundraiserImage" style={{ backgroundImage: fundraiserBackgroundImage }}>
           <ClapButton
             onCountChange={async () => {
               await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
@@ -93,9 +91,7 @@ const DetailsPage = () => {
           <div className="donationContainer">
             <div>
               {fundraiser.currentAmount}$<br></br>
-              <p className="fundraiserDonationDescription">
-                of {fundraiser.targetAmount}$ raised
-              </p>
+              <p className="fundraiserDonationDescription">of {fundraiser.targetAmount}$ raised</p>
             </div>
             <div>
               {fundraiser.backers}
@@ -103,20 +99,30 @@ const DetailsPage = () => {
               <p className="fundraiserDonationDescription">total backers</p>
             </div>
             <div>
-              {Math.floor(
-                (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) /
-                  86400000
-              )}
+              {Math.floor((Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000)}
               <br></br>
               <p className="fundraiserDonationDescription">days left</p>
             </div>
           </div>
 
-          <div class="ui progress">
+          {/* <div class="ui progress">
             <div class="bar">
               <div class="progress"></div>
             </div>
-          </div>
+          </div> */}
+
+          <Progress
+            indicating
+            color="purple"
+            percent={
+              fundraiser.currentAmount
+                ? (fundraiser.currentAmount / fundraiser.targetAmount) * 100
+                : 0
+            }
+            progress
+            style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
+            content="Raised"
+          />
 
           <div className="inputContainer">
             <input
@@ -179,29 +185,24 @@ const DetailsPage = () => {
             class="ui blue labeled submit icon button"
             style={{ marginBottom: 100 }}
             onClick={async () => {
-              await fetch(
-                `http://localhost:5200/fundraiser/comment/add/${id}`,
-                {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    comments: [
-                      ...fundraiserComments,
-                      {
-                        name: getName.name,
-                        textfield: commentTextArea.current.value,
-                        date: momentToday,
-                      },
-                    ],
-                  }),
-                }
-              ).then((response) => response.json());
+              await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  comments: [
+                    ...fundraiserComments,
+                    {
+                      name: getName.name,
+                      textfield: commentTextArea.current.value,
+                      date: momentToday,
+                    },
+                  ],
+                }),
+              }).then((response) => response.json());
               commentTextArea.current.value = '';
               fetch(`http://localhost:5200/fundraiser/comment/get/${id}`)
                 .then((response) => response.json())
-                .then((actualResponse) =>
-                  setFundraiserComments(actualResponse)
-                );
+                .then((actualResponse) => setFundraiserComments(actualResponse));
             }}
           >
             <i class="icon edit"></i> Add Reply
