@@ -31,7 +31,7 @@ const Maps = ({ data }) => {
   const handleClick = (id, coordinatesArr) => {
     // setMarker(id)
     console.log('fired', id, coordinatesArr);
-    setZoom(16);
+    setZoom(11);
     setCenter(coordinatesArr);
     console.log('refffff', markerRefs[id].openPopup());
   };
@@ -88,7 +88,7 @@ const Maps = ({ data }) => {
                 ))}
           </div>
         </Grid.Column>
-        <Grid.Column width={11} style={{ border: '5px red solid' }}>
+        <Grid.Column width={11} >
           {/* <MapContainerDiv
             data={data.filter((item) => !!item.location)}
             markerRef={markerRef}

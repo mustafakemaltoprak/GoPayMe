@@ -14,7 +14,7 @@ const CardItem = ({ data, handleClick }) => {
     <div>
       {data !== {} && (
         <div className="hover">
-          <Card style={{ height: '25rem', width: '15rem' }} onClick={() => handleClick(data._id)}>
+          <Card style={{ height: '25rem', width: '15rem' }}>
             {location.pathname === '/fundraisers' ? (
               <Label color="green" floating onClick={() => setOpen(true)}>
                 Edit
@@ -26,11 +26,20 @@ const CardItem = ({ data, handleClick }) => {
             )}
             {open && <CreateModal open={open} setOpen={setOpen} editData={data} />}
             {/* <div style={{ position: 'absolute', bottom: '200rem' }}>Name : City</div> */}
-            <Image src={data.image} wrapped ui={false}/>
+            <Image
+              src={data.image}
+              wrapped
+              ui={false}
+              onClick={() => handleClick(data._id)}
+              style={{ cursor: 'pointer' }}
+            />
 
             <Card.Content>
-              <Card.Header>{data.title}</Card.Header>
-              <Card.Meta>created: days ago</Card.Meta>
+              <Card.Header style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div>{data.title}</div>
+                <Icon name='heart'/>
+              </Card.Header>
+              <Card.Meta>created by: 'data writer'</Card.Meta>
               <Card.Description>{data.description?.substring(1, 20) + '...'}</Card.Description>
             </Card.Content>
             {/* <Card.Content extra style={{height: '20rem'}}> */}

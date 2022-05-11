@@ -13,10 +13,31 @@ const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState({
+    Favorites: false,
+    Following: false,
+    Explore: true,
+  });
   const [toggle, setToggle] = useState(false);
 
   const handleClick = (id) => {
     history.push(`/fundraiser/${id}`);
+  };
+
+  const handleCurrentPage = (arg) => {
+    // setCategories(prev => {...prev, egef: !categories[arg]})
+   
+      const currentPageCopy = { ...currentPage };
+      for (let i in currentPageCopy) {
+        if (i !== arg) {
+          currentPageCopy[i] = false;
+        } else {
+          currentPageCopy[i] = true;
+        }
+      }
+      setCurrentPage(currentPageCopy)
+      // return { ...prev, [arg]: true };
+  
   };
   useEffect(() => {
     fetchData().then((response) => {
@@ -42,11 +63,18 @@ const Home = () => {
       <Menu attached="top" tabular>
         <Menu.Item
           name="Explore"
-          active={true}
-          // onClick={this.handleItemClick}
+          active={currentPage['Explore']}
+          onClick={() => handleCurrentPage('Explore')}
         />
         <Menu.Item
           name="Following"
+          active={currentPage['Following']}
+          onClick={() => handleCurrentPage('Following')}
+        />
+        <Menu.Item
+          name="Favorites"
+          active={currentPage['Favorites']}
+          onClick={() => handleCurrentPage('Favorites')}
           // onClick={this.handleItemClick}
         />
         <Menu.Menu position="right">
