@@ -56,3 +56,10 @@ app.post('/payment', cors(), async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT} 🚀`.green.inverse);
 });
+
+// Socket io
+
+// io.on('connection', (socket) => { /* socket object may be used to send specific messages to the new connected client */
+//     console.log('Socket.io connected 🚀'.pink.inverse);
+//     socket.emit('connection', null);
+// });
