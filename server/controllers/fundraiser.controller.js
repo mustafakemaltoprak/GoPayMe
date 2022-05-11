@@ -9,8 +9,8 @@ const getAllFundraisers = async (req, res) => {
   try {
     console.log('fired', req.body, 'user', req.user.userId);
     const foundUser = await User.findOne({ userId: req.user.userId });
-     console.log('user', foundUser.categories);
-    const allFundraisers = await Fundraiser.find({ });
+    console.log('user', foundUser.categories);
+    const allFundraisers = await Fundraiser.find({});
     console.log('created', allFundraisers);
     res.status(201).send(allFundraisers);
   } catch (error) {
@@ -56,8 +56,23 @@ function deleteFundraiser(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+const searchbyTerm = async (req, res) => {
+  const searchTerm = req.query.searchTerm;
+  try {
+    const allFundraisers = await Fundraiser.find({ title: new RegExp(searchTerm, 'i') });
+    const allUsers = await User.find({ name: new RegExp(searchTerm, 'i') });
+
+    console.log('testing', allFundraisers)
+    console.log('search', searchTerm, req.url);
+    res.status(200).send({ users: allUsers, fundraisers: allFundraisers });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllFundraisers,
   createFundraiser,
   deleteFundraiser,
+  searchbyTerm,
 };

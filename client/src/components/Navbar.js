@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { Menu, Container, Button, Icon, Label, Header, Dropdown, Image, Search } from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
+import SearchComponent from './SearchComponent';
 
 const Navbar = () => {
   const user = useSelector((state) => state.user);
@@ -18,7 +19,7 @@ const Navbar = () => {
           <Icon name="money" />
         </Menu.Item>
         <Menu.Item header>
-          <Search
+          {/* <Search
             // loading={loading}
             placeholder="Search..."
             // onResultSelect={(e, data) =>
@@ -27,9 +28,10 @@ const Navbar = () => {
             // onSearchChange={handleSearchChange}
             // results={results}
             // value={value}
-          >
+         /> */}
+         <SearchComponent />
             
-          </Search>
+          
         </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>

@@ -3,7 +3,8 @@ const {
   getAllFundraisers,
   createFundraiser,
   deleteFundraiser,
-} = require("../controllers/fundraiser.controller")
+  searchbyTerm,
+} = require('../controllers/fundraiser.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
 // Show all the fundraisers
@@ -13,7 +14,7 @@ router.get('/', authMiddleware, getAllFundraisers);
 
 // Create a fundraiser
 router.post('/create', authMiddleware, createFundraiser);
-
+router.get('/search', authMiddleware, searchbyTerm);
 // router.route("/create").post(createFundraiser);
 
 // Delete a fundraiser
