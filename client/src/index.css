@@ -79,6 +79,7 @@ body,
   border-style: solid;
   border-color: black;
   margin-top: 20px;
+  margin-left: 33px;
 }
 
 .fundraiserDescription {
@@ -87,6 +88,7 @@ body,
   border-width: 5px;
   border-style: solid;
   border-color: black;
+  margin-left: 150px;
 }
 
 .fundraiserDonation {
@@ -166,8 +168,7 @@ input {
   border-style: none;
   background-color: #7795f8;
   will-change: opacity, transform;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #829fff;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #829fff;
   border-radius: 4px;
 }
 
@@ -196,8 +197,7 @@ input {
   height: 40px;
   margin: 40px 15px 0;
   background-color: #7795f8;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
   border-radius: 4px;
   color: #fff;
   font-weight: 600;
@@ -209,7 +209,60 @@ input {
 
 button:active {
   background-color: #7795f8;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
   transform: scale(0.99);
+}
+
+/* .overlay {
+  position: absolute; 
+  bottom: 0; 
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+/* color: #f1f1f1; 
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center; */
+/* } */
+
+.cardlabel:hover {
+  background: blue;
+}
+
+.homeg {
+  border: 3px solid purple;
+  width: 100% !important;
+  height: 100% !important;
+}
+.homegrid {
+  display: grid;
+  grid-template-columns: 10rem auto;
+  max-width: 100%;
+  border: 3px solid green;
+}
+
+.maps {
+  width: 90rem !important;
+  height: 200rem;
+}
+
+.leaflet-container {
+  /* height: 100%;    
+  width: 100%; */
+  width: 100%;
+  height: 60vh;
+  border: green 3px solid;
+}
+
+.map-card{
+  transform: scale(1);
+}
+
+.map-card:hover {
+  background: gainsboro !important;
+  transform: scale(1.03);
+  transition: all 0.5ms linear;
 }

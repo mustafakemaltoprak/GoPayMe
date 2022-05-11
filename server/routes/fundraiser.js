@@ -9,6 +9,7 @@ const {
   getAllComments,
   addLike,
   getAllLikes,
+  searchbyTerm,
 } = require('../controllers/fundraiser.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -17,6 +18,8 @@ router.get('/', authMiddleware, getAllFundraisers);
 router.post('/create', authMiddleware, createFundraiser);
 
 router.route('/find/:id').get(findSpecificFundraiser);
+router.get('/search', authMiddleware, searchbyTerm);
+// router.route("/create").post(createFundraiser);
 
 router.route('/change/:id').put(updatePriceFundraiser);
 
