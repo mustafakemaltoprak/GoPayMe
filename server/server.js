@@ -8,7 +8,9 @@ const morgan = require('morgan');
 const connectDB = require('./models/config');
 const app = express();
 const bodyParser = require('body-parser');
-const stripe = require('stripe')("sk_test_51KxYJVLr9g73Dg8UznlQbSHxIr4jfF9Gm0YPI25DWkcTxvFpUhtvusyi0DlicbYGRTTmdGdvcvNDdVCFokjX2MNT00Nd9amqYj");
+const stripe = require('stripe')(
+  'sk_test_51KxYJVLr9g73Dg8UznlQbSHxIr4jfF9Gm0YPI25DWkcTxvFpUhtvusyi0DlicbYGRTTmdGdvcvNDdVCFokjX2MNT00Nd9amqYj'
+);
 
 const PORT = 5200;
 

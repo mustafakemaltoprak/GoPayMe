@@ -10,7 +10,7 @@ import { registerUser } from '../redux/actions/userActions';
 import { toast } from 'react-toastify';
 const Register = () => {
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const history = useHistory();
   // const [email, setEmail] = useState('');
   // const [name, setName] = useState('');
@@ -36,29 +36,36 @@ const Register = () => {
   const onSubmit = async (formObj) => {
     console.log(formObj);
     try {
-       console.log('registerObj');
+      console.log('registerObj');
       const registerObj = await creatEmailAccount(formObj);
-      console.log('registerObj', registerObj)
+      console.log('registerObj', registerObj);
       if (registerObj) {
         toast.success('successfully registered');
-        const newFormObj = delete formObj['password']
+        const newFormObj = delete formObj['password'];
         dispatch(registerUser(newFormObj));
         history.push('/login');
         reset();
-      }
-      else {
-        throw new Error('User details exist')
+      } else {
+        throw new Error('User details exist');
       }
     } catch (error) {
       toast.error(error.message);
     }
-    
-   
   };
   return (
     <Grid style={{ height: '100vh' }}>
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
+      <Container
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Form
+          size="big"
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ minWidth: '30vw' }}
+        >
           <h1>Register</h1>
           <Form.Field>
             <label>Name</label>
@@ -96,7 +103,13 @@ const Register = () => {
             <p style={{ color: 'red' }}>{errors.password?.message}</p>
           </Form.Field>
 
-          <Button type="submit" fluid size="large" color="teal" content="Register" />
+          <Button
+            type="submit"
+            fluid
+            size="large"
+            color="teal"
+            content="Register"
+          />
           <Button
             fluid
             size="large"

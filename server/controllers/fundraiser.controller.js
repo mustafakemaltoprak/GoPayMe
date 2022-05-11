@@ -56,6 +56,64 @@ function deleteFundraiser(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+function findSpecificFundraiser(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser))
+    .catch((err) => res.status(400).json('Error' + err));
+}
+
+function updatePriceFundraiser(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.currentAmount = req.body.currentAmount;
+      fundraiser.backers = req.body.backers;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser price updated'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
+function addComments(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.comments = req.body.comments;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser comments updated'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
+function getAllComments(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser.comments))
+    .catch((err) => res.status(400).json('Error' + err));
+}
+
+function addLike(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.likes = req.body.likes;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser liked'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
+function getAllLikes(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser.likes))
+    .catch((err) => res.status(400).json('Error' + err));
+}
+
 const searchbyTerm = async (req, res) => {
   const searchTerm = req.query.searchTerm;
   try {
@@ -74,5 +132,11 @@ module.exports = {
   getAllFundraisers,
   createFundraiser,
   deleteFundraiser,
+  findSpecificFundraiser,
+  updatePriceFundraiser,
+  addComments,
+  getAllComments,
+  addLike,
+  getAllLikes,
   searchbyTerm,
 };

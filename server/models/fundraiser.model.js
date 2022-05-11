@@ -10,7 +10,7 @@ const fundraiserSchema = new Schema({
   address: String,
   currentAmount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   deadlineDate: Date,
   location: {
@@ -26,10 +26,17 @@ const fundraiserSchema = new Schema({
   },
   description: String,
   categories: [String],
-  backers: Number,
+  backers: {
+    type: Number,
+    default: 0,
+  },
   image: String,
+  comments: [],
+  likes: {
+    type: Number,
+    default: 1,
+  },
 });
-
 
 fundraiserSchema.pre('save', async function (next) {
   const location = await geocoder.geocode(this.address);
