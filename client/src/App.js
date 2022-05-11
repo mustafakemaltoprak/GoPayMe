@@ -26,7 +26,11 @@ function App() {
             render={() => (
               <>
                 <Container
-                  style={{ border: 'orange 2px solid', marginTop: '5rem', minHeight: '80vh' }}
+                  style={{
+                    border: 'orange 2px solid',
+                    marginTop: '5rem',
+                    minHeight: '80vh',
+                  }}
                 >
                   <Navbar />
                   <Grid>
@@ -37,7 +41,7 @@ function App() {
                       <Grid.Column width={13}>
                         <Route path="/home" component={Home} exact />
                         <Route path="/profile" component={Dashboard} />
-                        
+
                         <Route path="/fundraisers" component={MyFundraisers} />
                         <Route path="/fundraiser/:id" component={DetailsPage} />
                       </Grid.Column>

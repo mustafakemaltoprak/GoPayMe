@@ -1,7 +1,6 @@
 import React from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
-// import '../styles/fundraiserDtl.css';
 import { toast } from 'react-toastify';
 
 const CARD_OPTIONS = {
@@ -28,6 +27,9 @@ export default function PaymentForm(props) {
   const stripe = useStripe();
   const elements = useElements();
 
+  let convertPropsToNumber = parseInt(props.price);
+  let convertCurrentAmountToNumber = parseInt(props.currentAmount);
+  let convertBackersToNumber = parseInt(props.backers);
   let convertDollarIntoCents = parseInt(props.price) * 100;
 
   const handleSubmit = async (e) => {
@@ -47,6 +49,18 @@ export default function PaymentForm(props) {
 
         if (response.data.success) {
           toast.success('Your payment was successful');
+          await fetch(`http://localhost:5200/fundraiser/change/${props.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              currentAmount:
+                convertPropsToNumber + convertCurrentAmountToNumber,
+              backers: convertBackersToNumber + 1,
+            }),
+          }).then((response) => response.json());
+          fetch(`http://localhost:5200/fundraiser/find/${props.id}`)
+            .then((response) => response.json())
+            .then((actualResponse) => props.setFundraiser(actualResponse));
         } else {
           toast.error('Your payment failed');
         }
