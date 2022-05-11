@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search } from 'semantic-ui-react';
+import { Button, Label, Search } from 'semantic-ui-react';
 import _ from 'lodash';
 import { searchService } from '../services/common';
 
@@ -11,9 +11,24 @@ const SearchComponent = () => {
   const handleResultSelect = (params) => {};
 
   const resultRenderer = (obj) => (
-    <div>
-      <p>{obj?.name}</p>
-    </div>
+    <>
+      <div
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+        onClick={() => console.log('from obj', obj)}
+      >
+        {obj.title ? (
+          <p style={{ display: 'flex' }}>
+            {obj.title} <p style={{ color: 'red' }}>User</p>
+          </p>
+        ) : (
+           <p style={{ display: 'flex' }}>
+            {obj.name} <p style={{ color: 'green' }}>Fund</p>
+          </p>
+         
+        )}
+        {/* <Label content="follow" color="green" /> */}
+      </div>
+    </>
   );
 
   const handleSearchChange = async (e, { value }) => {
@@ -31,13 +46,13 @@ const SearchComponent = () => {
     }, 100);
 
     setValue(value);
-      console.log('chat data', value);
+    console.log('chat data', value);
     const data = await searchService(value);
 
-    console.log('fffff',[...data.users, ...data.fundraisers])
-
-    // console.log('finall ', 
-  
+    console.log('fffff', [...data.users, ...data.fundraisers]);
+    if (data.users.length + data.fundraisers.length > 4) {
+      setResults([...data.users, ...data.fundraisers]);
+    }
   };
   return (
     <Search
@@ -47,7 +62,7 @@ const SearchComponent = () => {
       onSearchChange={_.debounce(handleSearchChange, 10, { loading: true })}
       results={results}
       value={valueInit}
-      // resultRenderer={resultRenderer}
+      resultRenderer={resultRenderer}
       // {...this.props}
     />
   );
