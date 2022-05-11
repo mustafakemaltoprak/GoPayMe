@@ -27,7 +27,9 @@ const Navbar = () => {
             // onSearchChange={handleSearchChange}
             // results={results}
             // value={value}
-          />
+          >
+            
+          </Search>
         </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>

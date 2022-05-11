@@ -35,9 +35,11 @@ const CardItem = ({ data, handleClick }) => {
             />
 
             <Card.Content>
-              <Card.Header style={{display: 'flex', justifyContent: 'space-between'}}>
+              <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>{data.title}</div>
-                <Icon name='heart'/>
+                <div style={{ display: 'flex' }}>
+                  <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>2</p>
+                </div>
               </Card.Header>
               <Card.Meta>created by: 'data writer'</Card.Meta>
               <Card.Description>{data.description?.substring(1, 20) + '...'}</Card.Description>
