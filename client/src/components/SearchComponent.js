@@ -17,14 +17,13 @@ const SearchComponent = () => {
         onClick={() => console.log('from obj', obj)}
       >
         {obj.title ? (
-          <p style={{ display: 'flex' }}>
+          <p style={{ display: 'flex', justifyContent: 'space-between' }}>
             {obj.title} <p style={{ color: 'red' }}>User</p>
           </p>
         ) : (
-           <p style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             {obj.name} <p style={{ color: 'green' }}>Fund</p>
-          </p>
-         
+          </div>
         )}
         {/* <Label content="follow" color="green" /> */}
       </div>
@@ -52,6 +51,8 @@ const SearchComponent = () => {
     console.log('fffff', [...data.users, ...data.fundraisers]);
     if (data.users.length + data.fundraisers.length > 4) {
       setResults([...data.users, ...data.fundraisers]);
+    } else{
+      setResults([...data.users, ...data.fundraisers])
     }
   };
   return (
