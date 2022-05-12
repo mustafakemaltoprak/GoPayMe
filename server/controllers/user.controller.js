@@ -42,6 +42,7 @@ const loginUser = async (req, res) => {
         name: userCreated.name,
         userId: userCreated.userId,
         newUser: true,
+        following: userCreated.following,
         description: userCreated.description,
         token,
       });
@@ -58,6 +59,7 @@ const loginUser = async (req, res) => {
         userId: userExists.userId,
         description: userExists.description,
         notifications: userExists.notifications,
+        following: userExists.following,
         token,
       });
       // jwt.sign({ _id }, process.env.SECRET, { expiresIn: '10d' }),

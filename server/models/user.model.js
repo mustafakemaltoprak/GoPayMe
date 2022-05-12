@@ -24,6 +24,7 @@ const userSchema = new Schema({
       senderId: String
     },
   ],
+  following: [String],
   userId: String,
   image: {
     type: String,
