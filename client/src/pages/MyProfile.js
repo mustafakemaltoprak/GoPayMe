@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Grid, Label, Menu, Segment } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {  notificationRespond } from '../services/user-services';
+import { notificationRespond } from '../services/user-services';
 import { updateUserDetails } from '../redux/actions/userActions';
 
 const MyProfile = () => {
@@ -107,7 +107,7 @@ const MyProfile = () => {
                             const payload = {
                               senderId: item.senderId,
                               response: 'accept',
-                              typeof: 'follow'
+                              typeof: 'follow',
                             };
                             const response = await notificationRespond(payload);
                             if (response) dispatch(updateUserDetails(response));
@@ -123,7 +123,8 @@ const MyProfile = () => {
                               response: 'reject',
                               typeof: 'follow',
                             };
-                            await notificationRespond(payload);
+                            const response = await notificationRespond(payload);
+                            if (response) dispatch(updateUserDetails(response));
                           }}
                         />
                       </div>

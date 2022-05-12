@@ -7,9 +7,9 @@ const getAllFundraisers = async (req, res) => {
   //     .catch((err) => res.status(400).json('Error: ' + err));
 
   try {
-    console.log('fired', req.body, 'user', req.user.userId);
-    const foundUser = await User.findOne({ userId: req.user.userId });
-    console.log('user', foundUser.categories);
+    // console.log('fired', req.body, 'user', req.user.userId);
+    // const foundUser = await User.findOne({ userId: req.user.userId })
+    // console.log('user', foundUser.categories);
     const allFundraisers = await Fundraiser.find({});
     console.log('created', allFundraisers);
     res.status(201).send(allFundraisers);

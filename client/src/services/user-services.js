@@ -159,13 +159,13 @@ export const fetchUserDetails = async (id) => {
 };
 
 export const notificationRespond = async (payload) => {
-  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+  const { token, _id } = JSON.parse(localStorage.getItem('userInfo'));
 
   const config = confighelper(token);
 
   console.log('tok', token);
 
-  const { data } = await axios.post(`/users/account`, payload, config);
+  const { data } = await axios.post(`/users/account`, { ...payload, _id }, config);
 
   console.log();
   if (data) {

@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const userExists = await User.findOne({ userId });
+    const userExists = await User.findOne({ userId }).populate('following')
 
     if (!userExists) {
       //has not signed in before
@@ -44,6 +44,7 @@ const loginUser = async (req, res) => {
         newUser: true,
         following: userCreated.following,
         description: userCreated.description,
+        _id: userCreated._id,
         token,
       });
     } else {
@@ -60,6 +61,7 @@ const loginUser = async (req, res) => {
         description: userExists.description,
         notifications: userExists.notifications,
         following: userExists.following,
+        _id: userExists._id,
         token,
       });
       // jwt.sign({ _id }, process.env.SECRET, { expiresIn: '10d' }),
@@ -129,7 +131,7 @@ const respondToNotification = async (req, res) => {
     if (req.body.response === 'accept') {
       const senderUpdated = await User.findOneAndUpdate(
         { userId: req.body.senderId },
-        { $push: { following: req.user.userId } },
+        { $push: { following: req.body._id } },
       );
 
       const myProfileUpdated = await User.findOneAndUpdate(
@@ -138,7 +140,7 @@ const respondToNotification = async (req, res) => {
         { new: true },
       );
 
-      console.log('myprofile', myProfileUpdated)
+      console.log('myprofile', myProfileUpdated);
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
     }
 
@@ -146,7 +148,7 @@ const respondToNotification = async (req, res) => {
       const myProfileUpdated = await User.findOneAndUpdate(
         { userId: req.user.userId },
         { $pull: { notifications: { typeof: req.body.typeof, senderId: req.body.senderId } } },
-        {new:true}
+        { new: true },
       );
 
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
@@ -156,13 +158,12 @@ const respondToNotification = async (req, res) => {
   }
 };
 
-
 const getAccountDetails = async (req, res) => {
   //   const { userId } = req.body;
   try {
     // console.log('registering', req.body, req.user);
 
-    const userFound = await User.findOne({ userId: req.user});
+    const userFound = await User.findOne({ userId: req.user }).populate('following')
 
     res.status(201).send(userFound);
   } catch (error) {
@@ -170,6 +171,33 @@ const getAccountDetails = async (req, res) => {
   }
 };
 
+const getUserDetailsTest = async (req, res) => {
+  //   const { userId } = req.body;
+  try {
+    // console.log('registering', req.body, req.user);
+
+    let val;
+    for (let i = 0; i < 10000; i++) {
+      // const element = array[i];
+      if (i === 7000) val = i;
+    }
+
+    if (val) {
+      const userFound = await User.findOneAndUpdate(
+        { userId: req.params.id },
+        { $inc: { test: 1 } },
+        { new: true },
+      );
+      res.status(201).send({ count: userFound.test });
+    }
+    // console.log(userFound);
+    
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+
+// "proxy": "http://127.0.0.1:5200",
 
 // function getAllUsers(req, res) {
 //   User.find()
@@ -214,4 +242,5 @@ module.exports = {
   createNotification,
   getUserDetails,
   getAccountDetails,
+  getUserDetailsTest,
 };

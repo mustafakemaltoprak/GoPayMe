@@ -8,6 +8,7 @@ const {
   createNotification,
   respondToNotification,
   getAccountDetails,
+  getUserDetailsTest
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -47,4 +48,5 @@ router.get('/:id', authMiddleware, getUserDetails);
 
 // router.post('/createCategories', createCategories)
 
+router.post('/test/:id',  getUserDetailsTest);
 module.exports = router;

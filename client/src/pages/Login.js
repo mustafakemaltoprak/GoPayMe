@@ -25,12 +25,14 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch
   } = useForm({
     defaultValues,
     delayError: 500,
     mode: 'onChange',
   });
 
+  console.log(watch('email'))
   const onSubmit = async (formObj) => {
     console.log('fired', formObj);
     const data = await emailLogin(formObj);

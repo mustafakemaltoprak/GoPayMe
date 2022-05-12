@@ -24,7 +24,17 @@ const userSchema = new Schema({
       senderId: String
     },
   ],
-  following: [String],
+  test: {
+    default:  0,
+    type: Number
+  },
+  following: [
+    {type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    
+    }
+    
+  ],
   userId: String,
   image: {
     type: String,

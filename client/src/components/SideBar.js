@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/actions/userActions';
 const SideBar = () => {
   const history = useHistory();
+  const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   // var uid = firebase.auth().currentUser.uid;
   // console.log('userrrid', uid)
+  
   return (
     <Sticky>
       {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
@@ -32,7 +34,12 @@ const SideBar = () => {
         // width={''}
         // style={{ overflow: 'hidden' }}
         className="cool"
-        style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden', width: '100%' }}
+        style={{
+          border: 'solid 1px gainsboro',
+          paddingTop: '10rem',
+          overflow: 'hidden',
+          width: '100%',
+        }}
       >
         <Grid>
           <Menu.Item
@@ -56,13 +63,13 @@ const SideBar = () => {
         <Menu.Item
           as={Link}
           active={location.pathname === '/dashboard'}
-          to='/dashboard'
+          to="/dashboard"
           // onClick={() => {
           //   history.push('/fundraisers');
           // }}
         >
           <Icon name="home" />
-          Profile
+          Dashboard
         </Menu.Item>
 
         <Menu.Item
@@ -79,6 +86,11 @@ const SideBar = () => {
         </Menu.Item>
       </Menu>
 
+      <Grid.Column style={{ marginTop: '3rem', textAlign: 'center' }}>
+        <h3>Online Friends</h3>
+        {loginSuccess.following.length > 0 ? 
+          (loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)) : (<p>Not following anyone yet</p>) }
+      </Grid.Column>
       {/* <Sidebar.Pusher>
               <Segment basic>
                 <Header as="h3">Application Content</Header>
