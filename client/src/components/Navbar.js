@@ -6,10 +6,12 @@ import { useSelector } from 'react-redux';
 import SearchComponent from './SearchComponent';
 
 const Navbar = () => {
-  const user = useSelector((state) => state.user);
+  const {loginSuccess} = useSelector((state) => state.user);
   useEffect(() => {
-    document.title = `Welcome ${user.loginSuccess?.name}`;
-  }, []);
+    document.title = `Welcome ${loginSuccess.name ? loginSuccess.name : 'Cool User'}`;
+  });
+
+  console.log('loginSuccess', loginSuccess)
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
@@ -29,9 +31,7 @@ const Navbar = () => {
             // results={results}
             // value={value}
          /> */}
-         <SearchComponent />
-            
-          
+          <SearchComponent />
         </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
@@ -48,10 +48,10 @@ const Navbar = () => {
             spaced="right"
             src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
           />
-          <Dropdown pointing="top left" text={'User'}>
+          <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to="/createEvent" text="Create Event" icon="plus" />
-              <Dropdown.Item as={Link} to={`/profile/:id`} text="My profile" icon="user" />
+              <Dropdown.Item as={Link} to={`/account`} text="My profile" icon="user" />
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>

@@ -7,6 +7,7 @@ import { createNotification, fetchUserDetails } from '../services/user-services'
 function Profile() {
   const location = useLocation();
   const [textValue, setTextValue] = useState('');
+  const [requestSent, setRequestSent] = useState(false);
   const [detailsData, setDetailsData] = useState('');
 
   const url = location.pathname.split('/').slice(-1)[0];
@@ -50,7 +51,7 @@ function Profile() {
             Follow
           </Button> */}
           <Popup
-            trigger={<Button color="red" icon="user" content="Follow" />}
+            trigger={<Button color="red" icon="user" content={requestSent ?  'Request sent': "Follow"} />}
             content={
               <>
                 <h2></h2>
@@ -65,6 +66,8 @@ function Profile() {
                       note: textValue,
                     };
                     const data = await createNotification(payload);
+                    setRequestSent(true)
+                    
 
                     console.log('received', data);
                   }}

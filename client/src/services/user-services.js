@@ -126,12 +126,14 @@ export const postCategories = async (payload) => {
 };
 
 export const createNotification = async (payload) => {
-  const { token, userId } = JSON.parse(localStorage.getItem('userInfo'));
+  const { token, userId, name } = JSON.parse(localStorage.getItem('userInfo'));
 
   const config = confighelper(token);
 
-  console.log('tok', token);
+  
+  payload = {...payload, senderName: name, senderId: userId}
 
+  console.log('payload', payload);
   const { data } = await axios.post(`/users/notification`, payload, config);
 
   console.log();

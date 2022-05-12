@@ -36,18 +36,21 @@ const loginUser = async (req, res) => {
       const userCreated = await User.create(req.body);
       const token = generateToken(userId);
 
+
+
       res.status(201).send({
         image: userCreated.image,
         categories: userCreated.categories,
         name: userCreated.name,
         userId: userCreated.userId,
         newUser: true,
+        description: userCreated.description,
         token,
       });
     } else {
       const token = generateToken({ userId });
       // JSON.stringify(userExists);
-      console.log('userexists new', userExists);
+      // console.log('userexists new', userExists);
       console.log('userexists new', userExists);
 
       res.status(201).send({
@@ -55,6 +58,8 @@ const loginUser = async (req, res) => {
         categories: userExists.categories,
         name: userExists.name,
         userId: userExists.userId,
+        description: userExists.description,
+        notifications: userExists.notifications,
         token,
       });
       // jwt.sign({ _id }, process.env.SECRET, { expiresIn: '10d' }),
@@ -86,9 +91,10 @@ const createNotification = async (req, res) => {
   try {
     //conso
     console.log('registering', req.body, req.user);
+    // const payload = {...req.body, senderName: , senderId: req.user.userId}
 
     const userFoundandUpdated = await User.findOneAndUpdate(
-      { userId: req.user.userId },
+      { userId: req.body.targetUser},
       { $push: { notifications: req.body } },
     );
 

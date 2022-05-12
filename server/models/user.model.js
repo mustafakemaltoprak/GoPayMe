@@ -17,9 +17,11 @@ const userSchema = new Schema({
       targetUser: {
         // ref: 'User',
         // type: mongoose.Schema.ObjectId,
-        type: String
+        type: String,
       },
       note: String,
+      senderName: String,
+      senderId: String
     },
   ],
   userId: String,
