@@ -13,7 +13,7 @@ const {
 } = require('../controllers/fundraiser.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
-router.get('/', authMiddleware, getAllFundraisers);
+router.post('/', authMiddleware, getAllFundraisers);
 
 router.post('/create', authMiddleware, createFundraiser);
 
