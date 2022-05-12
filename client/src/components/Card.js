@@ -38,7 +38,7 @@ const CardItem = ({ data, handleClick }) => {
               <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>{data.title}</div>
                 <div style={{ display: 'flex' }}>
-                  <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>2</p>
+                  <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>{data.likes}</p>
                 </div>
               </Card.Header>
               <Card.Meta>created by: 'data writer'</Card.Meta>

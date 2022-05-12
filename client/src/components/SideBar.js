@@ -22,8 +22,8 @@ const SideBar = () => {
             <br /> */}
       {/* <Sidebar.Pushable as={Segment}> */}
       {/* <div style={{border: 'solid 2px green'}}>coolfegfegegegegrgergegegegege egegegeg</div> */}
-      <Sidebar
-        as={Menu}
+      <Menu
+        // as={Menu}
         animation="overlay"
         icon="labeled"
         // inverted
@@ -32,7 +32,7 @@ const SideBar = () => {
         // width={''}
         // style={{ overflow: 'hidden' }}
         className="cool"
-        style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden' }}
+        style={{ border: 'solid 1px gainsboro', paddingTop: '10rem', overflow: 'hidden', width: '100%' }}
       >
         <Grid>
           <Menu.Item
@@ -77,7 +77,7 @@ const SideBar = () => {
           <Icon name="home" />
           Logout
         </Menu.Item>
-      </Sidebar>
+      </Menu>
 
       {/* <Sidebar.Pusher>
               <Segment basic>
