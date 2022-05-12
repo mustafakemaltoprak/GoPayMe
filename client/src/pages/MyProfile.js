@@ -107,7 +107,7 @@ const MyProfile = () => {
                             const payload = {
                               senderId: item.senderId,
                               response: 'accept',
-                              typeof: 'follow',
+                              typeof: 'follow'
                             };
                             const response = await notificationRespond(payload);
                             if (response) dispatch(updateUserDetails(response));
