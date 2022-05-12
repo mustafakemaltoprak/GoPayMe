@@ -31,9 +31,7 @@ function Profile() {
               <span className="date">Joined in 2015</span>
             </Card.Meta>
             {detailsData.description ? (
-              <Card.Description>
-                {detailsData.description}
-              </Card.Description>
+              <Card.Description>{detailsData.description}</Card.Description>
             ) : (
               <Card.Description>No description yet</Card.Description>
             )}
@@ -51,7 +49,9 @@ function Profile() {
             Follow
           </Button> */}
           <Popup
-            trigger={<Button color="red" icon="user" content={requestSent ?  'Request sent': "Follow"} />}
+            trigger={
+              <Button color="red" icon="user" content={requestSent ? 'Request sent' : 'Follow'} />
+            }
             content={
               <>
                 <h2></h2>
@@ -66,8 +66,7 @@ function Profile() {
                       note: textValue,
                     };
                     const data = await createNotification(payload);
-                    setRequestSent(true)
-                    
+                    setRequestSent(true);
 
                     console.log('received', data);
                   }}
@@ -85,7 +84,7 @@ function Profile() {
         </div>
       </div>
       <div className="userContentContainer" style={{ flex: '3', border: 'black 1px solid' }}>
-        <h1>Text area for user settings</h1>
+        <h1>Messages with {detailsData.name}</h1>
         {/* <UserDetails></UserDetails> */}
       </div>
     </div>

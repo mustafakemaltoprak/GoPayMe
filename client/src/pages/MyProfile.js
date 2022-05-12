@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Grid, Label, Menu, Segment } from 'semantic-ui-react';
-import { useSelector } from 'react-redux';
-import { map } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {  notificationRespond } from '../services/user-services';
+import { updateUserDetails } from '../redux/actions/userActions';
 
 const MyProfile = () => {
   const { loginSuccess } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState({
     Account: true,
     Requests: false,
@@ -96,8 +99,33 @@ const MyProfile = () => {
                         <Label onClick={() => setCurrentNote(item.note)}>View Note</Label>
                       </div>
                       <div style={{ display: 'flex' }}>
-                        <Button circular content="accept" color="blue" />
-                        <Button circular content="reject" color="red" />
+                        <Button
+                          circular
+                          content="accept"
+                          color="blue"
+                          onClick={async () => {
+                            const payload = {
+                              senderId: item.senderId,
+                              response: 'accept',
+                              typeof: 'follow',
+                            };
+                            const response = await notificationRespond(payload);
+                            if (response) dispatch(updateUserDetails(response));
+                          }}
+                        />
+                        <Button
+                          circular
+                          content="reject"
+                          color="red"
+                          onClick={async () => {
+                            const payload = {
+                              senderId: item.senderId,
+                              response: 'reject',
+                              typeof: 'follow',
+                            };
+                            await notificationRespond(payload);
+                          }}
+                        />
                       </div>
                     </Segment>
                   ))}

@@ -130,8 +130,7 @@ export const createNotification = async (payload) => {
 
   const config = confighelper(token);
 
-  
-  payload = {...payload, senderName: name, senderId: userId}
+  payload = { ...payload, senderName: name, senderId: userId };
 
   console.log('payload', payload);
   const { data } = await axios.post(`/users/notification`, payload, config);
@@ -155,6 +154,38 @@ export const fetchUserDetails = async (id) => {
 
   console.log();
   if (data) {
+    return data;
+  }
+};
+
+export const notificationRespond = async (payload) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.post(`/users/account`, payload, config);
+
+  console.log();
+  if (data) {
+    console.log('that was updated!', data);
+    return data;
+  }
+};
+
+export const getAccountDetails = async () => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.get(`/users/account`, config);
+
+  console.log();
+  if (data) {
+    // console.log('that was updated!');
     return data;
   }
 };

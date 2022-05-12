@@ -6,10 +6,9 @@ const {
   selectCategories,
   getUserDetails,
   createNotification,
+  respondToNotification,
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
-
-
 
 // Show all the fundraisers
 
@@ -31,11 +30,14 @@ router.post('/register', registerUser);
 //categories
 router.post('/categories/:id', createCategories);
 
-
+//send notification
 router.post('/notification', authMiddleware, createNotification);
+
+//respond toNotifcation
+router.post('/account', authMiddleware, respondToNotification);
+
+//user details
 router.get('/:id', authMiddleware, getUserDetails);
-
-
 
 // createCategories
 

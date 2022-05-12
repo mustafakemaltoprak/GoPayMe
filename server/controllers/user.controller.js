@@ -36,8 +36,6 @@ const loginUser = async (req, res) => {
       const userCreated = await User.create(req.body);
       const token = generateToken(userId);
 
-
-
       res.status(201).send({
         image: userCreated.image,
         categories: userCreated.categories,
@@ -94,13 +92,13 @@ const createNotification = async (req, res) => {
     // const payload = {...req.body, senderName: , senderId: req.user.userId}
 
     const userFoundandUpdated = await User.findOneAndUpdate(
-      { userId: req.body.targetUser},
+      { userId: req.body.targetUser },
       { $push: { notifications: req.body } },
     );
 
     console.log('user', userFoundandUpdated);
     res.status(201).send({
-      success: true
+      success: true,
     });
   } catch (error) {
     res.status(404).send({ error: error.message });
@@ -120,6 +118,56 @@ const getUserDetails = async (req, res) => {
     res.status(404).send({ error: error.message });
   }
 };
+
+const respondToNotification = async (req, res) => {
+  //   const { userId } = req.body;
+  try {
+    // console.log('registering', req.body, req.user);
+
+    if (req.body.response === 'accept') {
+      const senderUpdated = await User.findOneAndUpdate(
+        { userId: req.body.senderId },
+        { $push: { following: req.user.userId } },
+      );
+
+      const myProfileUpdated = await User.findOneAndUpdate(
+        { userId: req.user.userId },
+        { $pull: { notifications: { typeof: req.body.typeof, senderId: req.body.senderId } } },
+        { new: true },
+      );
+
+      console.log('myprofile', myProfileUpdated)
+      if (myProfileUpdated) res.status(201).send(myProfileUpdated);
+    }
+
+    if (req.body.response === 'reject') {
+      const myProfileUpdated = await User.findOneAndUpdate(
+        { userId: req.user.userId },
+        { $pull: { notifications: { typeof: req.body.typeof, senderId: req.body.senderId } } },
+        {new:true}
+      );
+
+      if (myProfileUpdated) res.status(201).send(myProfileUpdated);
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+
+const getAccountDetails = async (req, res) => {
+  //   const { userId } = req.body;
+  try {
+    // console.log('registering', req.body, req.user);
+
+    const userFound = await User.findOne({ userId: req.user});
+
+    res.status(201).send(userFound);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+
 
 // function getAllUsers(req, res) {
 //   User.find()
@@ -156,10 +204,12 @@ module.exports = {
   //   getAllUsers,
   //   createUser,
   //   deleteUser,
+  respondToNotification,
   registerUser,
   loginUser,
   getUserDetails,
   createCategories,
   createNotification,
   getUserDetails,
+  getAccountDetails,
 };
