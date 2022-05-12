@@ -67,7 +67,7 @@ function Profile() {
                     };
                     const data = await createNotification(payload);
                     setRequestSent(true);
-
+                    
                     console.log('received', data);
                   }}
                 />

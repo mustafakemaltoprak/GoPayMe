@@ -7,6 +7,7 @@ const {
   getUserDetails,
   createNotification,
   respondToNotification,
+  getAccountDetails,
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -35,6 +36,9 @@ router.post('/notification', authMiddleware, createNotification);
 
 //respond toNotifcation
 router.post('/account', authMiddleware, respondToNotification);
+
+//get account details
+router.get('/account', authMiddleware, getAccountDetails);
 
 //user details
 router.get('/:id', authMiddleware, getUserDetails);
