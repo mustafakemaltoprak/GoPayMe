@@ -152,7 +152,7 @@ const DetailsPage = () => {
       <div className="fundraiserDescription">{fundraiser.description}</div>
 
       <div class="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
-        <h3 class="ui dividing header">Comments</h3>
+        <h3 className="ui dividing header">Comments - Writer:  {fundraiser.writer}</h3>
         {fundraiserComments.length > 0 &&
           fundraiserComments.map(({ name, textfield, date }) => {
             return (

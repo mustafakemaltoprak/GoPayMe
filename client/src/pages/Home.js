@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchFundraisers } from '../redux/actions/fundraiserActions';
 import CardItem from '../components/Card';
 import Maps from '../components/Maps';
+import Following from '../components/Following';
 
 const Home = () => {
   const history = useHistory();
@@ -94,7 +95,9 @@ const Home = () => {
         <Menu.Item
           name="Following"
           active={currentPage['Following']}
-          onClick={() => handleCurrentPage('Following')}
+          onClick={() => {
+            handleCurrentPage('Following');
+          }}
         />
         <Menu.Item
           name="Favorites"
@@ -144,19 +147,21 @@ const Home = () => {
                   data.map((dataItem) => (
                     <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
                   ))}
+                {count >= limit ? (
+                  <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                    load more
+                  </Label>
+                ) : (
+                  <p style={{ textAlign: 'center' }}>No more fundraisers</p>
+                )}
               </>
             )}
           </div>
-          {toggle && <>{data.length > 0 && <Maps data={data} key={8888} />}</>}
-          {count >= limit ? (
-            <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-              load more
-            </Label>
-          ) : (
-            <p style={{ textAlign: 'center' }}>No more fundraisers</p>
-          )}
+          {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
         </>
       )}
+
+      {currentPage['Following'] && (<Following/>)}
     </>
   );
 };

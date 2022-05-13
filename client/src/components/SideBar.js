@@ -88,7 +88,7 @@ const SideBar = () => {
 
       <Grid.Column style={{ marginTop: '3rem', textAlign: 'center' }}>
         <h3>Online Friends</h3>
-        {loginSuccess.following.length > 0 ? 
+        {loginSuccess.following?.length > 0 ? 
           (loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)) : (<p>Not following anyone yet</p>) }
       </Grid.Column>
       {/* <Sidebar.Pusher>

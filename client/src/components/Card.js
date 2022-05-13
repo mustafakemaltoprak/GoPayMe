@@ -51,8 +51,12 @@ const CardItem = ({ data, handleClick }) => {
               percent={data.currentAmount ? (data.currentAmount / data.targetAmount) * 100 : 0}
               progress
               style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
-              content="Raised"
-            />
+              // content={`$${data.currentAmount} Raised`}
+            >
+              <p
+                style={{  color: 'gray' }}
+              >{`$${data.currentAmount} Raised`}</p>
+            </Progress>
             {/* </Card.Content> */}
           </Card>
         </div>

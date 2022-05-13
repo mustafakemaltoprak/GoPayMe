@@ -39,7 +39,10 @@ function Profile() {
           <Card.Content extra>
             <a>
               <Icon name="user" />
-              22 Friends
+              {detailsData.following?.length > 0
+                ? detailsData.following?.length
+                : '0 '}
+              Friends
             </a>
           </Card.Content>
         </Card>
@@ -67,7 +70,7 @@ function Profile() {
                     };
                     const data = await createNotification(payload);
                     setRequestSent(true);
-                    
+
                     console.log('received', data);
                   }}
                 />

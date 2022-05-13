@@ -1,7 +1,10 @@
 const Fundraiser = require('../models/fundraiser.model');
+const { db } = require('../models/user.model');
 const User = require('../models/user.model');
 
-const getAllFundraisers = (req, res) => {
+const getAllFundraisers = async (req, res) => {
+  const skip = req.body.skip && parseInt(req.body.skip);
+  const limit = req.body.limit && parseInt(req.body.limit);
   //   Fundraiser.find()
   //     .then((fundraisers) => res.json(fundraisers))
   //     .catch((err) => res.status(400).json('Error: ' + err));
@@ -11,14 +14,35 @@ const getAllFundraisers = (req, res) => {
   // const foundUser = await User.findOne({ userId: req.user.userId })
   // console.log('user', req.body);
 
-  const skip = req.body.skip && parseInt(req.body.skip);
-  const limit = req.body.limit && parseInt(req.body.limit);
+  if (req.body.following) {
+    // const foundUser = await User.findOne({ userId: req.user.userId });
+    console.log('fired')
+    const foundWriters = await User.find({
+      _id: {
+        $in: req.body.following,
+      },
+    });
+    const writers = foundWriters.map((user) => user.userId);
+    Fundraiser.find({
+      writer: {
+        $in: writers,
+      },
+    })
+      .skip(skip)
+      .limit(limit)
+      .exec((err, docs) => {
+        if (err) res.status(400).send({ error: error.message });
+        res.status(201).send({ docs, count: docs.length });
+      });
+      return
+  }
+
   Fundraiser.find()
     .skip(skip)
     .limit(limit)
     .exec((err, docs) => {
       if (err) res.status(400).send({ error: error.message });
-      res.status(201).send({docs, count: docs.length});
+      res.status(201).send({ docs, count: docs.length });
     });
   // console.log('created', allFundraisers);
   // } catch (error) {}
