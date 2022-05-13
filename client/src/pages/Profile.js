@@ -99,26 +99,7 @@ function Profile() {
         }}
       >
         <Image src={detailsData.image} size="small" circular />
-        {/* <Card>
-          <Card.Content>
-            <Card.Header>{detailsData.name}</Card.Header>
-            <Card.Meta>
-              <span className="date">Joined in 2015</span>
-            </Card.Meta>
-            {detailsData.description ? (
-              <Card.Description>{detailsData.description}</Card.Description>
-            ) : (
-              <Card.Description>No description yet</Card.Description>
-            )}
-          </Card.Content>
-          <Card.Content extra>
-            <a>
-              <Icon name="create calendar event" />
-              {detailsData.following?.length > 0 ? detailsData.following?.length : '0 '}
-              Friends
-            </a>
-          </Card.Content>
-        </Card> */}
+
         <List>
           <List.Item>
             <List.Icon name="users" />
@@ -215,13 +196,19 @@ function Profile() {
             justifyContent: 'flex-end',
             flexDirection: 'column',
             padding: '1rem',
-            overflowY: 'scroll',
+            overflow: 'hidden',
           }}
         >
-          {allMessages.chats?.messages?.length > 0 &&
-            allMessages.chats?.messages.map((msg) => (
-              <Message msg={msg.msg} senderName={msg.sender} msgTime={msg.date} />
-            ))}
+          <div
+          style={{
+            overflow: 'auto',
+          }}
+          >
+            {allMessages?.chats?.messages?.length > 0 &&
+              allMessages?.chats?.messages.map((msg) => (
+                <Message msg={msg.msg} senderName={msg.sender} msgTime={msg.date} />
+              ))}
+          </div>
         </div>
         <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
           <Input
