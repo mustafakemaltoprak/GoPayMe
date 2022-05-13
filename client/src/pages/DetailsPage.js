@@ -206,6 +206,8 @@ const DetailsPage = () => {
           />
           <Label>calendar event</Label>
         </div>
+        
+        
         <div className="fundraiserDonation">
           <div className="donationContainer">
             <div>
