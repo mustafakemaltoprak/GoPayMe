@@ -8,6 +8,7 @@ const {
   createNotification,
   respondToNotification,
   getAccountDetails,
+  updateAvatarPicture,
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -46,5 +47,8 @@ router.get('/:id', authMiddleware, getUserDetails);
 // createCategories
 
 // router.post('/createCategories', createCategories)
+
+//change avatar
+router.put('/account', authMiddleware, updateAvatarPicture);
 
 module.exports = router;

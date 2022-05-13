@@ -151,6 +151,7 @@ export const fetchUserDetails = async (id) => {
   console.log('tok', token);
 
   const { data } = await axios.get(`/users/${id}`, config);
+  console.log('userDetails Info', data);
 
   console.log();
   if (data) {
@@ -186,6 +187,23 @@ export const getAccountDetails = async () => {
   console.log();
   if (data) {
     // console.log('that was updated!');
+    return data;
+  }
+};
+
+export const avatarUpdate = async (payload) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  console.log('avatar payloadd', payload)
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.put(`/users/account`, payload, config);
+
+  console.log();
+  if (data) {
+    console.log('that was updated!', data);
     return data;
   }
 };

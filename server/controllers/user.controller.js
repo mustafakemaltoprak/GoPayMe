@@ -170,6 +170,29 @@ const getAccountDetails = async (req, res) => {
   }
 };
 
+const updateAvatarPicture = async (req, res) => {
+  try {
+    // console.log('Avatar Updating', req.body, req.user);
+
+    const userFound = await User.findOneAndUpdate(
+      { userId: req.user.userId },
+      { image: req.body.image },
+      { new: true },
+      );
+      console.log('avatar img', req.body.image)
+
+    res.status(201).send(userFound);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+  /*
+  const user = await User.findOneAndUpdate(
+      { userId: req.params.id },
+      { categories: req.body.categories },
+      { new: true },
+    ); */
+}
+
 
 // function getAllUsers(req, res) {
 //   User.find()
@@ -214,4 +237,5 @@ module.exports = {
   createNotification,
   getUserDetails,
   getAccountDetails,
+  updateAvatarPicture,
 };

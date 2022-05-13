@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Grid, Label, Menu, Segment } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import { Button, Grid, Label, Menu, Segment, Card, Image, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {  notificationRespond } from '../services/user-services';
+import { notificationRespond, avatarUpdate, fetchUserDetails } from '../services/user-services';
 import { updateUserDetails } from '../redux/actions/userActions';
+import Categories from './Categories';
 
 const MyProfile = () => {
   const { loginSuccess } = useSelector((state) => state.user);
@@ -15,6 +16,33 @@ const MyProfile = () => {
   });
 
   const [currentNote, setCurrentNote] = useState('');
+
+  //images selection
+  const avatar1 = 'https://react.semantic-ui.com/images/avatar/large/daniel.jpg';
+  const avatar2 = 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg';
+  const avatar3 = 'https://react.semantic-ui.com/images/avatar/large/steve.jpg';
+  const avatar4 = 'https://react.semantic-ui.com/images/avatar/large/molly.png';
+  const avatar5 = 'https://react.semantic-ui.com/images/avatar/large/jenny.jpg';
+  const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
+  const [image, setImage] = useState('')
+
+  const handleAvatarSelection = async (arg) => {
+    const payload = { image: arg};
+    try {
+      await avatarUpdate(payload);
+      setImage(arg);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+  console.log('avatar pick', image);
+  useEffect(() => {
+    console.log('checking userId',loginSuccess.userId);
+    fetchUserDetails(loginSuccess.userId).then((response) => {
+      console.log('check avatar response', response);
+      setImage(response.image)});
+  }, []);
+
 
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
@@ -70,7 +98,65 @@ const MyProfile = () => {
             attached="bottom"
             style={{ paddingTop: '2rem', border: '1px red solid' }}
             className="cardgrid"
-          ></div>
+          >
+            <div className='userAvatarContainer' style={{ display: 'flex', justifyContent: 'space-between', border: 'black 2px solid', width: '130px%' }}>
+              <div className='currentCardContainer' style={{ flex: '1'}}>
+                <Card>
+                  <Image src={image} wrapped ui={false} />
+                  <Card.Content>
+                    <Card.Header>Matthew</Card.Header>
+                    <Card.Meta>
+                      <span className='date'>Joined in 2015</span>
+                    </Card.Meta>
+                    <Card.Description>
+                      Matthew is a musician living in Nashville.
+                    </Card.Description>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <a>
+                      <Icon name='user' />
+                      22 Friends
+                    </a>
+                  </Card.Content>
+                </Card>
+                <div>
+                  <a href='/profile'>
+                    <Button primary>
+                      <Icon name='user'></Icon>
+                    </Button>
+                  </a>
+                  <a href='/messages'>
+                    <Button secondary>
+                      <Icon name='rocketchat'></Icon>
+                    </Button>
+                  </a>
+                </div>
+
+              </div>
+              <div className='userContentContainer' style={{ flex: '3', display: 'flex', border: 'black 1px solid', 'flex-direction': 'column'}}>
+                <h1>Avatar selection</h1>
+                <div className='avatarSelection' style={{ border: 'yellow 2px solid', display: 'flex', 'flex-direction': 'column'}}>
+                  <div className='rowImages' style={{ border: 'blue 1px solid', display: 'flex'}}>
+                    <img src={avatar1} alt='' onClick={() => handleAvatarSelection(avatar1)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                    <img src={avatar2} alt='' onClick={() => handleAvatarSelection(avatar2)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                    <img src={avatar3} alt='' onClick={() => handleAvatarSelection(avatar3)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                  </div>
+                  <div className='rowImages' style={{ border: 'blue 1px solid', display: 'flex'}}>
+                    <img src={avatar4} alt='' onClick={() => handleAvatarSelection(avatar4)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                    <img src={avatar5} alt='' onClick={() => handleAvatarSelection(avatar5)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                    <img src={avatar6} alt='' onClick={() => handleAvatarSelection(avatar6)} style={{ width: '130px', height: '130px', 'border-radius': '50%'}}/>
+                  </div>
+                </div>
+                <div className='descriptionContainer'>
+                  <h4>User Description</h4>
+                  <span>May the fourth is Stars Wars Day (for obvious reasons) and we’re ready for the day of remembrance with these Jedi jokes and memes</span>
+                </div>
+                <div className='categoriesSelection'>
+                  <Categories/>
+                </div>
+              </div>
+            </div>
+          </div>
         </>
       )}
 
