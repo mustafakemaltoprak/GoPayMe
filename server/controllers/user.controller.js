@@ -236,6 +236,15 @@ const updateAvatarPicture = async (req, res) => {
     ); */
 };
 
+  /*
+  const user = await User.findOneAndUpdate(
+      { userId: req.params.id },
+      { categories: req.body.categories },
+      { new: true },
+    ); */
+
+
+
 // function getAllUsers(req, res) {
 //   User.find()
 //     .then((users) => res.json(users))
@@ -280,5 +289,7 @@ module.exports = {
   getUserDetails,
   getAccountDetails,
   getUserDetailsTest,
+  
+  
   updateAvatarPicture,
 };
