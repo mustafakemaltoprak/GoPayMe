@@ -15,9 +15,9 @@ import {
   notificationRespond,
   avatarUpdate,
   fetchUserDetails,
+  postCategories,
 } from '../services/user-services';
 import { updateUserDetails } from '../redux/actions/userActions';
-import Categories from './Categories';
 
 const MyProfile = () => {
   const { loginSuccess } = useSelector((state) => state.user);
@@ -31,16 +31,22 @@ const MyProfile = () => {
   const [currentNote, setCurrentNote] = useState('');
 
   //images selection
-  const avatar1 =
-    'https://react.semantic-ui.com/images/avatar/large/daniel.jpg';
-  const avatar2 =
-    'https://react.semantic-ui.com/images/avatar/large/elliot.jpg';
+  const avatar1 = 'https://react.semantic-ui.com/images/avatar/large/daniel.jpg';
+  const avatar2 = 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg';
   const avatar3 = 'https://react.semantic-ui.com/images/avatar/large/steve.jpg';
   const avatar4 = 'https://react.semantic-ui.com/images/avatar/large/molly.png';
   const avatar5 = 'https://react.semantic-ui.com/images/avatar/large/jenny.jpg';
-  const avatar6 =
-    'https://react.semantic-ui.com/images/avatar/large/matthew.png';
+  const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
   const [image, setImage] = useState('');
+  const [description, setDescription] = useState('');
+  const [categories, setCategories] = useState({
+    charity: false,
+    healthcare: false,
+    art: false,
+    humanitarian: false,
+    animals: false,
+    sports: false,
+  });
 
   const handleAvatarSelection = async (arg) => {
     const payload = { image: arg };
@@ -52,10 +58,41 @@ const MyProfile = () => {
     }
   };
   console.log('avatar pick', image);
+
+  const handleClickCategories = (arg) => {
+    setCategories((prev) => {
+      return { ...prev, [arg]: !categories[arg] };
+    });
+  };
+
+  const handleClick = (arg) => {
+    // setCategories(prev => {...prev, egef: !categories[arg]})
+    setCategories((prev) => {
+      return { ...prev, [arg]: !categories[arg] };
+    });
+  };
+
+  const handleSubmit = async () => {
+    let categoriesArr = [];
+    for (let key in categories) {
+      if (categories[key]) {
+        categoriesArr.push(key);
+      }
+    }
+
+    console.log('ARRAYY', categoriesArr);
+
+    try {
+      await postCategories({ categories: categoriesArr, userId: loginSuccess.userId });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     console.log('checking userId', loginSuccess.userId);
     fetchUserDetails(loginSuccess.userId).then((response) => {
-      console.log('check avatar response', response);
+      // console.log('check avatar response', response);
       setImage(response.image);
     });
   }, []);
@@ -115,8 +152,7 @@ const MyProfile = () => {
             style={{ paddingTop: '2rem', border: '1px red solid' }}
             className="cardgrid"
           >
-            <div
-              className="userAvatarContainer"
+            <div className="userAvatarContainer"
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -125,8 +161,8 @@ const MyProfile = () => {
               }}
             >
               <div className="currentCardContainer" style={{ flex: '1' }}>
-                <Card>
-                  <Image src={image} wrapped ui={false} />
+                <Card style={{width: '200px', height: 'auto'}}>
+                  <Image src={image} wrapped ui={false} style={{'border-radius': '50%'}} />
                   <Card.Content>
                     <Card.Header>Matthew</Card.Header>
                     <Card.Meta>
@@ -156,16 +192,15 @@ const MyProfile = () => {
                   </a>
                 </div>
               </div>
-              <div
-                className="userContentContainer"
+              <div className="userContentContainer"
                 style={{
-                  flex: '3',
+                  flex: '2',
                   display: 'flex',
                   border: 'black 1px solid',
                   'flex-direction': 'column',
                 }}
               >
-                <h1>Avatar selection</h1>
+                <h2>Edit your information</h2>
                 <div
                   className="avatarSelection"
                   style={{
@@ -248,13 +283,81 @@ const MyProfile = () => {
                 <div className="descriptionContainer">
                   <h4>User Description</h4>
                   <span>
-                    May the fourth is Stars Wars Day (for obvious reasons) and
-                    we’re ready for the day of remembrance with these Jedi jokes
-                    and memes
+                    May the fourth is Stars Wars Day
                   </span>
                 </div>
-                <div className="categoriesSelection">
-                  <Categories />
+                <div className="categoriesSelection" style={{'margin-top': '25px'}}>
+                  <Grid columns={3} divided style={{ width: '30rem' }}>
+                    <h4>Select your categories</h4>
+                    <Grid.Row>
+                      <Grid.Column>
+                        <Label
+                          as="a"
+                          color={categories['charity'] && 'teal'}
+                          style={{ width: '110px', textAlign: 'center' }}
+                          onClick={() => handleClick('charity')}
+                        >
+                          Charity
+                          <Icon name="delete" />
+                        </Label>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <Label
+                          as="a"
+                          color={categories['healthcare'] && 'teal'}
+                          style={{ width: '110px', textAlign: 'center' }}
+                          onClick={() => handleClick('healthcare')}
+                        >
+                          Healthcare
+                          <Icon name="delete" />
+                        </Label>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <Label
+                          as="a"
+                          color={categories['art'] && 'teal'}
+                          style={{ width: '110px', textAlign: 'center' }}
+                          onClick={() => handleClick('art')}
+                        >
+                          Art
+                          <Icon name="delete" />
+                        </Label>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row centered>
+                      <Grid.Column>
+                        <Label
+                          as="a"
+                          color={categories['humanitarian'] && 'teal'}
+                          style={{ width: '110px', textAlign: 'center' }}
+                          onClick={() => handleClick('humanitarian')}
+                        >
+                          Humanitarian
+                          <Icon name="delete" />
+                        </Label>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <Label
+                          as="a"
+                          style={{ width: '110px', textAlign: 'center' }}
+                          onClick={() => handleClick('animals')}
+                          color={categories['animals'] && 'teal'}
+                        >
+                          Animals
+                          <Icon name="delete" />
+                        </Label>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row centered>
+                      <Button
+                        color="blue"
+                        style={{ width: '300px', textAlign: 'center' }}
+                        onClick={handleSubmit}
+                      >
+                        Update Your Categories
+                      </Button>
+                    </Grid.Row>
+                  </Grid>
                 </div>
               </div>
             </div>
