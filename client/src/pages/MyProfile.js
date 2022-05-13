@@ -39,6 +39,7 @@ const MyProfile = () => {
   const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
   const [image, setImage] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [categories, setCategories] = useState({
     charity: false,
     healthcare: false,
@@ -94,9 +95,11 @@ const MyProfile = () => {
     fetchUserDetails(loginSuccess.userId).then((response) => {
       // console.log('check avatar response', response);
       setImage(response.image);
+      setSelectedCategories(response.categories);
     });
   }, []);
 
+  console.log('check categories response', selectedCategories);
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
 
@@ -175,7 +178,12 @@ const MyProfile = () => {
                   <Card.Content extra>
                     <a>
                       <Icon name="user" />
-                      22 Friends
+                      Your Categories List:
+                      <ul>
+                        {selectedCategories.map(item => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
                     </a>
                   </Card.Content>
                 </Card>
