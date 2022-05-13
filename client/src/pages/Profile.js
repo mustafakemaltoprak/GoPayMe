@@ -182,7 +182,7 @@ function Profile() {
             <Image
               circular
               style={{ height: '2rem', marginRight: '1.5rem', padding: 0, display: 'flex' }}
-              // src={detailsData.image}
+              src={detailsData.image}
             />
             Send {detailsData.name} a message
           </h3>
