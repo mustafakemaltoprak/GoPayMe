@@ -9,6 +9,7 @@ const {
   respondToNotification,
   getAccountDetails,
   getUserDetailsTest
+  updateAvatarPicture,
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -49,4 +50,7 @@ router.get('/:id', authMiddleware, getUserDetails);
 // router.post('/createCategories', createCategories)
 
 router.post('/test/:id',  getUserDetailsTest);
+//change avatar
+router.put('/account', authMiddleware, updateAvatarPicture);
+
 module.exports = router;
