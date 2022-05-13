@@ -3,13 +3,13 @@ import { Grid } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
 import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart,
-  ChartLegend,
-  ChartSeries,
-  ChartSeriesItem,
-  ChartSeriesLabels,
-} from '@progress/kendo-react-charts';
+// import {
+//   Chart,
+//   ChartLegend,
+//   ChartSeries,
+//   ChartSeriesItem,
+//   ChartSeriesLabels,
+// } from '@progress/kendo-react-charts';
 import 'hammerjs';
 
 function Dashboard() {
@@ -220,7 +220,7 @@ function Dashboard() {
             className="contentRightCharts"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
-            <Chart>
+            {/* <Chart>
               <ChartSeries>
                 <ChartSeriesItem
                   type="donut"
@@ -236,7 +236,7 @@ function Dashboard() {
                 </ChartSeriesItem>
               </ChartSeries>
               <ChartLegend visible={false} />
-            </Chart>
+            </Chart> */}
           </div>
         </div>
       </div>

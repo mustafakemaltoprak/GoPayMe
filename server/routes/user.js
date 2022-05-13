@@ -8,7 +8,7 @@ const {
   createNotification,
   respondToNotification,
   getAccountDetails,
-  getUserDetailsTest
+  getUserDetailsTest,
   updateAvatarPicture,
 } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth');
