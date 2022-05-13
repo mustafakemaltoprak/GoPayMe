@@ -10,6 +10,9 @@ const {
   addLike,
   getAllLikes,
   searchbyTerm,
+  addView,
+  addPrevDonation,
+  getPrevDonations,
 } = require('../controllers/fundraiser.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -27,8 +30,23 @@ router.route('/comment/add/:id').put(addComments);
 
 router.route('/comment/get/:id').get(getAllComments);
 
+router.route('/prevDonation/add/:id').put(addPrevDonation);
+
+router.route('/prevDonation/get/:id').get(getPrevDonations);
+
 router.route('/like/:id').put(addLike);
 
+router.route('/view/:id').put(addView);
+
 router.route('/like/amount/:id').get(getAllLikes);
+
+router.route('/create-tokens').post(async (req, res, next) => {
+  try {
+    const { code } = req.body;
+    res.send(code);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

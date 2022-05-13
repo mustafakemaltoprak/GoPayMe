@@ -168,7 +168,8 @@ input {
   border-style: none;
   background-color: #7795f8;
   will-change: opacity, transform;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #829fff;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #829fff;
   border-radius: 4px;
 }
 
@@ -197,7 +198,8 @@ input {
   height: 40px;
   margin: 40px 15px 0;
   background-color: #7795f8;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #7795f8;
   border-radius: 4px;
   color: #fff;
   font-weight: 600;
@@ -209,7 +211,8 @@ input {
 
 button:active {
   background-color: #7795f8;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #7795f8;
+  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #7795f8;
   transform: scale(0.99);
 }
 
@@ -257,7 +260,7 @@ button:active {
   border: green 3px solid;
 }
 
-.map-card{
+.map-card {
   transform: scale(1);
 }
 
@@ -265,4 +268,8 @@ button:active {
   background: gainsboro !important;
   transform: scale(1.03);
   transition: all 0.5ms linear;
+}
+.previous-donations {
+  text-align: center;
+  margin-top: 10px;
 }

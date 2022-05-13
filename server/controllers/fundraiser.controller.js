@@ -16,7 +16,7 @@ const getAllFundraisers = async (req, res) => {
 
   if (req.body.following) {
     // const foundUser = await User.findOne({ userId: req.user.userId });
-    console.log('fired')
+    console.log('fired');
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
@@ -34,7 +34,7 @@ const getAllFundraisers = async (req, res) => {
         if (err) res.status(400).send({ error: error.message });
         res.status(201).send({ docs, count: docs.length });
       });
-      return
+    return;
   }
 
   Fundraiser.find()
@@ -119,9 +119,28 @@ function addComments(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+function addPrevDonation(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.prevDonations = req.body.prevDonations;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser previous donations updated'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
 function getAllComments(req, res) {
   Fundraiser.findById(req.params.id)
     .then((fundraiser) => res.json(fundraiser.comments))
+    .catch((err) => res.status(400).json('Error' + err));
+}
+
+function getPrevDonations(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser.prevDonations))
     .catch((err) => res.status(400).json('Error' + err));
 }
 
@@ -147,7 +166,9 @@ function getAllLikes(req, res) {
 const searchbyTerm = async (req, res) => {
   const searchTerm = req.query.searchTerm;
   try {
-    const allFundraisers = await Fundraiser.find({ title: new RegExp(searchTerm, 'i') });
+    const allFundraisers = await Fundraiser.find({
+      title: new RegExp(searchTerm, 'i'),
+    });
     const allUsers = await User.find({ name: new RegExp(searchTerm, 'i') });
 
     console.log('testing', allFundraisers);
@@ -157,6 +178,18 @@ const searchbyTerm = async (req, res) => {
     res.status(404).send({ error: error.message });
   }
 };
+function addView(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.views = fundraiser.views + req.body.views;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser view added'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
 
 module.exports = {
   getAllFundraisers,
@@ -169,4 +202,7 @@ module.exports = {
   addLike,
   getAllLikes,
   searchbyTerm,
+  addView,
+  addPrevDonation,
+  getPrevDonations,
 };
