@@ -121,10 +121,9 @@ const Maps = ({ data }) => {
                 }}
                 key={place.id}
                 position={place.location.coordinates}
-                // eventHandlers={{ click: () => showPreview(place) }}
+                // eventHandlers={{ click: () => showPreview
               >
-                {/* show place's title on hover the marker */}
-                {/* <Tooltip>{place.title}</Tooltip> */}
+                
                 <Popup>
                   {' '}
                   <Segment
@@ -132,8 +131,7 @@ const Maps = ({ data }) => {
                     style={{ cursor: 'pointer' }}
                     className="map-card"
                     vertical
-                    // onClick={() => onClickShowMarker(dataItem.location.coordinates)}
-                    // onClick={() => handleClick(index, dataItem.location.coordinates)}
+                   
                   >
                     <p>{place.title}</p>
                     <Progress
