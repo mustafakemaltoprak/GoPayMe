@@ -32,6 +32,8 @@ export default function PaymentForm(props) {
   let convertBackersToNumber = parseInt(props.backers);
   let convertDollarIntoCents = parseInt(props.price) * 100;
 
+  let today = new Date();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -58,9 +60,33 @@ export default function PaymentForm(props) {
               backers: convertBackersToNumber + 1,
             }),
           }).then((response) => response.json());
-          fetch(`http://localhost:5200/fundraiser/find/${props.id}`)
+          await fetch(`http://localhost:5200/fundraiser/find/${props.id}`)
             .then((response) => response.json())
             .then((actualResponse) => props.setFundraiser(actualResponse));
+          await fetch(
+            `http://localhost:5200/fundraiser/prevDonation/add/${props.id}`,
+            {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                prevDonations: [
+                  ...props.previousDonations,
+                  {
+                    sender: props.name,
+                    amount: props.price,
+                    date: today,
+                  },
+                ],
+              }),
+            }
+          ).then((response) => response.json());
+          await fetch(
+            `http://localhost:5200/fundraiser/prevDonation/get/${props.id}`
+          )
+            .then((response) => response.json())
+            .then((actualResponse) =>
+              props.setPreviousDonations(actualResponse)
+            );
         } else {
           toast.error('Your payment failed');
         }

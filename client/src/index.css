@@ -213,3 +213,8 @@ button:active {
     inset 0 1px 0 #7795f8;
   transform: scale(0.99);
 }
+
+.previous-donations {
+  text-align: center;
+  margin-top: 10px;
+}

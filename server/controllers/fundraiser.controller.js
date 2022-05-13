@@ -89,9 +89,28 @@ function addComments(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+function addPrevDonation(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.prevDonations = req.body.prevDonations;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser previous donations updated'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
 function getAllComments(req, res) {
   Fundraiser.findById(req.params.id)
     .then((fundraiser) => res.json(fundraiser.comments))
+    .catch((err) => res.status(400).json('Error' + err));
+}
+
+function getPrevDonations(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser.prevDonations))
     .catch((err) => res.status(400).json('Error' + err));
 }
 
@@ -114,6 +133,19 @@ function getAllLikes(req, res) {
     .catch((err) => res.status(400).json('Error' + err));
 }
 
+function addView(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => {
+      fundraiser.views = fundraiser.views + req.body.views;
+
+      fundraiser
+        .save()
+        .then(() => res.json('Fundraiser view added'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+    })
+    .catch((err) => res.status(400).json('Error: ' + err));
+}
+
 module.exports = {
   getAllFundraisers,
   createFundraiser,
@@ -124,4 +156,7 @@ module.exports = {
   getAllComments,
   addLike,
   getAllLikes,
+  addView,
+  addPrevDonation,
+  getPrevDonations,
 };
