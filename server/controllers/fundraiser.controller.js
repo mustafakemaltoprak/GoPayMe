@@ -1,21 +1,51 @@
 const Fundraiser = require('../models/fundraiser.model');
+const { db } = require('../models/user.model');
 const User = require('../models/user.model');
 
 const getAllFundraisers = async (req, res) => {
+  const skip = req.body.skip && parseInt(req.body.skip);
+  const limit = req.body.limit && parseInt(req.body.limit);
   //   Fundraiser.find()
   //     .then((fundraisers) => res.json(fundraisers))
   //     .catch((err) => res.status(400).json('Error: ' + err));
 
-  try {
-    console.log('fired', req.body, 'user', req.user.userId);
-    const foundUser = await User.findOne({ userId: req.user.userId });
-    console.log('user', foundUser.categories);
-    const allFundraisers = await Fundraiser.find({});
-    console.log('created', allFundraisers);
-    res.status(201).send(allFundraisers);
-  } catch (error) {
-    res.status(400).send({ error: error.message });
+  // try {
+  // console.log('fired', req.body, 'user', req.user.userId);
+  // const foundUser = await User.findOne({ userId: req.user.userId })
+  // console.log('user', req.body);
+
+  if (req.body.following) {
+    // const foundUser = await User.findOne({ userId: req.user.userId });
+    console.log('fired')
+    const foundWriters = await User.find({
+      _id: {
+        $in: req.body.following,
+      },
+    });
+    const writers = foundWriters.map((user) => user.userId);
+    Fundraiser.find({
+      writer: {
+        $in: writers,
+      },
+    })
+      .skip(skip)
+      .limit(limit)
+      .exec((err, docs) => {
+        if (err) res.status(400).send({ error: error.message });
+        res.status(201).send({ docs, count: docs.length });
+      });
+      return
   }
+
+  Fundraiser.find()
+    .skip(skip)
+    .limit(limit)
+    .exec((err, docs) => {
+      if (err) res.status(400).send({ error: error.message });
+      res.status(201).send({ docs, count: docs.length });
+    });
+  // console.log('created', allFundraisers);
+  // } catch (error) {}
 };
 
 const createFundraiser = async (req, res) => {
@@ -120,7 +150,7 @@ const searchbyTerm = async (req, res) => {
     const allFundraisers = await Fundraiser.find({ title: new RegExp(searchTerm, 'i') });
     const allUsers = await User.find({ name: new RegExp(searchTerm, 'i') });
 
-    console.log('testing', allFundraisers)
+    console.log('testing', allFundraisers);
     console.log('search', searchTerm, req.url);
     res.status(200).send({ users: allUsers, fundraisers: allFundraisers });
   } catch (error) {

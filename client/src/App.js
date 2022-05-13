@@ -11,6 +11,8 @@ import Dashboard from './pages/Dashboard';
 import SideBar from './components/SideBar';
 import { Container, Grid } from 'semantic-ui-react';
 import MyFundraisers from './pages/MyFundraisers';
+import Profile from './pages/Profile';
+import MyProfile from './pages/MyProfile';
 // import 'leaflet/dist/leaflet.css';
 
 function App() {
@@ -36,15 +38,17 @@ function App() {
                   <Navbar />
                   <Grid>
                     <Grid.Row>
-                      <Grid.Column width={2}>
+                      <Grid.Column width={3}>
                         <SideBar />
                       </Grid.Column>
-                      <Grid.Column width={14}>
+                      <Grid.Column width={13}>
                         <Route path="/home" component={Home} exact />
-                        <Route path="/profile" component={Dashboard} />
+                        <Route path="/dashboard" component={Dashboard} />
 
                         <Route path="/fundraisers" component={MyFundraisers} />
+                        <Route path="/profile/:id" component={Profile} />
                         <Route path="/fundraiser/:id" component={DetailsPage} />
+                        <Route path="/account" component={MyProfile} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

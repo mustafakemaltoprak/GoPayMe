@@ -7,6 +7,34 @@ const userSchema = new Schema({
   email: String,
   password: String,
   categories: [String],
+  description: String,
+  notifications: [
+    {
+      typeof: {
+        type: String,
+        enum: ['follow', 'reject', 'message', 'accept'],
+      },
+      targetUser: {
+        // ref: 'User',
+        // type: mongoose.Schema.ObjectId,
+        type: String,
+      },
+      note: String,
+      senderName: String,
+      senderId: String
+    },
+  ],
+  test: {
+    default:  0,
+    type: Number
+  },
+  following: [
+    {type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    
+    }
+    
+  ],
   userId: String,
   image: {
     type: String,

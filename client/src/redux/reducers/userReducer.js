@@ -1,4 +1,9 @@
-import { REGISTER_USER, LOGIN_USER, LOGOUT_USER } from '../constants/userConstants';
+import {
+  REGISTER_USER,
+  LOGIN_USER,
+  LOGOUT_USER,
+  UPDATE_ACCOUNT_DETAILS,
+} from '../constants/userConstants';
 // {
 //     type: 'LOGIN_USER',
 //     payload: payload,
@@ -19,6 +24,8 @@ const userReducer = (state = {}, action) => {
       return { ...state, loginSuccess: action.payload };
     case LOGOUT_USER:
       return {};
+    case UPDATE_ACCOUNT_DETAILS:
+      return { ...state, loginSuccess: { ...state.loginSuccess, ...action.payload } };
     default:
       return state;
   }

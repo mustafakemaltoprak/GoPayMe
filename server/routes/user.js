@@ -4,9 +4,13 @@ const {
   loginUser,
   createCategories,
   selectCategories,
+  getUserDetails,
+  createNotification,
+  respondToNotification,
+  getAccountDetails,
+  getUserDetailsTest
 } = require('../controllers/user.controller');
-
-
+const { authMiddleware } = require('../middlewares/auth');
 
 // Show all the fundraisers
 
@@ -28,10 +32,21 @@ router.post('/register', registerUser);
 //categories
 router.post('/categories/:id', createCategories);
 
+//send notification
+router.post('/notification', authMiddleware, createNotification);
 
+//respond toNotifcation
+router.post('/account', authMiddleware, respondToNotification);
+
+//get account details
+router.get('/account', authMiddleware, getAccountDetails);
+
+//user details
+router.get('/:id', authMiddleware, getUserDetails);
 
 // createCategories
 
 // router.post('/createCategories', createCategories)
 
+router.post('/test/:id',  getUserDetailsTest);
 module.exports = router;

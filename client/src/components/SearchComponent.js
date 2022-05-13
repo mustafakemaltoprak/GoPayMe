@@ -2,28 +2,30 @@ import React, { useState } from 'react';
 import { Button, Label, Search } from 'semantic-ui-react';
 import _ from 'lodash';
 import { searchService } from '../services/common';
+import { useHistory } from 'react-router-dom';
 
 const SearchComponent = () => {
   const [loading, setLoading] = useState(false);
   const [valueInit, setValue] = useState('');
   const [results, setResults] = useState([]);
 
+  const history = useHistory();
   const handleResultSelect = (params) => {};
 
   const resultRenderer = (obj) => (
     <>
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-        onClick={() => console.log('from obj', obj)}
-      >
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {obj.title ? (
           <p style={{ display: 'flex', justifyContent: 'space-between' }}>
             {obj.title} <p style={{ color: 'red' }}>User</p>
           </p>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {obj.name} <p style={{ color: 'green' }}>Fund</p>
-          </div>
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>{obj.name}</div>
+            <Label style={{ color: 'green' }} onClick={() => history.push(`profile/${obj.userId}`)}>
+              view profile
+            </Label>
+          </>
         )}
         {/* <Label content="follow" color="green" /> */}
       </div>
@@ -51,11 +53,12 @@ const SearchComponent = () => {
     console.log('fffff', [...data.users, ...data.fundraisers]);
     if (data.users.length + data.fundraisers.length > 4) {
       setResults([...data.users, ...data.fundraisers]);
-    } else{
-      setResults([...data.users, ...data.fundraisers])
+    } else {
+      setResults([...data.users, ...data.fundraisers]);
     }
   };
   return (
+    
     <Search
       loading={loading}
       placeholder="Search User or fundraiser"

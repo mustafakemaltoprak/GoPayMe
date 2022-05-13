@@ -15,14 +15,14 @@ export const editFundraiser = async () => {};
 
 
 //get
-export const fetchData = async () => {
+export const fetchData = async (variables) => {
   const token = JSON.parse(localStorage.getItem('userInfo')).token;
 
   const config = confighelper(token);
   // console.log('config', config);
   // delete formObj['token'];
   console.log('config', config);
-  const { data } = await axios.get('/fundraiser', config);
+  const { data } = await axios.post('/fundraiser', variables, config);
   console.log('testing result', data);
   return data;
 };

@@ -38,7 +38,7 @@ const CardItem = ({ data, handleClick }) => {
               <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>{data.title}</div>
                 <div style={{ display: 'flex' }}>
-                  <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>2</p>
+                  <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>{data.likes}</p>
                 </div>
               </Card.Header>
               <Card.Meta>created by: 'data writer'</Card.Meta>
@@ -51,8 +51,12 @@ const CardItem = ({ data, handleClick }) => {
               percent={data.currentAmount ? (data.currentAmount / data.targetAmount) * 100 : 0}
               progress
               style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
-              content="Raised"
-            />
+              // content={`$${data.currentAmount} Raised`}
+            >
+              <p
+                style={{  color: 'gray' }}
+              >{`$${data.currentAmount} Raised`}</p>
+            </Progress>
             {/* </Card.Content> */}
           </Card>
         </div>

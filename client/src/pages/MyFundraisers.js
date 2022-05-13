@@ -26,25 +26,30 @@ const Myfundraisers = () => {
   return (
     <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
       <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
-      <Grid.Row style={{display: 'block'}}>
-       
+      <Grid.Row style={{ display: 'block' }}>
         <Button
           onClick={() => {
             setOpenModal(true);
           }}
-          floated='right'
+          floated="right"
         >
           Create a fundraiser
         </Button>
       </Grid.Row>
 
-      
-
-      <Grid.Row>
-        {data.length > 0 ? data.map(dataItem => (<CardItem data={dataItem} />)) : <p>You havent published any data yet</p>}
+      <div
+        attached="bottom"
+        style={{ padding: '2rem', border: '1px red solid' }}
+        className="cardgrid"
+      >
+        {data.length > 0 ? (
+          data.map((dataItem) => <CardItem data={dataItem} />)
+        ) : (
+          <p>You havent published any data yet</p>
+        )}
 
         {/* // } */}
-      </Grid.Row>
+      </div>
     </div>
   );
 };

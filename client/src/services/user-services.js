@@ -7,6 +7,7 @@ import {
 import { auth } from './firebase';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { confighelper } from './helpers-services';
 
 export const creatEmailAccount = async (payload) => {
   console.log('response', payload.email, payload.password);
@@ -39,7 +40,7 @@ export const creatEmailAccount = async (payload) => {
 // export const login (email, password) => {
 
 //   }
- 
+
 export const googleLogin = async () => {
   const googleAuthProvider = new GoogleAuthProvider();
   try {
@@ -124,5 +125,71 @@ export const postCategories = async (payload) => {
   }
 };
 
+export const createNotification = async (payload) => {
+  const { token, userId, name } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  payload = { ...payload, senderName: name, senderId: userId };
+
+  console.log('payload', payload);
+  const { data } = await axios.post(`/users/notification`, payload, config);
+
+  console.log();
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const fetchUserDetails = async (id) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.get(`/users/${id}`, config);
+
+  console.log();
+  if (data) {
+    return data;
+  }
+};
+
+export const notificationRespond = async (payload) => {
+  const { token, _id } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.post(`/users/account`, { ...payload, _id }, config);
+
+  console.log();
+  if (data) {
+    console.log('that was updated!', data);
+    return data;
+  }
+};
+
+export const getAccountDetails = async () => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  console.log('tok', token);
+
+  const { data } = await axios.get(`/users/account`, config);
+
+  console.log();
+  if (data) {
+    // console.log('that was updated!');
+    return data;
+  }
+};
+
+// ax
 // axios.post('/users/login', )
 // return

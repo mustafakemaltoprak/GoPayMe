@@ -1,15 +1,33 @@
 import React, { useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { Menu, Container, Button, Icon, Label, Header, Dropdown, Image, Search } from 'semantic-ui-react';
+import { NavLink, Link, useHistory } from 'react-router-dom';
+import {
+  Menu,
+  Container,
+  Button,
+  Icon,
+  Label,
+  Header,
+  Dropdown,
+  Image,
+  Search,
+  Popup,
+  Segment,
+} from 'semantic-ui-react';
 
 import { useSelector } from 'react-redux';
 import SearchComponent from './SearchComponent';
 
 const Navbar = () => {
-  const user = useSelector((state) => state.user);
+  const { loginSuccess } = useSelector((state) => state.user);
+  const history = useHistory()
   useEffect(() => {
-    document.title = `Welcome ${user.loginSuccess?.name}`;
-  }, []);
+    document.title = `Welcome ${loginSuccess.name ? loginSuccess.name : 'Cool User'}`;
+    
+  }, [loginSuccess]);
+
+ 
+
+  console.log('loginSuccess', loginSuccess);
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
@@ -29,29 +47,70 @@ const Navbar = () => {
             // results={results}
             // value={value}
          /> */}
-         <SearchComponent />
-            
-          
+          <SearchComponent />
         </Menu.Item>
 
         <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
           <Icon name="mail" /> Messages
           <Label color="red">22</Label>
         </Menu.Item>
-        <Menu.Item as="a">
+
+        <Popup
+          trigger={
+            <Menu.Item as="a">
+              <Icon name="alarm" /> Notifications
+              {loginSuccess.notifications.length > 0 && (
+                <Label color="teal">
+                  {loginSuccess.notifications.length}
+                </Label>
+              )}
+            </Menu.Item>
+          }
+          flowing
+          disabled={loginSuccess.notifications.length < 1}
+          hoverable
+        >
+          {loginSuccess.notifications.map((item) => (
+            <Segment vertical>
+              <p>Follow request from {item.senderName}</p>
+              <Label as={NavLink} to="/account" onClick={() => history.push('/account')}>
+                View
+              </Label>
+            </Segment>
+          ))}
+          {/* <Grid.Row>
+            <Header as="h4">Basic Plan</Header>
+
+            <Button>Choose</Button>
+          </Grid.Row>
+          <Grid.Row textAlign="center">
+            <Header as="h4">Business Plan</Header>
+
+            <Button>Choose</Button>
+          </Grid.Row>
+          <Grid.Row textAlign="center">
+            <Header as="h4">Premium Plan</Header>
+
+            <Button>Choose</Button>
+          </Grid.Row> */}
+        </Popup>
+
+        {/* <Menu.Item as="a">
           <Icon name="users" /> Notifications
-          <Label color="teal">22</Label>
-        </Menu.Item>
+          <Label color="teal">
+            {loginSuccess.notifications.length > 0 && loginSuccess.notifications.length}
+          </Label>
+        </Menu.Item> */}
         <Menu.Item>
           <Image
             avatar
             spaced="right"
             src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
           />
-          <Dropdown pointing="top left" text={'User'}>
+          <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to="/createEvent" text="Create Event" icon="plus" />
-              <Dropdown.Item as={Link} to={`/profile/:id`} text="My profile" icon="user" />
+              <Dropdown.Item as={Link} to={`/account`} text="My profile" icon="user" />
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>

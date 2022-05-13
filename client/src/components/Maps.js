@@ -1,12 +1,18 @@
 import React, { useRef, useState } from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid, Progress, Segment } from 'semantic-ui-react';
 import MapContainerDiv from './MapContainer';
+import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Tooltip, useMap, Popup } from 'react-leaflet';
 // import { MapContainer, TileLayer } from 'react-leaflet';
 
 const Maps = ({ data }) => {
   data = data.filter((item) => !!item.location);
   console.log('ddddddd', data);
+
+  const dataCoords = data.map((place)=> place.location.coordinates)
+
+   console.log('ddegegegd', dataCoords);
+
 
   //  const onClickShowMarker = (params) => {
   //    const map = mapRef.current;
@@ -78,25 +84,25 @@ const Maps = ({ data }) => {
                   <Segment
                     color={colors[Math.floor(Math.random() * colors.length)]}
                     style={{ cursor: 'pointer' }}
-                    className='map-card'
+                    className="map-card"
                     // onClick={() => onClickShowMarker(dataItem.location.coordinates)}
-                    onClick={() =>  handleClick(index, dataItem.location.coordinates)
-                    }
+                    onClick={() => handleClick(index, dataItem.location.coordinates)}
                   >
                     {dataItem.title}
                   </Segment>
                 ))}
           </div>
         </Grid.Column>
-        <Grid.Column width={11} >
+        <Grid.Column width={11}>
           {/* <MapContainerDiv
             data={data.filter((item) => !!item.location)}
             markerRef={markerRef}
             mapRef={mapRef}
           /> */}
           <MapContainer
+            bounds={L.latLngBounds(dataCoords)}
             center={center}
-            zoom={zoom}
+            // zoom={zoom}
             // scrollWheelZoom={true}
             // whenCreated={(map) => {
             //   mapRef.current = map;
@@ -115,11 +121,32 @@ const Maps = ({ data }) => {
                 }}
                 key={place.id}
                 position={place.location.coordinates}
-                // eventHandlers={{ click: () => showPreview(place) }}
+                // eventHandlers={{ click: () => showPreview
               >
-                {/* show place's title on hover the marker */}
-                {/* <Tooltip>{place.title}</Tooltip> */}
-                <Popup> {place.title} </Popup>
+                
+                <Popup>
+                  {' '}
+                  <Segment
+                    // color={colors[Math.floor(Math.random() * colors.length)]}
+                    style={{ cursor: 'pointer' }}
+                    className="map-card"
+                    vertical
+                   
+                  >
+                    <p>{place.title}</p>
+                    <Progress
+                      color="purple"
+                      percent={
+                        place.currentAmount ? (place.currentAmount / place.targetAmount) * 100 : 0
+                      }
+                      progress
+                      style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
+                      // content={`$${data.currentAmount} Raised`}
+                    >
+                      <p style={{ color: 'gray' }}>{`$${place.currentAmount} Raised`}</p>
+                    </Progress>
+                  </Segment>{' '}
+                </Popup>
               </Marker>
             ))}
             {/* <Marker position={[51.505, -0.09]}>
