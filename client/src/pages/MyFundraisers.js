@@ -39,7 +39,7 @@ const Myfundraisers = () => {
 
       <div
         attached="bottom"
-        style={{ padding: '2rem', border: '1px red solid' }}
+        style={{ padding: '2rem',marginTop: '3rem', border: '1px red solid' }}
         className="cardgrid"
       >
         {data.length > 0 ? (

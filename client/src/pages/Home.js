@@ -136,32 +136,30 @@ const Home = () => {
 
       {currentPage['Explore'] && (
         <>
-          <div
-            attached="bottom"
-            style={{ padding: '2rem', border: '1px red solid' }}
-            className="cardgrid"
-          >
-            {!toggle && (
-              <>
-                {data.length > 0 &&
-                  data.map((dataItem) => (
-                    <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-                  ))}
-                {count >= limit ? (
-                  <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                    load more
-                  </Label>
-                ) : (
-                  <p style={{ textAlign: 'center' }}>No more fundraisers</p>
-                )}
-              </>
+          <div attached="bottom" style={{ padding: '2rem', border: '1px red solid' }}>
+            <div className="cardgrid">
+              {!toggle && (
+                <>
+                  {data.length > 0 &&
+                    data.map((dataItem) => (
+                      <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                    ))}
+                </>
+              )}
+            </div>
+            {count >= limit ? (
+              <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                load more
+              </Label>
+            ) : (
+              <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
             )}
           </div>
           {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
         </>
       )}
 
-      {currentPage['Following'] && (<Following/>)}
+      {currentPage['Following'] && <Following />}
     </>
   );
 };

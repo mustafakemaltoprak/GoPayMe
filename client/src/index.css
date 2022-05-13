@@ -94,7 +94,7 @@ body,
 .fundraiserDonation {
   height: 400px;
   width: 350px;
-  border-width: 5px;
+  border-width: 1px;
   border-style: solid;
   border-color: black;
   margin-left: 40px;

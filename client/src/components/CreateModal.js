@@ -77,6 +77,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       ...formObj,
       image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 3)] : formObj.image[0],
       writer: loginSuccess.userId,
+      writerId: loginSuccess._id,
       token: loginSuccess.token,
       targetAmount: Number(formObj.targetAmount),
       deadlineDate: new Date(formObj.deadlineDate),
@@ -89,6 +90,8 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       
       dispatch(createFundraiserAction(data));
       toast.success('Fundraiser created')
+       setloading(false);
+      setOpen(false);
     }
 
 
@@ -238,6 +241,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                   // setOpen(false)
                 }}
                 primary
+                loading={loading}
               >
                 Submit <Icon name="chevron right" />
               </Button>

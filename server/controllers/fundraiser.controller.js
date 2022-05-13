@@ -87,7 +87,7 @@ function deleteFundraiser(req, res) {
 }
 
 function findSpecificFundraiser(req, res) {
-  Fundraiser.findById(req.params.id)
+  Fundraiser.findById(req.params.id).populate('writerId')
     .then((fundraiser) => res.json(fundraiser))
     .catch((err) => res.status(400).json('Error' + err));
 }

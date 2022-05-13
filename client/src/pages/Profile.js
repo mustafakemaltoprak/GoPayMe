@@ -38,7 +38,7 @@ function Profile() {
           </Card.Content>
           <Card.Content extra>
             <a>
-              <Icon name="user" />
+              <Icon name="create calendar event" />
               {detailsData.following?.length > 0
                 ? detailsData.following?.length
                 : '0 '}

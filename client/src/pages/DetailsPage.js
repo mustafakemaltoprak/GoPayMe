@@ -5,7 +5,7 @@ import PaymentForm from '../components/PaymentForm';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ClapButton from 'react-clap-button';
-import { Progress } from 'semantic-ui-react';
+import { Image, Label, Progress } from 'semantic-ui-react';
 import moment from 'moment';
 let gapi = window.gapi;
 let DISCOVERY_DOCS = [
@@ -176,11 +176,18 @@ const DetailsPage = () => {
     <>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
       <div className="container">
-        <div
+        {/* <div
           className="fundraiserImage"
           style={{ backgroundImage: fundraiserBackgroundImage }}
-        >
+        ></div> */}
+        <div>
+          <Image src={fundraiser.image} style={{ height: '20rem' }} />
+          <p>{fundraiser.description}</p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <ClapButton
+            className="fundraiserImage"
             onCountChange={async () => {
               await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
                 method: 'PUT',
@@ -197,14 +204,13 @@ const DetailsPage = () => {
             countTotal={likes - 1}
             isClicked={false}
           />
+          <Label>calendar event</Label>
         </div>
         <div className="fundraiserDonation">
           <div className="donationContainer">
             <div>
               {fundraiser.currentAmount}$<br></br>
-              <p className="fundraiserDonationDescription">
-                of {fundraiser.targetAmount}$ raised
-              </p>
+              <p className="fundraiserDonationDescription">of {fundraiser.targetAmount}$ raised</p>
             </div>
             <div>
               {fundraiser.backers}
@@ -212,10 +218,7 @@ const DetailsPage = () => {
               <p className="fundraiserDonationDescription">total backers</p>
             </div>
             <div>
-              {Math.floor(
-                (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) /
-                  86400000
-              )}
+              {Math.floor((Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000)}
               <br></br>
               <p className="fundraiserDonationDescription">days left</p>
             </div>
@@ -281,12 +284,9 @@ const DetailsPage = () => {
           )}
         </div>
       </div>
-      <div className="fundraiserDescription">{fundraiser.description}</div>
 
       <div class="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
-        <h3 className="ui dividing header">
-          Comments - Writer: {fundraiser.writer}
-        </h3>
+        <h3 className="ui dividing header">Comments</h3>
         {fundraiserComments.length > 0 &&
           fundraiserComments.map(({ name, textfield, date }) => {
             return (
@@ -319,29 +319,24 @@ const DetailsPage = () => {
             class="ui blue labeled submit icon button"
             style={{ marginBottom: 100 }}
             onClick={async () => {
-              await fetch(
-                `http://localhost:5200/fundraiser/comment/add/${id}`,
-                {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    comments: [
-                      ...fundraiserComments,
-                      {
-                        name: getName.name,
-                        textfield: commentTextArea.current.value,
-                        date: momentToday,
-                      },
-                    ],
-                  }),
-                }
-              ).then((response) => response.json());
+              await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  comments: [
+                    ...fundraiserComments,
+                    {
+                      name: getName.name,
+                      textfield: commentTextArea.current.value,
+                      date: momentToday,
+                    },
+                  ],
+                }),
+              }).then((response) => response.json());
               commentTextArea.current.value = '';
               fetch(`http://localhost:5200/fundraiser/comment/get/${id}`)
                 .then((response) => response.json())
-                .then((actualResponse) =>
-                  setFundraiserComments(actualResponse)
-                );
+                .then((actualResponse) => setFundraiserComments(actualResponse));
             }}
           >
             <i class="icon edit"></i> Add Reply

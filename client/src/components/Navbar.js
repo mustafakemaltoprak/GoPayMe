@@ -31,12 +31,12 @@ const Navbar = () => {
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={NavLink} exact to="/home" header>
-          <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
+        <Menu.Item as={Link} exact to="/home" header style={{ border: 'none' }}>
+          <img src="/logo192.png" alt="logo" style={{ marginRight: 15, border: 'none' }} />
           GoPayME
           <Icon name="money" />
         </Menu.Item>
-        <Menu.Item header>
+        <Menu.Item header style={{ border: 'none' }}>
           {/* <Search
             // loading={loading}
             placeholder="Search..."
@@ -49,10 +49,10 @@ const Navbar = () => {
          /> */}
           <SearchComponent />
         </Menu.Item>
-
-        <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
+home
+        <Menu.Item as="a" style={{ marginLeft: 'auto', border: 'none' }}>
           <Icon name="mail" /> Messages
-          <Label color="red">22</Label>
+          {/* <Label color="red"></Label> */}
         </Menu.Item>
 
         <Popup
@@ -60,9 +60,7 @@ const Navbar = () => {
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
               {loginSuccess.notifications.length > 0 && (
-                <Label color="teal">
-                  {loginSuccess.notifications.length}
-                </Label>
+                <Label color="teal">{loginSuccess.notifications.length}</Label>
               )}
             </Menu.Item>
           }
