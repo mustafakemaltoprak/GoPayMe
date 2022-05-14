@@ -68,6 +68,7 @@ console.log('IDDDD', detailsData)
       console.log('inner', allMessages);
       setAllMessages(response);
       setNewMessage(response);
+        setMessage('');
       return;
     }
  
@@ -219,7 +220,7 @@ console.log('IDDDD', detailsData)
             border: '2px solid red',
             display: 'flex',
             // alignItems: 'flex-start',
-            // justifyContent: 'flex-end',
+            justifyContent: 'flex-end',
             flexDirection: 'column',
             padding: '1rem',
             overflow: 'hidden',

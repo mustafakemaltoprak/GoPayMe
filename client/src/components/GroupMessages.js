@@ -1,12 +1,52 @@
 import React from 'react';
-import { Grid, Button, Input, Image } from 'semantic-ui-react';
+import { useEffect } from 'react';
+import { Grid, Button, Input, Image,Segment } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
+import { fetchAllConversations, fetchMessages } from '../services/messages';
 import Message from './Message';
+import { useState } from 'react';
 
 const GroupMessages = () => {
+  const { loginSuccess } = useSelector((state) => state.user);
+  const [contactNames, setContactNames] = useState([]);
+   const [allCurrentMessages, setAllCurrentMessages] = useState({});
+  useEffect(() => {
+    fetchAllConversations().then((response) =>
+      setContactNames(
+        response.map(
+          (convo) => {
+          const name =  convo.members.find((member) => member._id !== loginSuccess._id).name
+           const id =  convo.members.find((member) => member._id !== loginSuccess._id)._id
+
+           return {name , id}
+          }
+        )
+      ),
+    );
+  }, []);
+
+  const handleFetch = async(id) => {
+    console.log('idddd', IDBDatabase)
+    const msg = await fetchMessages(id).then((response) => {
+      console.log('fresh data', response);
+      setAllCurrentMessages(response);
+    }); 
+    console.log('the msgs', msg)
+
+  }
+
+  console.log('group page', contactNames);
   return (
     <Grid columns={2} divided>
       <Grid.Row>
-        <Grid.Column width={5} style={{ border: '1px solid red' }}></Grid.Column>
+        <Grid.Column width={5} style={{ border: '1px solid red' }}>
+          {contactNames.length > 0 &&
+            contactNames.map((contact) => (
+              <Segment style={{ cursor: 'pointer' }} onClick={() => handleFetch(contact.id)}>
+                {contact.name}
+              </Segment>
+            ))}
+        </Grid.Column>
         <Grid.Column width={11}>
           <div
             className="userContentContainer"
@@ -35,7 +75,7 @@ const GroupMessages = () => {
                 border: '2px solid red',
                 display: 'flex',
                 // alignItems: 'flex-start',
-                // justifyContent: 'flex-end',
+                justifyContent: 'flex-end',
                 flexDirection: 'column',
                 padding: '1rem',
                 overflow: 'hidden',
@@ -46,7 +86,37 @@ const GroupMessages = () => {
                   overflow: 'auto',
                 }}
               >
-                
+                {allCurrentMessages?.chats?.messages?.length > 0 &&
+                  allCurrentMessages?.chats?.messages.map((msg) => (
+                    // <div style={{ border: '2px green solid' }}>
+                    <div
+                      // ref={scrollRef}
+                      style={{
+                        display: 'block',
+
+                        // flexDirection: 'column',
+                        // padding: '.1rem',
+                        // marginBottom: '.5rem',
+                        // background: 'gainsboro',
+                        // color: 'black',
+                        // border: '5px solid purple',
+                        // float: 'right',
+                        // marginRight: 'auto',
+                      }}
+                    >
+                      <Message
+                        msg={msg.msg}
+                        senderObj={
+                          allCurrentMessages.members.find((member) => member._id === msg.sender)
+                            ? allCurrentMessages.members.find((member) => member._id === msg.sender)
+                            : allCurrentMessages.members.find((member) => member._id !== msg.sender)
+                        }
+                        msgTime={msg.date}
+                        // style={true && 'flex-start'}
+                        style={msg.sender === loginSuccess._id ? 'flex-end' : 'flex-start'}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
             <form

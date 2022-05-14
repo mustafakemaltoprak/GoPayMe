@@ -64,6 +64,6 @@ router.put('/account', authMiddleware, updateAvatarPicture);
 //mesages 
 router.post('/messages/create',authMiddleware, createMessage);
 router.get('/messages/:id/:uid', authMiddleware, fetchMessages);
-router.get('/messages', authMiddleware, fetchAllConversations);
+router.get('/messages/:id', authMiddleware, fetchAllConversations);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const createMessage = async (req, res) => {
   try {
     console.log('Avatar Updating', req.body);
 
-    const convoExists = await Conversations.findOne({ members: { $in: req.body.members } });
+    const convoExists = await Conversations.findOne({ members: { $all: req.body.members } });
 
     console.log('covoexists', convoExists);
 
@@ -15,7 +15,7 @@ const createMessage = async (req, res) => {
 
       if (convoCreated) {
         const convo = await Conversations.findOne({
-          members: { $in: req.body.members },
+          members: { $all: req.body.members },
         }).populate('members');
 
         res.status(201).send(convo);
@@ -48,7 +48,7 @@ const createMessage = async (req, res) => {
     console.log('Updating', req.body);
     const convoUpdated = await Conversations.findOneAndUpdate(
       {
-        members: { $in: req.body.members },
+        members: { $all: req.body.members },
       },
       { $push: { 'chats.messages': req.body.chats.messages } },
 
@@ -75,7 +75,22 @@ console.log('convo found', convoFound);
     res.status(500).send({ error: error.message });
   }
 };
+
+const fetchAllConversations = async (req, res) => {
+  try {
+    // console.log('Avatar Updating', req.body, req.user);
+    console.log('fetching messages', req.user.userId);
+    const convoFound = await Conversations.find({
+      members: { $in: [req.params.id] },
+    }).populate('members');
+    console.log('convo found', convoFound);
+    convoFound ? res.status(200).send(convoFound) : res.status(200).send({});
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
 module.exports = {
   createMessage,
   fetchMessages,
+  fetchAllConversations,
 };

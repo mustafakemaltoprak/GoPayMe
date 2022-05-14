@@ -23,12 +23,12 @@ export const fetchMessages = async (receiverId) => {
 
 
 
-export const fetchAllConversations = async (receiverId) => {
+export const fetchAllConversations = async () => {
   const { token, _id } = JSON.parse(localStorage.getItem('userInfo'));
   const config = confighelper(token);
   // delete formObj['token'];
-  console.log('forrrrrr', _id, receiverId);
-  const { data } = await axios.get(`/users/messages`, config);
+  // console.log('forrrrrr', _id, receiverId);
+  const { data } = await axios.get(`/users/messages/${_id}`, config);
   // console.log('testing result', data);
   return data;
 };
