@@ -60,12 +60,6 @@ const MyProfile = () => {
   };
   console.log('avatar pick', image);
 
-  const handleClickCategories = (arg) => {
-    setCategories((prev) => {
-      return { ...prev, [arg]: !categories[arg] };
-    });
-  };
-
   const handleClick = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
     setCategories((prev) => {
@@ -85,6 +79,7 @@ const MyProfile = () => {
 
     try {
       await postCategories({ categories: categoriesArr, userId: loginSuccess.userId });
+      setSelectedCategories(categoriesArr);
     } catch (e) {
       console.error(e);
     }
@@ -93,7 +88,7 @@ const MyProfile = () => {
   useEffect(() => {
     console.log('checking userId', loginSuccess.userId);
     fetchUserDetails(loginSuccess.userId).then((response) => {
-      // console.log('check avatar response', response);
+      console.log('check avatar response', response);
       setImage(response.image);
       setSelectedCategories(response.categories);
     });
@@ -172,19 +167,18 @@ const MyProfile = () => {
                       <span className="date">Joined in 2015</span>
                     </Card.Meta>
                     <Card.Description>
-                      Matthew is a musician living in Nashville.
+                      Matthew is a musician living in Nashville
+                      <Icon name="edit" style={{'margin-left': '3px'}} />
                     </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
-                    <a>
-                      <Icon name="user" />
-                      Your Categories List:
-                      <ul>
-                        {selectedCategories.map(item => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </a>
+                    <Icon name="user" />
+                    Your Categories List:
+                    <ul style={{'text-align': 'center', 'list-style-type': 'none', 'text-transform': 'capitalize'}}>
+                      {selectedCategories.map(item => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
                   </Card.Content>
                 </Card>
                 <div>
@@ -212,14 +206,12 @@ const MyProfile = () => {
                 <div
                   className="avatarSelection"
                   style={{
-                    border: 'yellow 2px solid',
                     display: 'flex',
                     'flex-direction': 'column',
                   }}
                 >
-                  <div
-                    className="rowImages"
-                    style={{ border: 'blue 1px solid', display: 'flex' }}
+                  <div className="rowImages"
+                    style={{ display: 'flex' }}
                   >
                     <img
                       src={avatar1}
@@ -229,6 +221,8 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                     <img
@@ -239,6 +233,8 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                     <img
@@ -249,12 +245,13 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                   </div>
-                  <div
-                    className="rowImages"
-                    style={{ border: 'blue 1px solid', display: 'flex' }}
+                  <div className="rowImages"
+                    style={{ display: 'flex' }}
                   >
                     <img
                       src={avatar4}
@@ -264,6 +261,8 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                     <img
@@ -274,6 +273,8 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                     <img
@@ -284,19 +285,16 @@ const MyProfile = () => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        'margin-left': '50px',
+                        'margin-top': '20px',
                       }}
                     />
                   </div>
                 </div>
-                <div className="descriptionContainer">
-                  <h4>User Description</h4>
-                  <span>
-                    May the fourth is Stars Wars Day
-                  </span>
-                </div>
-                <div className="categoriesSelection" style={{'margin-top': '25px'}}>
-                  <Grid columns={3} divided style={{ width: '30rem' }}>
-                    <h4>Select your categories</h4>
+
+                <div className="categoriesSelection" style={{'margin-top': '25px', border: 'red 1px solid',}}>
+                  <h4>Select your categories</h4>
+                  <Grid columns={3} divided style={{ width: '30rem', 'justify': 'flex-end', margin: 'auto'}}>
                     <Grid.Row>
                       <Grid.Column>
                         <Label

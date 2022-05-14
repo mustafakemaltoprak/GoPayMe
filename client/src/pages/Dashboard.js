@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
-import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import {
   Chart,
   ChartLegend,
@@ -11,6 +12,8 @@ import {
   ChartSeriesLabels,
 } from '@progress/kendo-react-charts';
 import 'hammerjs';
+
+import axios from 'axios';
 
 function Dashboard() {
   const { fundraisers } = useSelector((state) => state.fundraiser);
@@ -25,6 +28,37 @@ function Dashboard() {
   const pieData = data.map((el) => {
     return { kind: el.name, share: el.currentAmount };
   });
+
+  //IMPLEMENTING PIE CHART
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  const dataPieChart = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# Target Amount',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+
 
   const labelContent = (e) => e.category;
 
@@ -202,8 +236,7 @@ function Dashboard() {
             border: 'blue 1px solid',
           }}
         >
-          <div
-            className="contentLeftDetails"
+          <div className="contentLeftDetails"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
             <Grid.Row>
@@ -216,11 +249,11 @@ function Dashboard() {
               {/* // } */}
             </Grid.Row>
           </div>
-          <div
-            className="contentRightCharts"
+          <div className="contentRightCharts"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
-            <Chart>
+            <h4>Testing charts</h4>
+            {/* <Chart>
               <ChartSeries>
                 <ChartSeriesItem
                   type="donut"
@@ -236,7 +269,8 @@ function Dashboard() {
                 </ChartSeriesItem>
               </ChartSeries>
               <ChartLegend visible={false} />
-            </Chart>
+            </Chart> */}
+            <Pie data={dataPieChart} />
           </div>
         </div>
       </div>
