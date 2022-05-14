@@ -49,7 +49,7 @@ const Navbar = () => {
          /> */}
           <SearchComponent />
         </Menu.Item>
-home
+
         <Menu.Item as="a" style={{ marginLeft: 'auto', border: 'none' }}>
           <Icon name="mail" /> Messages
           {/* <Label color="red"></Label> */}

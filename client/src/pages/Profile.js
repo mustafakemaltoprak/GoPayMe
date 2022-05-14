@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Card, Icon, Image, Button, Popup, TextArea, List, Input } from 'semantic-ui-react';
@@ -9,14 +9,16 @@ import { createNotification, fetchUserDetails } from '../services/user-services'
 // import UserDetails from '../components/UserDetails';
 function Profile() {
   const location = useLocation();
+  const scrollRef = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const [textValue, setTextValue] = useState('');
-  const [allMessages, setAllMessages] = useState([]);
+  const [allMessages, setAllMessages] = useState({});
   const [requestSent, setRequestSent] = useState(false);
 
   const [detailsData, setDetailsData] = useState({});
   const [message, setMessage] = useState('');
   const [newMessage, setNewMessage] = useState('');
+  const [justMessages, setJustMessages] = useState([]);
 
   const url = location.pathname.split('/').slice(-1)[0];
 
@@ -24,11 +26,22 @@ function Profile() {
     fetchUserDetails(url).then((response) => setDetailsData(response));
   }, [url]);
 
+console.log('IDDDD', detailsData)
   useEffect(() => {
-    if (detailsData) fetchMessages(detailsData._id).then((response) => setAllMessages(response[0]));
-  }, [detailsData, message]);
+    if (detailsData)
+      fetchMessages(detailsData._id).then((response) => {
+        console.log('fresh data', response);
+        setAllMessages(response);
+      }); 
+  }, [detailsData]);
 
-  console.log('messages were fetched', allMessages, 'detailsId', detailsData._id);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [newMessage]);
+
+  console.log('messages were fetched', allMessages);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +62,21 @@ function Profile() {
     console.log('payload', payload);
     const response = await createMessage(payload);
     console.log('the response', response);
-    if (response) {
+
+    if (response && Object.keys(allMessages).length === 0) {
+      //if first message
+      console.log('inner', allMessages);
+      setAllMessages(response);
+      setNewMessage(response);
+      return;
+    }
+ 
+    if (response ) {
+            console.log('outer', allMessages);
+      //if first message
       const newMsg = response.chats.messages.pop();
-      console.log('mnee messs', newMsg);
+      console.log('mnee messs', allMessages );
+      setNewMessage(newMsg);
       // console.log('all', allMessages, 'fefefe',allMessages.messages);
       setAllMessages((previousMessages) => {
         return {
@@ -61,15 +86,15 @@ function Profile() {
           },
         };
       });
-
-      // {
-      //   ...previousMessages,
-      //   chats: { messages: [...previousMessages.chats.messages, newMsg] },
-      // });
-      // setAllMessages((previous) => {
-      //   return { ...previous, chats: { messages: [...previous.messages.chats, newMsg] } };
-      // });
     }
+
+    // {
+    //   ...previousMessages,
+    //   chats: { messages: [...previousMessages.chats.messages, newMsg] },
+    // });
+    // setAllMessages((previous) => {
+    //   return { ...previous, chats: { messages: [...previous.messages.chats, newMsg] } };
+    // });
 
     // [...previous[0].chats.messages]
     //   members: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
@@ -84,6 +109,7 @@ function Profile() {
     //     },
     //   ],
     // },
+    setMessage('')
   };
 
   console.log('detailsData', allMessages);
@@ -192,21 +218,48 @@ function Profile() {
             height: '85%',
             border: '2px solid red',
             display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
+            // alignItems: 'flex-start',
+            // justifyContent: 'flex-end',
             flexDirection: 'column',
             padding: '1rem',
             overflow: 'hidden',
           }}
         >
           <div
-          style={{
-            overflow: 'auto',
-          }}
+            style={{
+              overflow: 'auto',
+            }}
           >
             {allMessages?.chats?.messages?.length > 0 &&
               allMessages?.chats?.messages.map((msg) => (
-                <Message msg={msg.msg} senderName={msg.sender} msgTime={msg.date} />
+                // <div style={{ border: '2px green solid' }}>
+                <div
+                  ref={scrollRef}
+                  style={{
+                    display: 'block',
+
+                    // flexDirection: 'column',
+                    // padding: '.1rem',
+                    // marginBottom: '.5rem',
+                    // background: 'gainsboro',
+                    // color: 'black',
+                    // border: '5px solid purple',
+                    // float: 'right',
+                    // marginRight: 'auto',
+                  }}
+                >
+                  <Message
+                    msg={msg.msg}
+                    senderObj={
+                      allMessages.members.find((member) => member._id === msg.sender)
+                        ? allMessages.members.find((member) => member._id === msg.sender)
+                        : allMessages.members.find((member) => member._id !== msg.sender)
+                    }
+                    msgTime={msg.date}
+                    // style={true && 'flex-start'}
+                    style={msg.sender === loginSuccess._id ? 'flex-end' : 'flex-start'}
+                  />
+                </div>
               ))}
           </div>
         </div>
