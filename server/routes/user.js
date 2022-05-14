@@ -1,5 +1,9 @@
 const router = require('express').Router();
-const { createMessage, fetchMessages } = require('../controllers/conversations.controller');
+const {
+  createMessage,
+  fetchMessages,
+  fetchAllConversations,
+} = require('../controllers/conversations.controller');
 const {
   registerUser,
   loginUser,
@@ -60,5 +64,6 @@ router.put('/account', authMiddleware, updateAvatarPicture);
 //mesages 
 router.post('/messages/create',authMiddleware, createMessage);
 router.get('/messages/:id/:uid', authMiddleware, fetchMessages);
+router.get('/messages', authMiddleware, fetchAllConversations);
 
 module.exports = router;

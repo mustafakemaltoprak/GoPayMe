@@ -147,13 +147,20 @@ const Home = () => {
                 </>
               )}
             </div>
-            {count >= limit ? (
-              <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                load more
-              </Label>
-            ) : (
-              <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
-            )}
+            {
+              !toggle && (
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px green solid' }}>
+                  {' '}
+                  {count >= limit ? (
+                    <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                      load more
+                    </Label>
+                  ) : (
+                    <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
+                  )}
+                </div>
+              )
+            }
           </div>
           {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
         </>

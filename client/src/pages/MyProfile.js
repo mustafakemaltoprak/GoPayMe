@@ -18,6 +18,7 @@ import {
 } from '../services/user-services';
 import { updateUserDetails } from '../redux/actions/userActions';
 import Categories from './Categories';
+import GroupMessages from '../components/GroupMessages';
 
 const MyProfile = () => {
   const { loginSuccess } = useSelector((state) => state.user);
@@ -333,6 +334,8 @@ const MyProfile = () => {
           {/* </div> */}
         </>
       )}
+
+      {currentPage['Messages'] && (<GroupMessages/>)}
     </>
   );
 };

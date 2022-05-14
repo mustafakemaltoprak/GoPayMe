@@ -20,3 +20,15 @@ export const fetchMessages = async (receiverId) => {
   // console.log('testing result', data);
   return data;
 };
+
+
+
+export const fetchAllConversations = async (receiverId) => {
+  const { token, _id } = JSON.parse(localStorage.getItem('userInfo'));
+  const config = confighelper(token);
+  // delete formObj['token'];
+  console.log('forrrrrr', _id, receiverId);
+  const { data } = await axios.get(`/users/messages`, config);
+  // console.log('testing result', data);
+  return data;
+};
