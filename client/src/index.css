@@ -277,3 +277,11 @@ button:active {
 .ui.label {
   background: #e9f877 !important;
 }
+
+
+
+.contactName:hover {
+  background: gainsboro !important;
+  transform: scale(1.03);
+  transition: all 0.5ms linear;
+}

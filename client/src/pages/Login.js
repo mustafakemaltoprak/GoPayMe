@@ -88,6 +88,7 @@ const Login = () => {
             content="Login with Google?"
             onClick={googleLogin}
             style={{ marginTop: '1.2rem' }}
+            icon='google'
           />
           <Button
             fluid

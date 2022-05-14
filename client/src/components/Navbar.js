@@ -14,11 +14,13 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import SearchComponent from './SearchComponent';
+import { logoutUser } from '../redux/actions/userActions';
 
 const Navbar = () => {
   const { loginSuccess } = useSelector((state) => state.user);
+   const dispatch = useDispatch();
   const history = useHistory()
   useEffect(() => {
     document.title = `Welcome ${loginSuccess.name ? loginSuccess.name : 'Cool User'}`;
@@ -29,14 +31,14 @@ const Navbar = () => {
 
   console.log('loginSuccess', loginSuccess);
   return (
-    <Menu fixed="top" style={{ zIndex: 10000 }}>
+    <Menu fixed="top" style={{ zIndex: 10000 }} borderless>
       <Container>
         <Menu.Item as={Link} exact to="/home" header style={{ border: 'none' }}>
-          <img src="/logo192.png" alt="logo" style={{ marginRight: 15, border: 'none' }} />
+          <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
           GoPayME
           <Icon name="money" />
         </Menu.Item>
-        <Menu.Item header style={{ border: 'none' }}>
+        <Menu.Item header>
           {/* <Search
             // loading={loading}
             placeholder="Search..."
@@ -50,7 +52,7 @@ const Navbar = () => {
           <SearchComponent />
         </Menu.Item>
 
-        <Menu.Item as="a" style={{ marginLeft: 'auto', border: 'none' }}>
+        <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
           <Icon name="mail" /> Messages
           {/* <Label color="red"></Label> */}
         </Menu.Item>
@@ -107,8 +109,17 @@ const Navbar = () => {
           />
           <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="/createEvent" text="Create Event" icon="plus" />
-              <Dropdown.Item as={Link} to={`/account`} text="My profile" icon="user" />
+              <Dropdown.Item as={Link} to={`/account`} text="Account" icon="user" />
+              <Dropdown.Item
+                as={Link}
+                to={`/account`}
+                text="Logout"
+                icon="user"
+                onClick={() => {
+                  dispatch(logoutUser());
+                  history.push('/login');
+                }}
+              />
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
