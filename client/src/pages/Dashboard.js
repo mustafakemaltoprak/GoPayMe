@@ -25,6 +25,12 @@ function Dashboard() {
   const [views, setViews] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
+  console.log('checking projectsCreated', projectsCreated);
+  console.log('checking totalRaised', totalRaised);
+  console.log('checking donators', donators);
+  console.log('checking views', views);
+  console.log('checking data', data);
+
   const pieData = data.map((el) => {
     return { kind: el.name, share: el.currentAmount };
   });
@@ -33,17 +39,19 @@ function Dashboard() {
   ChartJS.register(ArcElement, Tooltip, Legend);
   const dataPieChart = {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    // labels: [donators],
     datasets: [
       {
         label: '# Target Amount',
-        data: [12, 19, 3, 5, 2, 3],
+        // data: [totalRaised],
+        data: [12, 55, 34, 120, 720],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -61,18 +69,6 @@ function Dashboard() {
 
 
   const labelContent = (e) => e.category;
-
-  // const pieData = {
-  //   labels: ['New Users', 'deleted users', 'Active users'],
-  //   datasets: [
-  //     {
-  //       data: [99, 166, 24],
-  //       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-  //       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-  //       borderWidth: 1,
-  //     },
-  //   ],
-  // };
 
   const reactDonutChartBackgroundColor = [
     '#00E396',
@@ -123,20 +119,17 @@ function Dashboard() {
 
   return (
     // <Container></Container>
-    <div
-      className="profileContainer"
+    <div className="profileContainer"
       style={{ border: 'red 2px solid', padding: '1rem' }}
     >
-      <div
-        className="summaryHeaderContainer"
+      <div className="summaryHeaderContainer"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           width: '100%',
         }}
       >
-        <div
-          className="summaryCard"
+        <div className="summaryCard"
           style={{
             flex: '1',
             padding: '10px',
@@ -216,8 +209,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div
-        className="projectContentContainer"
+      <div className="projectContentContainer"
         style={{
           border: 'black 1px solid',
           padding: '1rem',
@@ -236,7 +228,7 @@ function Dashboard() {
             border: 'blue 1px solid',
           }}
         >
-          <div className="contentLeftDetails"
+          {/* <div className="contentLeftDetails"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
             <Grid.Row>
@@ -245,32 +237,22 @@ function Dashboard() {
               ) : (
                 <p>You havent published any data yet</p>
               )}
-
-              {/* // } */}
             </Grid.Row>
-          </div>
+          </div> */}
           <div className="contentRightCharts"
-            style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
+            style={{ flex: '1',
+            border: 'orange 1px solid',
+          margin: '5px 5px',
+            // height: '100vh',
+            }}
           >
-            <h4>Testing charts</h4>
-            {/* <Chart>
-              <ChartSeries>
-                <ChartSeriesItem
-                  type="donut"
-                  data={pieData}
-                  categoryField="kind"
-                  field="share"
-                >
-                  <ChartSeriesLabels
-                    color="#fff"
-                    background="none"
-                    content={labelContent}
-                  />
-                </ChartSeriesItem>
-              </ChartSeries>
-              <ChartLegend visible={false} />
-            </Chart> */}
-            <Pie data={dataPieChart} />
+            <Pie data={dataPieChart}
+              style={{
+              height: '50%',
+              width: '100%',
+              border: 'black 1px solid',
+              responsive: true,
+              maintainAspectRatio: false}}/>
           </div>
         </div>
       </div>

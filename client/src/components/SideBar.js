@@ -11,7 +11,7 @@ const SideBar = () => {
   const location = useLocation();
   // var uid = firebase.auth().currentUser.uid;
   // console.log('userrrid', uid)
-  
+
   return (
     <Sticky>
       {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
@@ -56,7 +56,7 @@ const SideBar = () => {
         </Grid>
 
         <Menu.Item as={Link} to="/fundraisers" active={location.pathname === '/fundraisers'}>
-          <Icon name="home" />
+          <Icon name="tags" />
           My fundraisers
         </Menu.Item>
 
@@ -68,7 +68,7 @@ const SideBar = () => {
           //   history.push('/fundraisers');
           // }}
         >
-          <Icon name="home" />
+          <Icon name="dashboard" />
           Dashboard
         </Menu.Item>
 
@@ -81,14 +81,14 @@ const SideBar = () => {
             history.push('/login');
           }}
         >
-          <Icon name="home" />
+          <Icon name="sign-out" />
           Logout
         </Menu.Item>
       </Menu>
 
       <Grid.Column style={{ marginTop: '3rem', textAlign: 'center' }}>
         <h3>Online Friends</h3>
-        {loginSuccess.following?.length > 0 ? 
+        {loginSuccess.following?.length > 0 ?
           (loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)) : (<p>Not following anyone yet</p>) }
       </Grid.Column>
       {/* <Sidebar.Pusher>
