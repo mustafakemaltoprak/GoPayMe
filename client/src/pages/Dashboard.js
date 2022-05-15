@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
 import {
   Chart,
@@ -36,9 +36,9 @@ function Dashboard() {
   });
 
   //IMPLEMENTING PIE CHART
-  ChartJS.register(ArcElement, Tooltip, Legend);
+  ChartJS.register(ArcElement, Tooltip, Legend, Title);
   const dataPieChart = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4', 'Project 5'],
     // labels: [donators],
     datasets: [
       {
@@ -66,6 +66,34 @@ function Dashboard() {
     ],
   };
 
+  const dataPieChart2 = {
+    labels: ['Donator 1', 'Donator 2', 'Donator 3', 'Donator 4'],
+    // labels: [donators],
+    datasets: [
+      {
+        label: '# Target Amount',
+        // data: [totalRaised],
+        data: [300, 80, 1000, 600],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
 
   const labelContent = (e) => e.category;
@@ -240,19 +268,55 @@ function Dashboard() {
             </Grid.Row>
           </div> */}
           <div className="contentRightCharts"
-            style={{ flex: '1',
-            border: 'orange 1px solid',
-          margin: '5px 5px',
+            style={{
+            position: "relative",
+            'margin-left': "0px",
+            width: "30%",
+            // border: 'orange 1px solid',
+            // margin: '5px 5px',
+            // width: '40%',
             // height: '100vh',
             }}
           >
-            <Pie data={dataPieChart}
+            <Grid columns={2} divided style={{ width: '60rem', 'justify': 'flex-end', margin: 'auto'}}>
+              <Grid.Row>
+                <Grid.Column>
+                  <Pie data={dataPieChart}
+                    options={{
+                      // responsive: true,
+                      title: {
+                        display: true,
+                        text: 'Custom Chart Title',
+                      },
+                    }}
+                    style={{
+                    // height: '50%',
+                    // width: '100%',
+                    border: 'black 1px solid',
+                    // responsive: true,
+                    maintainAspectRatio: false}}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Doughnut data={dataPieChart2}
+                    style={{
+                    // height: '50%',
+                    // width: '100%',
+                    border: 'black 1px solid',
+                    // responsive: true,
+                    maintainAspectRatio: false}}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            {/* <Pie data={dataPieChart}
               style={{
-              height: '50%',
-              width: '100%',
+              // height: '50%',
+              // width: '100%',
               border: 'black 1px solid',
-              responsive: true,
-              maintainAspectRatio: false}}/>
+              // responsive: true,
+              maintainAspectRatio: false}}
+            /> */}
           </div>
         </div>
       </div>
