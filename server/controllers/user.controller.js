@@ -115,7 +115,7 @@ const getUserDetails = async (req, res) => {
   try {
     console.log('registering', req.body, req.user);
 
-    const userFound = await User.findOne({ userId: req.params.id });
+    const userFound = await User.findOne({ userId: req.params.id }).populate('following')
 
     console.log('user', userFound);
     res.status(201).send(userFound);
@@ -152,7 +152,7 @@ const respondToNotification = async (req, res) => {
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
     }
 
-    if (req.body.response === 'reject') {
+    if (req.body.response === 'reject' || req.body.response === 'dismiss') {
       const myProfileUpdated = await User.findOneAndUpdate(
         { userId: req.user.userId },
         {
@@ -163,7 +163,7 @@ const respondToNotification = async (req, res) => {
             },
           },
         },
-        { new: true }
+        { new: true },
       );
 
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);

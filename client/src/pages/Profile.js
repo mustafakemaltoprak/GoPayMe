@@ -174,6 +174,7 @@ console.log('IDDDD', detailsData)
                       typeof: 'follow',
                       targetUser: url,
                       note: textValue,
+                      date: new Date().toISOString()
                     };
                     const data = await createNotification(payload);
                     setRequestSent(true);

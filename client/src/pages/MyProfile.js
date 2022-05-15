@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Grid,
@@ -19,8 +19,10 @@ import {
 import { updateUserDetails } from '../redux/actions/userActions';
 import Categories from './Categories';
 import GroupMessages from '../components/GroupMessages';
+import { io, Socket } from 'socket.io-client';
 
 const MyProfile = () => {
+   const socket = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState({
@@ -28,6 +30,8 @@ const MyProfile = () => {
     Requests: false,
     Messages: false,
   });
+
+
 
   const [currentNote, setCurrentNote] = useState('');
 
@@ -52,14 +56,29 @@ const MyProfile = () => {
       console.error(e);
     }
   };
-  console.log('avatar pick', image);
+  // console.log('avatar pick', image);
   useEffect(() => {
     console.log('checking userId', loginSuccess.userId);
     fetchUserDetails(loginSuccess.userId).then((response) => {
-      console.log('check avatar response', response);
+      // console.log('check avatar response', response);
       setImage(response.image);
     });
   }, []);
+
+     useEffect(() => {
+       socket.current = io('ws://localhost:8900');
+     })
+
+    useEffect(() => {
+
+      if(socket.current){
+        console.log('yesssss')
+        socket.current.emit('addUser', loginSuccess.userId);
+        socket.current.on('getUsers', (users) => {
+          console.log('socket users', users);
+        });
+      }
+    }, [loginSuccess]);
 
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
@@ -281,7 +300,7 @@ const MyProfile = () => {
               <Grid.Column width={4}>
                 {/* {loginSuccess.notifications.length < 0 ? <} */}
                 {loginSuccess.notifications.length > 0 &&
-                  loginSuccess.notifications.map((item) => (
+                  loginSuccess.notifications.filter(item => item.typeof === 'follow').map((item) => (
                     <Segment vertical>
                       <div>
                         Follow Request from <strong>{item.senderName}</strong>

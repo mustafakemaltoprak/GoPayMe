@@ -12,7 +12,8 @@ import { useEffect } from 'react';
 
 const Login = () => {
   const history = useHistory();
-  const [socket, setSocket] = useState(null);
+  const socket = useRef(io('ws://localhost:8900'));
+  // const [socket, setSocket] = useState(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const defaultValues = {
@@ -21,19 +22,24 @@ const Login = () => {
   };
 
   // const socket = useRef()
-  useEffect(() => {
-    //  if(!socket.current ){
-    //     socket.current =io('http://localhost:5200')
-    //  }
+  // useEffect(() => {
+  //   //  if(!socket.current ){
+  //   //     socket.current =io('http://localhost:5200')
+  //   //  }
 
-    setSocket(io('ws://localhost:8900'));
+  //   setSocket(io('ws://localhost:8900'));
 
-    if (socket) {
-      console.log('fired');
-      socket.current.emit('hello', { name: 'john doe', age: 22 });
-       socket.on('welcome', { name: 'john doe', age: 22 });
-    }
-  }, []);
+  //   if (socket) {
+  //     console.log('fired');
+  //     socket.current.emit('hello', { name: 'john doe', age: 22 });
+  //   }
+  // }, []);
+
+console.log('id',socket);
+
+  // useEffect(() => {
+  //   socket.current.emit('addUser', login);
+  // });
 
   // useEffect(()=> {
   //   // if(!socket.current )

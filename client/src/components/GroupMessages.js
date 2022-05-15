@@ -87,8 +87,16 @@ const GroupMessages = () => {
               style={{
                 overflowY: 'scroll',
                 height: '100%',
+                textAlign: 'center',
               }}
             >
+              <p
+                style={{
+                  paddingTop: '1rem',
+                }}
+              >
+                <strong>Latest messages</strong>
+              </p>
               {contactNames.map((contact) => (
                 <Segment
                   style={{ cursor: 'pointer' }}
@@ -118,7 +126,10 @@ const GroupMessages = () => {
                 <Image
                   circular
                   style={{ height: '2rem', marginRight: '1.5rem', padding: 0, display: 'flex' }}
-                  src={allCurrentMessages.members?.find((member) => member._id !== loginSuccess._id).image}
+                  src={
+                    allCurrentMessages.members?.find((member) => member._id !== loginSuccess._id)
+                      .image
+                  }
                 />
                 Send{' '}
                 {allCurrentMessages.members?.find((member) => member._id !== loginSuccess._id).name}{' '}

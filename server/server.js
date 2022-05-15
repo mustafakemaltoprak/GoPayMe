@@ -26,17 +26,40 @@ app.use(cors());
 
 // Routes
 const io = require('socket.io')(8900, {
-  cors : {
-    origin: 'http://localhost:3000'
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+});
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  const userExists = users.find((user) => user.userId === userId);
+
+  if (!userExists) {
+    users.push({ userId, socketId });
   }
-})
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId === socketId);
+};
+
+///************SOCKET */
 io.on('connection', (socket) => {
-  console.log('someone connected')
-  socket.on('hello', (data) => {
-    console.log({'name': data.name, 'age': data.age});
+  console.log('someone connected');
+
+  socket.on('addUser', (userId) => {
+    console.log('fired');
+    addUser(userId, socket.id);
+    io.emit('getUsers', users);
   });
 
-  io.emit('welcome', 'from the other isde')
+  socket.on('disconnect', () => {
+    console.log('a user disconnected');
+    removeUser(socket.id);
+    io.emit('getUsers', users);
+  });
 });
 
 const fundraiserRouter = require('./routes/fundraiser');

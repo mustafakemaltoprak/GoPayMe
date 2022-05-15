@@ -2,6 +2,7 @@ import React from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { createNotification } from '../services/user-services';
 
 const CARD_OPTIONS = {
   iconStyle: 'solid',
@@ -55,38 +56,42 @@ export default function PaymentForm(props) {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              currentAmount:
-                convertPropsToNumber + convertCurrentAmountToNumber,
+              currentAmount: convertPropsToNumber + convertCurrentAmountToNumber,
               backers: convertBackersToNumber + 1,
             }),
           }).then((response) => response.json());
+
           await fetch(`http://localhost:5200/fundraiser/find/${props.id}`)
             .then((response) => response.json())
             .then((actualResponse) => props.setFundraiser(actualResponse));
-          await fetch(
-            `http://localhost:5200/fundraiser/prevDonation/add/${props.id}`,
-            {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                prevDonations: [
-                  ...props.previousDonations,
-                  {
-                    sender: props.name,
-                    amount: props.price,
-                    date: today,
-                  },
-                ],
-              }),
-            }
-          ).then((response) => response.json());
-          await fetch(
-            `http://localhost:5200/fundraiser/prevDonation/get/${props.id}`
-          )
+          await fetch(`http://localhost:5200/fundraiser/prevDonation/add/${props.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prevDonations: [
+                ...props.previousDonations,
+                {
+                  sender: props.name,
+                  amount: props.price,
+                  date: today,
+                },
+              ],
+            }),
+          }).then((response) => response.json());
+
+          // /*********Donation */
+          const payload = {
+            typeof: 'donation',
+            targetUser: props.writer,
+            amount: props.price,
+          };
+          const data = await createNotification(payload);
+
+          // /*********Donation */
+
+          await fetch(`http://localhost:5200/fundraiser/prevDonation/get/${props.id}`)
             .then((response) => response.json())
-            .then((actualResponse) =>
-              props.setPreviousDonations(actualResponse)
-            );
+            .then((actualResponse) => props.setPreviousDonations(actualResponse));
         } else {
           toast.error('Your payment failed');
         }

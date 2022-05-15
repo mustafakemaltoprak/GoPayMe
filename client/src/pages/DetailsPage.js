@@ -206,8 +206,7 @@ const DetailsPage = () => {
           />
           <Label>calendar event</Label>
         </div>
-        
-        
+
         <div className="fundraiserDonation">
           <div className="donationContainer">
             <div>
@@ -267,10 +266,11 @@ const DetailsPage = () => {
                 setPreviousDonations={setPreviousDonations}
                 previousDonations={previousDonations}
                 name={getName.name}
+                writer={fundraiser.writer}
               />
             </Elements>
           )}
-          <h3 className="previous-donations">Previous Donations:</h3>
+          <h3 className="previous-donations">Latest Donations:</h3>
           {previousDonations.length > 0 ? (
             previousDonations.map(({ sender, amount, date }) => {
               return (

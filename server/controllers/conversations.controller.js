@@ -69,7 +69,7 @@ const fetchMessages = async (req, res) => {
     const convoFound = await Conversations.findOne({
       members: { $all: [req.params.id, req.params.uid] },
     }).populate('members');
-console.log('convo found', convoFound);
+// console.log('convo found', convoFound);
     convoFound ? res.status(200).send(convoFound) : res.status(200).send({});
   } catch (error) {
     res.status(500).send({ error: error.message });
@@ -82,8 +82,8 @@ const fetchAllConversations = async (req, res) => {
     console.log('fetching messages', req.user.userId);
     const convoFound = await Conversations.find({
       members: { $in: [req.params.id] },
-    }).sort({'chats.messages.date': 1}).populate('members')
-    console.log('convo found', convoFound);
+    }).sort({'chats.messages.date': -1}).populate('members')
+    // console.log('convo found', convoFound);
     convoFound ? res.status(200).send(convoFound) : res.status(200).send({});
   } catch (error) {
     res.status(500).send({ error: error.message });

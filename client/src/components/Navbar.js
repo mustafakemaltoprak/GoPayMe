@@ -14,28 +14,26 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import SearchComponent from './SearchComponent';
 import { logoutUser, updateUserDetails } from '../redux/actions/userActions';
-import { fetchUserDetails } from '../services/user-services';
+import { fetchUserDetails, notificationRespond } from '../services/user-services';
+import moment from 'moment';
 
 const Navbar = () => {
   const { loginSuccess } = useSelector((state) => state.user);
-   const dispatch = useDispatch();
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
   useEffect(() => {
     document.title = `Welcome ${loginSuccess.name ? loginSuccess.name : 'Cool User'}`;
-    
+
     fetchUserDetails(loginSuccess.userId).then((response) => {
-      dispatch(updateUserDetails(response))
+      dispatch(updateUserDetails(response));
     });
 
     // const response = await notificationRespond(payload);
     //                         if (response) dispatch(updateUserDetails(response));
-    
   }, []);
-
- 
 
   console.log('loginSuccess', loginSuccess);
   return (
@@ -80,10 +78,46 @@ const Navbar = () => {
         >
           {loginSuccess.notifications.map((item) => (
             <Segment vertical>
-              <p>Follow request from {item.senderName}</p>
-              <Label as={NavLink} to="/account" onClick={() => history.push('/account')}>
+              {item.typeof === 'follow' && <p>Follow request from {item.senderName}</p>}
+              {item.typeof === 'donation' && (
+                <p>
+                  {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
+                </p>
+              )}
+              <Label
+                // as={NavLink}
+                // to='/'
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  history.push(
+                    `${
+                      item.typeof === 'follow'
+                        ? '/account'
+                        : item.typeof === 'donation'
+                        ? '/dashboard'
+                        : 'message'
+                    }`,
+                  )
+                }
+              >
                 View
               </Label>
+              {item.typeof === 'donation' && (
+                <Label
+                  style={{ cursor: 'pointer' }}
+                  onClick={async () => {
+                    const payload = {
+                      senderId: item.senderId,
+                      response: 'dismiss',
+                      typeof: 'donation',
+                    };
+                    const response = await notificationRespond(payload);
+                    if (response) dispatch(updateUserDetails(response));
+                  }}
+                >
+                  dismiss
+                </Label>
+              )}
             </Segment>
           ))}
           {/* <Grid.Row>
