@@ -58,58 +58,50 @@ const Navbar = () => {
           <SearchComponent />
         </Menu.Item>
 
-        <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
-          <Icon name="mail" /> Messages
-          {/* <Label color="red"></Label> */}
-        </Menu.Item>
-
+        {/* <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
+          <Icon name="mail" /> Messages */}
+        {/* <Label color="red"></Label> */}
+        {/* </Menu.Item> */}
         <Popup
           trigger={
             <Menu.Item as="a">
-              <Icon name="alarm" /> Notifications
-              {loginSuccess.notifications.length > 0 && (
-                <Label color="teal">{loginSuccess.notifications.length}</Label>
-              )}
+              <Icon name="alarm" /> Messages
+              {loginSuccess.notifications.filter((item) => item.typeof === 'message').length >
+                0 && <Label color="red">{loginSuccess.notifications.length}</Label>}
             </Menu.Item>
           }
           flowing
-          disabled={loginSuccess.notifications.length < 1}
+          disabled={
+            loginSuccess.notifications.filter((item) => item.typeof === 'message').length < 1
+          }
           hoverable
         >
-          {loginSuccess.notifications.map((item) => (
-            <Segment vertical>
-              {item.typeof === 'follow' && <p>Follow request from {item.senderName}</p>}
-              {item.typeof === 'donation' && (
-                <p>
-                  {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
-                </p>
-              )}
-              <Label
-                // as={NavLink}
-                // to='/'
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  history.push(
-                    `${
-                      item.typeof === 'follow'
-                        ? '/account'
-                        : item.typeof === 'donation'
-                        ? '/dashboard'
-                        : 'message'
-                    }`,
-                  )
-                }
-              >
-                View
-              </Label>
-              {item.typeof === 'donation' && (
+          {loginSuccess.notifications
+            .filter((item) => item.typeof === 'message')
+            .map((item) => (
+              <Segment vertical>
+                <p>New Message from {item.senderName}</p>
+                <p>Sent {moment(item.date).fromNow()}</p>
+                {item.typeof === 'donation' && (
+                  <p>
+                    {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
+                  </p>
+                )}
+                <Label
+                  // as={NavLink}
+                  // to='/'
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => history.push('/account', { messageProp: true })}
+                >
+                  view
+                </Label>
                 <Label
                   style={{ cursor: 'pointer' }}
                   onClick={async () => {
                     const payload = {
                       senderId: item.senderId,
                       response: 'dismiss',
-                      typeof: 'donation',
+                      typeof: 'message',
                     };
                     const response = await notificationRespond(payload);
                     if (response) dispatch(updateUserDetails(response));
@@ -117,24 +109,63 @@ const Navbar = () => {
                 >
                   dismiss
                 </Label>
+              </Segment>
+            ))}
+        </Popup>
+
+        <Popup
+          trigger={
+            <Menu.Item as="a">
+              <Icon name="alarm" /> Notifications
+              {loginSuccess.notifications.filter((item) => item.typeof !== 'message') > 0 && (
+                <Label color="teal">{loginSuccess.notifications.length}</Label>
               )}
-            </Segment>
-          ))}
-          {/* <Grid.Row>
-            <Header as="h4">Basic Plan</Header>
-
-            <Button>Choose</Button>
-          </Grid.Row>
-          <Grid.Row textAlign="center">
-            <Header as="h4">Business Plan</Header>
-
-            <Button>Choose</Button>
-          </Grid.Row>
-          <Grid.Row textAlign="center">
-            <Header as="h4">Premium Plan</Header>
-
-            <Button>Choose</Button>
-          </Grid.Row> */}
+            </Menu.Item>
+          }
+          flowing
+          disabled={loginSuccess.notifications.filter((item) => item.typeof !== 'message') < 1}
+          hoverable
+        >
+          {loginSuccess.notifications
+            .filter((item) => item.typeof !== 'message')
+            .map((item) => (
+              <Segment vertical>
+                {item.typeof === 'follow' && <p>Follow request from {item.senderName}</p>}
+                {item.typeof === 'donation' && (
+                  <p>
+                    {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
+                  </p>
+                )}
+                <Label
+                  // as={NavLink}
+                  // to='/'
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    history.push(`${item.typeof === 'follow' ? '/account' : '/dashboard'}`, {
+                      requestsProp: item.typeof === 'follow',
+                    })
+                  }
+                >
+                  View
+                </Label>
+                {item.typeof === 'donation' && (
+                  <Label
+                    style={{ cursor: 'pointer' }}
+                    onClick={async () => {
+                      const payload = {
+                        senderId: item.senderId,
+                        response: 'dismiss',
+                        typeof: 'donation',
+                      };
+                      const response = await notificationRespond(payload);
+                      if (response) dispatch(updateUserDetails(response));
+                    }}
+                  >
+                    dismiss
+                  </Label>
+                )}
+              </Segment>
+            ))}
         </Popup>
 
         {/* <Menu.Item as="a">

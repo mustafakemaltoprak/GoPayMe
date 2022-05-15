@@ -66,7 +66,8 @@ console.log('IDDDD', detailsData)
        targetUser: detailsData.userId,
        note: '',
      };
-    const data = await createNotification(notificationPayload);
+    
+     await createNotification(notificationPayload);
 
     console.log('the response', response);
 

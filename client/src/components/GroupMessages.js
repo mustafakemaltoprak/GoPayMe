@@ -77,7 +77,7 @@ const GroupMessages = () => {
     setMessage('')
   };
 
-  console.log('group page', contactNames);
+  console.log('all current', allCurrentMessages );
   return (
     <Grid columns={2} divided>
       <Grid.Row>
@@ -136,56 +136,79 @@ const GroupMessages = () => {
                 a message
               </h3>
             </div>
-            <div
-              style={{
-                height: '85%',
-                border: '2px solid red',
-                display: 'flex',
-                // alignItems: 'flex-start',
-                justifyContent: 'flex-end',
-                flexDirection: 'column',
-                padding: '1rem',
-                overflow: 'hidden',
-              }}
-            >
+            {Object.keys(allCurrentMessages).length < 1 ? (
               <div
                 style={{
-                  overflow: 'auto',
+                  height: '85%',
+                  border: '2px solid red',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  color: 'gainsboro',
+                  padding: '1rem',
+                  overflow: 'hidden',
                 }}
               >
-                {allCurrentMessages?.chats?.messages?.length > 0 &&
-                  allCurrentMessages?.chats?.messages.map((msg) => (
-                    // <div style={{ border: '2px green solid' }}>
-                    <div
-                      ref={scrollRef}
-                      style={{
-                        display: 'block',
 
-                        // flexDirection: 'column',
-                        // padding: '.1rem',
-                        // marginBottom: '.5rem',
-                        // background: 'gainsboro',
-                        // color: 'black',
-                        // border: '5px solid purple',
-                        // float: 'right',
-                        // marginRight: 'auto',
-                      }}
-                    >
-                      <Message
-                        msg={msg.msg}
-                        senderObj={
-                          allCurrentMessages.members.find((member) => member._id === msg.sender)
-                            ? allCurrentMessages.members.find((member) => member._id === msg.sender)
-                            : allCurrentMessages.members.find((member) => member._id !== msg.sender)
-                        }
-                        msgTime={msg.date}
-                        // style={true && 'flex-start'}
-                        style={msg.sender === loginSuccess._id ? 'flex-end' : 'flex-start'}
-                      />
-                    </div>
-                  ))}
+              <h2>Click a contact to continue a conversation</h2>
               </div>
-            </div>
+            ) : (
+              <div
+                style={{
+                  height: '85%',
+                  border: '2px solid red',
+                  display: 'flex',
+                  // alignItems: 'flex-start',
+                  justifyContent: 'flex-end',
+                  flexDirection: 'column',
+                  padding: '1rem',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    overflow: 'auto',
+                  }}
+                >
+                  {allCurrentMessages?.chats?.messages?.length > 0 &&
+                    allCurrentMessages?.chats?.messages.map((msg) => (
+                      // <div style={{ border: '2px green solid' }}>
+                      <div
+                        ref={scrollRef}
+                        style={{
+                          display: 'block',
+
+                          // flexDirection: 'column',
+                          // padding: '.1rem',
+                          // marginBottom: '.5rem',
+                          // background: 'gainsboro',
+                          // color: 'black',
+                          // border: '5px solid purple',
+                          // float: 'right',
+                          // marginRight: 'auto',
+                        }}
+                      >
+                        <Message
+                          msg={msg.msg}
+                          senderObj={
+                            allCurrentMessages.members.find((member) => member._id === msg.sender)
+                              ? allCurrentMessages.members.find(
+                                  (member) => member._id === msg.sender,
+                                )
+                              : allCurrentMessages.members.find(
+                                  (member) => member._id !== msg.sender,
+                                )
+                          }
+                          msgTime={msg.date}
+                          // style={true && 'flex-start'}
+                          style={msg.sender === loginSuccess._id ? 'flex-end' : 'flex-start'}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
             <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
               <Input
                 value={message}

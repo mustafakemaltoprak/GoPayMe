@@ -21,14 +21,15 @@ import Categories from './Categories';
 import GroupMessages from '../components/GroupMessages';
 import { io, Socket } from 'socket.io-client';
 
-const MyProfile = () => {
+const MyProfile = ({history}) => {
+  const { messageProp, requestsProp } = history.location.state;
    const socket = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState({
-    Account: true,
-    Requests: false,
-    Messages: false,
+    Account: messageProp || requestsProp ? false: true,
+    Requests: requestsProp ?? false,
+    Messages: messageProp ?? false,
   });
 
 
