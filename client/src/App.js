@@ -14,12 +14,9 @@ import MyFundraisers from './pages/MyFundraisers';
 import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
 // import 'leaflet/dist/leaflet.css';
-// import backgroundImg from "./utils/bcgPage1.png";
-// import backgroundImg from "./utils/bcgPage8.jpg";
 
 function App() {
   return (
-    // <div style={{ backgroundImage: `url(${backgroundImg})`}}>
     <div>
       <Router>
         <Switch>

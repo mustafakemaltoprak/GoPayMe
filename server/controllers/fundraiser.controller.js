@@ -181,7 +181,7 @@ const searchbyTerm = async (req, res) => {
 function addView(req, res) {
   Fundraiser.findById(req.params.id)
     .then((fundraiser) => {
-      fundraiser.views = fundraiser.views + req.body.views;
+      fundraiser.views = fundraiser.views + req.body.views.views
 
       fundraiser
         .save()
@@ -189,6 +189,12 @@ function addView(req, res) {
         .catch((err) => res.status(400).json('Error: ' + err));
     })
     .catch((err) => res.status(400).json('Error: ' + err));
+}
+
+function getViews(req, res) {
+  Fundraiser.findById(req.params.id)
+    .then((fundraiser) => res.json(fundraiser.views))
+    .catch((err) => res.status(400).json('Error' + err));
 }
 
 module.exports = {
@@ -203,6 +209,7 @@ module.exports = {
   getAllLikes,
   searchbyTerm,
   addView,
+  getViews,
   addPrevDonation,
   getPrevDonations,
 };

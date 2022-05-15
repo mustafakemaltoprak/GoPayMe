@@ -4,16 +4,10 @@ import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
-import {
-  Chart,
-  ChartLegend,
-  ChartSeries,
-  ChartSeriesItem,
-  ChartSeriesLabels,
-} from '@progress/kendo-react-charts';
+
 import 'hammerjs';
 
-import axios from 'axios';
+// import { xorBy } from 'lodash';
 
 function Dashboard() {
   const { fundraisers } = useSelector((state) => state.fundraiser);
@@ -24,6 +18,21 @@ function Dashboard() {
   const [donators, setDonators] = useState(0);
   const [views, setViews] = useState(0);
   const [loaded, setLoaded] = useState(false);
+
+  // Charts States
+  // money per project
+  const [projectNames, setProjectNames] = useState(['']); // ['Street Artists', 'GoUkraine', 'ForFood']
+  const [projectRaised, setProjectRaised] = useState([0]); // [3000, 1000, 2000]
+
+  // money per donators
+  const [donatorNames, setDonatorNames] = useState([]); // ['Mustafa', 'Daniel', 'Busayo']
+  const [donatorPaid, setDonatorPaid] = useState([]); // [150, 100, 200]
+  // views per project
+  const [projectViewsNames, setProjectViewsNames] = useState([]); // ['Street Artists', 'GoUkraine', 'ForFood']
+  const [projectViews, setProjectViews] = useState([]); // [15, 1, 200]
+
+  const [chartPickedByUser, setChartPickedByUser] = useState('');
+
 
   console.log('checking projectsCreated', projectsCreated);
   console.log('checking totalRaised', totalRaised);
@@ -68,11 +77,9 @@ function Dashboard() {
 
   const dataPieChart2 = {
     labels: ['Donator 1', 'Donator 2', 'Donator 3', 'Donator 4'],
-    // labels: [donators],
     datasets: [
       {
         label: '# Target Amount',
-        // data: [totalRaised],
         data: [300, 80, 1000, 600],
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
@@ -94,6 +101,15 @@ function Dashboard() {
       },
     ],
   };
+
+  if (!chartPickedByUser) {
+    setChartPickedByUser(dataPieChart)
+  }
+
+  const handleOnChange = (arg) => {
+    let testObj = JSON.parse(arg.target.value);
+    setChartPickedByUser(testObj);
+  }
 
 
   const labelContent = (e) => e.category;
@@ -120,35 +136,61 @@ function Dashboard() {
 
   useEffect(() => {
     if (fundraisers.length > 0) {
-      console.log('fired');
       const filteredFundraisers = fundraisers.filter(
         (item) => item.writer === loginSuccess.userId
       );
       setData(filteredFundraisers);
     }
-    console.log(data);
     setLoaded(true);
-  }, [fundraisers, loginSuccess]);
+  }, []);
 
   useEffect(() => {
-    data.forEach((el) => {
-      setTotalRaised((prev) => prev + el.currentAmount);
-      setDonators((prev) => prev + el.backers);
-      setViews((prev) => prev + el.views);
+      for (let i = 0; i < data.length; i++){
+        console.log(projectNames.length)
+      if (projectNames.length === 0) {
+        console.log("I'm in the first if")
+        setProjectNames([{name: data[i].title}])
+        console.log("after", projectNames.length)
+      } else {
+        console.log("I'm in the else")
+        setProjectNames(prevState =>[...prevState, {
+          name: data[i].title
+        },
+        ]);
+      }
+      if (projectRaised.length === 0) {
+        console.log("I'm in the first if")
+        setProjectRaised([{amount: data[i].currentAmount}])
+        console.log("after", projectRaised.length)
+      } else {
+        console.log("I'm in the else")
+        setProjectRaised(prevState =>[...prevState, {
+          amount: data[i].currentAmount
+        },
+        ]);
+      }
+      setTotalRaised((prev) => prev + data[i].currentAmount);
+      setDonators((prev) => prev + data[i].backers);
+      setViews((prev) => prev + data[i].views);
       setProjectsCreated(projectsCreated + data.length);
-      console.log('inside test');
-      console.log(data);
-    });
+    }
   }, [loaded]);
+
+  console.log("names", projectNames)
+  console.log("values", projectRaised)
+
 
   const onClick = (e) => {
     console.log(e);
   };
 
+  if(!data.length) {
+    return <div>loading...</div>
+  }
+
   return (
-    // <Container></Container>
     <div className="profileContainer"
-      style={{ border: 'red 2px solid', padding: '1rem' }}
+      style={{ border: 'red 2px solid', padding: '1rem', backgroundColor: 'white' }}
     >
       <div className="summaryHeaderContainer"
         style={{
@@ -279,14 +321,26 @@ function Dashboard() {
             }}
           >
             <Grid columns={2} divided style={{ width: '60rem', 'justify': 'flex-end', margin: 'auto'}}>
+              <select className='chartInfo' name='chartSelected' onChange={handleOnChange} >
+                {/* <option value=""> -- Chart Selection -- </option> */}
+                <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
+                <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
+                <option value={projectViewsNames}>Views by Project</option>
+              </select>
               <Grid.Row>
                 <Grid.Column>
-                  <Pie data={dataPieChart}
+                  <Pie data={chartPickedByUser}
                     options={{
-                      // responsive: true,
-                      title: {
-                        display: true,
-                        text: 'Custom Chart Title',
+                      cutout: '90%',
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          display: false,
+                        },
+                        title: {
+                          display: false,
+                          text: 'Amount Raised By Project',
+                        },
                       },
                     }}
                     style={{
@@ -309,14 +363,6 @@ function Dashboard() {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {/* <Pie data={dataPieChart}
-              style={{
-              // height: '50%',
-              // width: '100%',
-              border: 'black 1px solid',
-              // responsive: true,
-              maintainAspectRatio: false}}
-            /> */}
           </div>
         </div>
       </div>
