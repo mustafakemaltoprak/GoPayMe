@@ -61,6 +61,13 @@ console.log('IDDDD', detailsData)
 
     console.log('payload', payload);
     const response = await createMessage(payload);
+     const notificationPayload = {
+       typeof: 'message',
+       targetUser: detailsData.userId,
+       note: '',
+     };
+    const data = await createNotification(notificationPayload);
+
     console.log('the response', response);
 
     if (response && Object.keys(allMessages).length === 0) {

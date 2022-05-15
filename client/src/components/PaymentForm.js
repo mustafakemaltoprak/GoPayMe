@@ -86,7 +86,7 @@ export default function PaymentForm(props) {
             amount: props.price,
           };
           const data = await createNotification(payload);
-
+          
           // /*********Donation */
 
           await fetch(`http://localhost:5200/fundraiser/prevDonation/get/${props.id}`)
