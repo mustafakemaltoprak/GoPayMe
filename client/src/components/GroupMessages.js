@@ -118,10 +118,10 @@ const GroupMessages = () => {
                 <Image
                   circular
                   style={{ height: '2rem', marginRight: '1.5rem', padding: 0, display: 'flex' }}
-                  src={allCurrentMessages.members.find((member) => member._id !== loginSuccess._id).image}
+                  src={allCurrentMessages.members?.find((member) => member._id !== loginSuccess._id).image}
                 />
                 Send{' '}
-                {allCurrentMessages.members.find((member) => member._id !== loginSuccess._id).name}{' '}
+                {allCurrentMessages.members?.find((member) => member._id !== loginSuccess._id).name}{' '}
                 a message
               </h3>
             </div>

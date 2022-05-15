@@ -82,7 +82,7 @@ const fetchAllConversations = async (req, res) => {
     console.log('fetching messages', req.user.userId);
     const convoFound = await Conversations.find({
       members: { $in: [req.params.id] },
-    }).populate('members');
+    }).sort({'chats.messages.date': 1}).populate('members')
     console.log('convo found', convoFound);
     convoFound ? res.status(200).send(convoFound) : res.status(200).send({});
   } catch (error) {

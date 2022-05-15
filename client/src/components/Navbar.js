@@ -16,7 +16,8 @@ import {
 
 import { useSelector,useDispatch } from 'react-redux';
 import SearchComponent from './SearchComponent';
-import { logoutUser } from '../redux/actions/userActions';
+import { logoutUser, updateUserDetails } from '../redux/actions/userActions';
+import { fetchUserDetails } from '../services/user-services';
 
 const Navbar = () => {
   const { loginSuccess } = useSelector((state) => state.user);
@@ -25,7 +26,14 @@ const Navbar = () => {
   useEffect(() => {
     document.title = `Welcome ${loginSuccess.name ? loginSuccess.name : 'Cool User'}`;
     
-  }, [loginSuccess]);
+    fetchUserDetails(loginSuccess.userId).then((response) => {
+      dispatch(updateUserDetails(response))
+    });
+
+    // const response = await notificationRespond(payload);
+    //                         if (response) dispatch(updateUserDetails(response));
+    
+  }, []);
 
  
 

@@ -44,6 +44,7 @@ const loginUser = async (req, res) => {
         newUser: true,
         following: userCreated.following,
         description: userCreated.description,
+        notifications: userCreated.notifications,
         _id: userCreated._id,
         token,
       });
@@ -100,7 +101,7 @@ const createNotification = async (req, res) => {
       { $push: { notifications: req.body } }
     );
 
-    console.log('user', userFoundandUpdated);
+    console.log('was pushed into account', userFoundandUpdated);
     res.status(201).send({
       success: true,
     });

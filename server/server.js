@@ -4,12 +4,15 @@ const express = require('express');
 const cors = require('cors');
 const colors = require('colors');
 const mongoose = require('mongoose');
+
 const morgan = require('morgan');
 const connectDB = require('./models/config');
 const app = express();
+// const server = require('http').Server(app);
+// const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
 const stripe = require('stripe')(
-  'sk_test_51KxYJVLr9g73Dg8UznlQbSHxIr4jfF9Gm0YPI25DWkcTxvFpUhtvusyi0DlicbYGRTTmdGdvcvNDdVCFokjX2MNT00Nd9amqYj'
+  'sk_test_51KxYJVLr9g73Dg8UznlQbSHxIr4jfF9Gm0YPI25DWkcTxvFpUhtvusyi0DlicbYGRTTmdGdvcvNDdVCFokjX2MNT00Nd9amqYj',
 );
 
 const PORT = 5200;
@@ -22,6 +25,19 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
+const io = require('socket.io')(8900, {
+  cors : {
+    origin: 'http://localhost:3000'
+  }
+})
+io.on('connection', (socket) => {
+  console.log('someone connected')
+  socket.on('hello', (data) => {
+    console.log({'name': data.name, 'age': data.age});
+  });
+
+  io.emit('welcome', 'from the other isde')
+});
 
 const fundraiserRouter = require('./routes/fundraiser');
 const userRouter = require('./routes/user');
