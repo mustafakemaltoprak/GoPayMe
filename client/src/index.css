@@ -1,28 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: Abel, Arial, Verdana, sans-serif !important;
+  background: #80afcd !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-*,
+.ui.fixed.menu {
+  background: #80afcd !important;
+}
+
+.ui .vertical {
+  background: #80afcd !important;
+}
+
+.ui a {
+  background: #80afcd !important;
+}
+
+
+/* *,
 body,
 *::after,
 *::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box !important;
+ background: linear-gradient(45deg, #92bCa6, #A2CCB6);
+   /* background: linear-gradient(#dE685E, #EE786E); */
+     /* background: linear-gradient(#f8f8f8, #fff); */
+      /* background: linear-gradient(45deg, #92bCa6, #A2CCB6); */
+      /* linear-gradient(45deg, #7175da, #9790F2); */
+  /* background-image: linear-gradient(45deg, #7175da, #9790F2); */
+  /* background-image: linear-gradient(
+    135deg,
+    rgb(24, 107, 115) 0%,
+    rgb(33, 138, 174) 69%,
+    rgb(32, 167, 172) 89%
+  ); */
   /* justify-content: ; */
-}
+/* }  */
+/* 
+body {
+   background: #80afcd;
+} */
 
+
+/* .ui {
+     background: linear-gradient(45deg, #92bCa6, #A2CCB6)!important;
+} */
+
+/* .ui.button, .ui.placeholder .image.header:after, .ui.placeholder .line, .ui.placeholder .line:after, .ui.placeholder>:before {
+  background: red;
+} */
 /* .cool {
   margin: auto !important;
 } */
+
 
 .ui.cool.sidebar {
   /* width: 315px !important; */
