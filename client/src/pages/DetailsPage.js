@@ -5,15 +5,26 @@ import PaymentForm from '../components/PaymentForm';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ClapButton from 'react-clap-button';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
+// import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+
 import { Image, Label, Progress } from 'semantic-ui-react';
 import moment from 'moment';
-let gapi = window.gapi;
-let DISCOVERY_DOCS = [
-  'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
-];
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+// let gapi = window.gapi;
+let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const DetailsPage = () => {
+   const { t } = useTranslation();
+
+   function handleClick(lang) {
+     i18next.changeLanguage(lang);
+   }
+
   const [toggled, setToggled] = useState(false);
   const [fundraiser, setFundraiser] = useState(false);
   const [fundraiserComments, setFundraiserComments] = useState(false);
@@ -23,6 +34,19 @@ const DetailsPage = () => {
   function toggle() {
     toggled ? setToggled(false) : setToggled(true);
   }
+
+  //  const responseGoogle = (response) => {
+  //    console.log('fired', response);
+
+  //    let codee;
+  //    window.addEventListener('message', ({ data }) => {
+  //      //  console.log('the data', data);
+  //      const { authResult } = data;
+  //      console.log('the data', authResult.authResult);
+  //    });
+  //  };
+
+   
 
   const { id } = useParams();
 
@@ -69,6 +93,7 @@ const DetailsPage = () => {
   const commentTextArea = useRef();
 
   let fundraiserBackgroundImage = `url("${fundraiser.image}")`;
+  
 
   const calendarStrings = {
     lastDay: '[Yesterday at] LT',
@@ -78,10 +103,20 @@ const DetailsPage = () => {
     nextWeek: 'dddd [at] LT',
     sameElse: 'L',
   };
+  
+  //  useEffect(() => {
+  //    window.gapi.load('client:auth2', () => {
+  //      window.gapi.client.init({
+  //        clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+  //        scope: 'email',
+  //      });
+  //    });
+  //  }, []);
 
   if (!likes) {
     return <>Loading fundraiser details...</>;
   }
+  
 
   // const addCalendarEvent = () => {
   //   gapi.load('client:auth2', () => {
@@ -171,7 +206,16 @@ const DetailsPage = () => {
   //       });
   //   });
   // };
+  
 
+ 
+  const responseError = (error) => {
+    console.log('error', error);
+  };
+
+
+
+  // console.log('token', process.env.REACT_APP_GOOGLE_CLIENT_ID);
   return (
     <>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
@@ -183,6 +227,30 @@ const DetailsPage = () => {
         <div>
           <Image src={fundraiser.image} style={{ height: '20rem' }} />
           <p>{fundraiser.description}</p>
+          {/* <button onClick={() => handleClick('en')}>English</button>
+          <button onClick={() => handleClick('chi')}>Chinese</button>
+          <p>
+            <h3>{t('Thanks.1')}</h3> <h3>{t('Why.1')}</h3>
+          </p> */}
+          {/* <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            buttonText="Sign in and authorize calendar"
+            onSuccess={responseGoogle}
+            onFailure={responseError}
+            cookiePolicy={'single_host_origin'}
+            responseType="code"
+            accessType="offline"
+            scope="openid email profile https://www.googleapis.com/auth/calendar"
+          /> */}
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log('resp',credentialResponse);
+            }}
+            buttonText='google'
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          /> */}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -287,26 +355,23 @@ const DetailsPage = () => {
         </div>
       </div>
 
-      <div class="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
+      <div className="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
         <h3 className="ui dividing header">Comments</h3>
         {fundraiserComments.length > 0 &&
           fundraiserComments.map(({ name, textfield, date }) => {
             return (
               <>
-                <div class="comment">
-                  <a class="avatar">
-                    <img src="/images/avatar/small/elliot.jpg"></img>
-                  </a>
-                  <div class="content">
-                    <a class="author">{name}</a>
-                    <div class="metadata">
-                      <span class="date">
-                        <Moment calendar={calendarStrings}>{date}</Moment>
-                      </span>
-                    </div>
-                    <div class="text">
-                      <p>{textfield}</p>
-                    </div>
+                <div className="comment">
+                  <div className="content" style={{ display: 'flex' }}>
+                    <img src="/images/avatar/small/elliot.jpg" alt="" />
+                    <strong style={{ paddingLeft: '2rem' }}>{name}</strong>
+                    <div class="metadata"></div>
+                    <span style={{ color: 'gray' }}>
+                      <Moment calendar={calendarStrings}>{date}</Moment>
+                    </span>
+                  </div>
+                  <div class="text">
+                    <p>{textfield}</p>
                   </div>
                 </div>
               </>
@@ -341,7 +406,7 @@ const DetailsPage = () => {
                 .then((actualResponse) => setFundraiserComments(actualResponse));
             }}
           >
-            <i class="icon edit"></i> Add Reply
+            <i className="icon edit"></i> Add Reply
           </div>
         </form>
       </div>

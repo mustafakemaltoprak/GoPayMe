@@ -117,7 +117,7 @@ const getUserDetails = async (req, res) => {
 
     const userFound = await User.findOne({ userId: req.params.id }).populate('following')
 
-    console.log('user', userFound);
+    // console.log('user', userFound);
     res.status(201).send(userFound);
   } catch (error) {
     res.status(404).send({ error: error.message });

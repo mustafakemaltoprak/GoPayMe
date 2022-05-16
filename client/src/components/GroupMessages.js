@@ -97,11 +97,12 @@ const GroupMessages = () => {
               >
                 <strong>Latest messages</strong>
               </p>
-              {contactNames.map((contact) => (
+              {contactNames.map((contact, index) => (
                 <Segment
                   style={{ cursor: 'pointer' }}
                   className="contactName"
                   onClick={() => handleFetch(contact.id)}
+                  key={index}
                 >
                   {contact.name}
                 </Segment>
@@ -172,9 +173,10 @@ const GroupMessages = () => {
                   }}
                 >
                   {allCurrentMessages?.chats?.messages?.length > 0 &&
-                    allCurrentMessages?.chats?.messages.map((msg) => (
+                    allCurrentMessages?.chats?.messages.map((msg, index) => (
                       // <div style={{ border: '2px green solid' }}>
                       <div
+                      key={index}
                         ref={scrollRef}
                         style={{
                           display: 'block',

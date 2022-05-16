@@ -22,7 +22,12 @@ import GroupMessages from '../components/GroupMessages';
 import { io, Socket } from 'socket.io-client';
 
 const MyProfile = ({history}) => {
-  const { messageProp, requestsProp } = history.location.state;
+
+  console.log('history', history)
+  const messageProp = history.location?.state?.messageProp
+ 
+  const requestsProp = history.location?.state?.requestsProp;
+
    const socket = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -68,7 +73,7 @@ const MyProfile = ({history}) => {
 
      useEffect(() => {
        socket.current = io('ws://localhost:8900');
-     })
+     }, [])
 
     useEffect(() => {
 
@@ -153,9 +158,7 @@ const MyProfile = ({history}) => {
                     <Card.Meta>
                       <span className="date">Joined in 2015</span>
                     </Card.Meta>
-                    <Card.Description>
-                      Matthew is a musician living in Nashville.
-                    </Card.Description>
+                    <Card.Description>Matthew is a musician living in Nashville.</Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     <a>
@@ -183,7 +186,7 @@ const MyProfile = ({history}) => {
                   flex: '3',
                   display: 'flex',
                   border: 'black 1px solid',
-                  'flex-direction': 'column',
+                  flexDirection: 'column',
                 }}
               >
                 <h1>Avatar selection</h1>
@@ -192,13 +195,10 @@ const MyProfile = ({history}) => {
                   style={{
                     border: 'yellow 2px solid',
                     display: 'flex',
-                    'flex-direction': 'column',
+                    flexDirection: 'column',
                   }}
                 >
-                  <div
-                    className="rowImages"
-                    style={{ border: 'blue 1px solid', display: 'flex' }}
-                  >
+                  <div className="rowImages" style={{ border: 'blue 1px solid', display: 'flex' }}>
                     <img
                       src={avatar1}
                       alt=""
@@ -206,7 +206,7 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        'borderRadius': '50%',
                       }}
                     />
                     <img
@@ -216,7 +216,7 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        'borderRadius': '50%',
                       }}
                     />
                     <img
@@ -226,14 +226,11 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        borderRadius: '50%',
                       }}
                     />
                   </div>
-                  <div
-                    className="rowImages"
-                    style={{ border: 'blue 1px solid', display: 'flex' }}
-                  >
+                  <div className="rowImages" style={{ border: 'blue 1px solid', display: 'flex' }}>
                     <img
                       src={avatar4}
                       alt=""
@@ -241,7 +238,7 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        'borderRadius': '50%',
                       }}
                     />
                     <img
@@ -251,7 +248,7 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        'borderRadius': '50%',
                       }}
                     />
                     <img
@@ -261,7 +258,7 @@ const MyProfile = ({history}) => {
                       style={{
                         width: '130px',
                         height: '130px',
-                        'border-radius': '50%',
+                        'borderRadius': '50%',
                       }}
                     />
                   </div>
@@ -269,9 +266,8 @@ const MyProfile = ({history}) => {
                 <div className="descriptionContainer">
                   <h4>User Description</h4>
                   <span>
-                    May the fourth is Stars Wars Day (for obvious reasons) and
-                    we’re ready for the day of remembrance with these Jedi jokes
-                    and memes
+                    May the fourth is Stars Wars Day (for obvious reasons) and we’re ready for the
+                    day of remembrance with these Jedi jokes and memes
                   </span>
                 </div>
                 <div className="categoriesSelection">
@@ -301,50 +297,50 @@ const MyProfile = ({history}) => {
               <Grid.Column width={4}>
                 {/* {loginSuccess.notifications.length < 0 ? <} */}
                 {loginSuccess.notifications.length > 0 &&
-                  loginSuccess.notifications.filter(item => item.typeof === 'follow').map((item) => (
-                    <Segment vertical>
-                      <div>
-                        Follow Request from <strong>{item.senderName}</strong>
-                        <Label onClick={() => setCurrentNote(item.note)}>
-                          View Note
-                        </Label>
-                      </div>
-                      <div style={{ display: 'flex' }}>
-                        <Button
-                          circular
-                          content="accept"
-                          color="blue"
-                          onClick={async () => {
-                            const payload = {
-                              senderId: item.senderId,
-                              response: 'accept',
-                              typeof: 'follow',
-                            };
-                            const response = await notificationRespond(payload);
-                            if (response) dispatch(updateUserDetails(response));
-                          }}
-                        />
-                        <Button
-                          circular
-                          content="reject"
-                          color="red"
-                          onClick={async () => {
-                            const payload = {
-                              senderId: item.senderId,
-                              response: 'reject',
-                              typeof: 'follow',
-                            };
-                            const response = await notificationRespond(payload);
-                            if (response) dispatch(updateUserDetails(response));
-                          }}
-                        />
-                      </div>
-                    </Segment>
-                  ))}
+                  loginSuccess.notifications
+                    .filter((item) => item.typeof === 'follow')
+                    .map((item) => (
+                      <Segment vertical>
+                        <div>
+                          Follow Request from <strong>{item.senderName}</strong>
+                          <Label onClick={() => setCurrentNote(item.note)}>View Note</Label>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                          <Button
+                            circular
+                            content="accept"
+                            color="blue"
+                            onClick={async () => {
+                              const payload = {
+                                senderId: item.senderId,
+                                response: 'accept',
+                                typeof: 'follow',
+                              };
+                              const response = await notificationRespond(payload);
+                              if (response) dispatch(updateUserDetails(response));
+                            }}
+                          />
+                          <Button
+                            circular
+                            content="reject"
+                            color="red"
+                            onClick={async () => {
+                              const payload = {
+                                senderId: item.senderId,
+                                response: 'reject',
+                                typeof: 'follow',
+                              };
+                              const response = await notificationRespond(payload);
+                              if (response) dispatch(updateUserDetails(response));
+                            }}
+                          />
+                        </div>
+                      </Segment>
+                    ))}
               </Grid.Column>
               <Grid.Column width={12}>
                 {loginSuccess.notifications.length < 1 ? (
-                  <p>You have no notifications</p>
+                  <p>You have no requests</p>
                 ) : (
                   <p>{currentNote}</p>
                 )}
@@ -355,7 +351,7 @@ const MyProfile = ({history}) => {
         </>
       )}
 
-      {currentPage['Messages'] && (<GroupMessages/>)}
+      {currentPage['Messages'] && <GroupMessages />}
     </>
   );
 };

@@ -30,7 +30,7 @@ const SideBar = () => {
         icon="labeled"
         // inverted
         vertical
-        visible
+        // visible
         // width={''}
         // style={{ overflow: 'hidden' }}
         className="cool"
@@ -87,7 +87,7 @@ const SideBar = () => {
       </Menu>
 
       <Grid.Column style={{ marginTop: '3rem', textAlign: 'center' }}>
-        <h3>Online Friends</h3>
+        <h3>Your following</h3>
         {loginSuccess.following?.length > 0 ? 
           (loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)) : (<p>Not following anyone yet</p>) }
       </Grid.Column>
