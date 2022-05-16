@@ -3,6 +3,7 @@ const { db } = require('../models/user.model');
 const User = require('../models/user.model');
 
 const getAllFundraisers = async (req, res) => {
+  console.log(req.body);
   const skip = req.body.skip && parseInt(req.body.skip);
   const limit = req.body.limit && parseInt(req.body.limit);
   //   Fundraiser.find()
@@ -15,19 +16,32 @@ const getAllFundraisers = async (req, res) => {
   // console.log('user', req.body);
 
   if (req.body.following) {
-    // const foundUser = await User.findOne({ userId: req.user.userId });
-    console.log('fired');
+    // const foundUser = await User.findOne({ userId: req.user.userId });\
+    console.log('fired',req.body);
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
       },
     });
     const writers = foundWriters.map((user) => user.userId);
+
+    const options =
+      req.body.categories.length > 0
+        ? {
+            categories: {
+              $in: req.body.categories,
+            },
+          }
+        : {};
     Fundraiser.find({
       writer: {
         $in: writers,
       },
+      // categories: {
+      //   $in: req.body.categories,
+      // },
     })
+      .find(options)
 
       .skip(skip)
       .limit(limit)
@@ -47,11 +61,20 @@ const getAllFundraisers = async (req, res) => {
     // //   },
     // // });
     // const writers = foundWriters.map((user) => user.userId);
+    const options =
+      req.body.categories.length > 0
+        ? {
+            categories: {
+              $in: req.body.categories,
+            },
+          }
+        : {};
     Fundraiser.find({
       _id: {
         $in: req.body.bookmarked,
       },
     })
+      .find(options)
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -61,7 +84,15 @@ const getAllFundraisers = async (req, res) => {
     return;
   }
 
-  Fundraiser.find()
+  const options =
+    req.body.categories.length > 0
+      ? {
+          categories: {
+            $in: req.body.categories,
+          },
+        }
+      : {};
+  Fundraiser.find(options)
     .skip(skip)
     .limit(limit)
     .exec((err, docs) => {

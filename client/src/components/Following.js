@@ -38,6 +38,7 @@ const Following = ({ favorites }) => {
       limit: limit,
       following: favorites ? '' : loginSuccess.following,
       bookmarked: favorites ? loginSuccess.bookmarked : '',
+      categories: loginSuccess.categories
     };
     // if (!favorites) {
     fetchData(variables).then((response) => {

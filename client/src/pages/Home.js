@@ -21,6 +21,7 @@ import Following from '../components/Following';
 
 const Home = () => {
   const history = useHistory();
+    const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState({
@@ -55,6 +56,7 @@ const Home = () => {
     const variables = {
       skip: skip,
       limit: limit,
+      categories: loginSuccess.categories,
     };
     fetchData(variables).then((response) => {
       // console.log('ressss',response)
