@@ -25,6 +25,8 @@ function Dashboard() {
   const [projectNames, setProjectNames] = useState(['']); // ['Street Artists', 'GoUkraine', 'ForFood']
   const [projectRaised, setProjectRaised] = useState([0]); // [3000, 1000, 2000]
 
+  const [testUseState, setTestUseState] = useState([])
+
   // money per donators
   const [donatorNames, setDonatorNames] = useState([]); // ['Mustafa', 'Daniel', 'Busayo']
   const [donatorPaid, setDonatorPaid] = useState([]); // [150, 100, 200]
@@ -77,11 +79,11 @@ function Dashboard() {
   };
 
   const dataPieChart2 = {
-    labels: ['Donator 1', 'Donator 2', 'Donator 3', 'Donator 4'],
+    labels: donatorNames.flat(),
     datasets: [
       {
         label: '# Target Amount',
-        data: [300, 80, 1000, 600],
+        data: donatorPaid.flat(),
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
@@ -170,6 +172,8 @@ function Dashboard() {
     setLoaded(true);
   }, [fundraisers, loginSuccess]);
 
+  let testArray = []
+
   useEffect(() => {
     if (loaded) {
       setProjectNames(data.map((item) => item.title));
@@ -178,20 +182,19 @@ function Dashboard() {
       setProjectViewsNames(data.map((item) => item.title));
       setProjectViews(data.map((item) => item.views));
 
-
       for (let i = 0; i < data.length; i++) {
         setTotalRaised((prev) => prev + data[i].currentAmount);
         setDonators((prev) => prev + data[i].backers);
         setViews((prev) => prev + data[i].views);
         setProjectsCreated(projectsCreated + data.length);
-        setDonatorNames(data[i].prevDonations.map((item) => item.sender))
-        setDonatorPaid(data[i].prevDonations.map((item) => item.amount));
+        setDonatorNames((prevState) => [...prevState, data[i].prevDonations.map((item) => item.sender)]);
+        setDonatorPaid((prevState) => [...prevState, data[i].prevDonations.map((item) => item.amount)]);
       }
     }
   }, [loaded]);
 
-  console.log('donator names', donatorNames);
-  console.log('donator amount', donatorPaid);
+  console.log('donator names', donatorNames.flat());
+  console.log('donator amount', donatorPaid.flat());
 
   // console.log(projectNames.length);
   // if (projectNames.length === 0) {
