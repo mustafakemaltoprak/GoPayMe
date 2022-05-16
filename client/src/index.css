@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Abel');
-
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 body {
   margin: 0;
   font-family: Abel, Arial, Verdana, sans-serif !important;
-  background: #80afcd !important;
+  background: #4e567d !important;
 }
 
 code {
@@ -11,15 +11,40 @@ code {
 }
 
 .ui.fixed.menu {
-  background: #80afcd !important;
+  background: #4e567d !important;
 }
 
 .ui .vertical {
-  background: #80afcd !important;
+  background: #4e567d !important;
 }
 
 .ui a {
-  background: #80afcd !important;
+  background: #4e567d !important;
+  justify-content: s;
+}
+
+
+.comment > * {
+ padding-right: .9rem;
+}
+
+.comment-message {
+  display: grid;
+  grid-template-columns: 10% auto;
+}
+
+.details {
+  display: grid !important;
+  /* color: #4e567d; */
+  grid-template-columns: 45% 55%;
+}
+
+.details > * {
+  border: 2px solid green;
+}
+.metics {
+  display: grid;
+  grid-template-columns: 30% 35% 35%;
 }
 
 
@@ -111,7 +136,7 @@ body {
 
 .fundraiserImage {
   height: 300px;
-  width: 600px;
+  /* width: 600px; */
   border-width: 5px;
   border-style: solid;
   border-color: black;
@@ -121,7 +146,7 @@ body {
 
 .fundraiserDescription {
   height: 200px;
-  width: 500px;
+  /* width: 500px; */
   border-width: 5px;
   border-style: solid;
   border-color: black;
@@ -130,7 +155,7 @@ body {
 
 .fundraiserDonation {
   height: 400px;
-  width: 350px;
+  /* width: 350px; */
   border-width: 1px;
   border-style: solid;
   border-color: black;
@@ -141,9 +166,6 @@ body {
   font-size: x-small;
 }
 
-.container {
-  display: flex;
-}
 
 .donationContainer {
   display: flex;
@@ -152,11 +174,11 @@ body {
 }
 
 .donationMiniBox {
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 
 .donateButton {
-  width: 150px;
+  /* width: 150px; */
   margin-left: 75px;
   margin-top: 25px;
 }
@@ -164,7 +186,7 @@ body {
 .previousDonations {
   display: flex;
   margin-top: 50px;
-  margin-left: 75px;
+  /* margin-left: 75px; */
   flex-direction: column;
 }
 
@@ -309,7 +331,7 @@ button:active {
 }
 
 .ui.button {
-  background: #77d6f8 !important;
+  background: #ff6a5e!important;
 }
 
 .ui.label {
@@ -319,14 +341,16 @@ button:active {
 
 
 .contactName:hover {
+  
   background: gainsboro !important;
   transform: scale(1.03);
   transition: all 0.5ms linear;
+   
 }
 
 .countdown-timer {
     /* width: 600px; */
-    height: 100px;
+    height: 50px;
     border: 2px solid black;
 
     font-family: "Oswald";
@@ -344,4 +368,16 @@ button:active {
 
 .two-numbers {
     width: 2ch;
+}
+
+
+.container {
+    height: 50px;
+    border: 2px solid black;
+
+    font-family: "Oswald";
+    font-size: 16px;
+
+    /* display: flex;
+    justify-content: center; */
 }

@@ -11,7 +11,7 @@ const {
   getAllLikes,
   searchbyTerm,
   addView,
-  getViews,
+  // getViews,
   addPrevDonation,
   getPrevDonations,
 } = require('../controllers/fundraiser.controller');
@@ -39,7 +39,7 @@ router.route('/like/:id').put(addLike);
 
 router.route('/view/:id').put(addView);
 
-router.route('/view/get/:id').get(getViews);
+// router.route('/view/get/:id').get(getViews);
 
 router.route('/like/amount/:id').get(getAllLikes);
 

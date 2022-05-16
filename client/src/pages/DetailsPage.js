@@ -11,7 +11,19 @@ import { useSelector, useDispatch } from 'react-redux';
 // import { GoogleLogin } from 'react-google-login';
 import { GoogleLogin } from '@react-oauth/google';
 
-import { Button, Image, Label, Progress } from 'semantic-ui-react';
+import {
+  Button,
+  Grid,
+  GridColumn,
+  GridRow,
+  Icon,
+  Image,
+  Input,
+  Label,
+  Progress,
+  Segment,
+  TextArea,
+} from 'semantic-ui-react';
 import moment from 'moment';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import UserButton from '../components/UserButton';
@@ -26,9 +38,9 @@ let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 const DetailsPage = () => {
   const dispatch = useDispatch();
   const { loginSuccess } = useSelector((state) => state.user);
-  function handleClick(lang) {
-    i18next.changeLanguage(lang);
-  }
+  // function handleClick(lang) {
+  //   i18next.changeLanguage(lang);
+  // }
 
   let momentToday = new Date();
   const [toggled, setToggled] = useState(false);
@@ -74,17 +86,17 @@ const DetailsPage = () => {
 
     try {
       fetch(`http://localhost:5200/fundraiser/view/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        views: {
-          views: 1,
-        },
-      }),
-    }).then((response) => response.json());
-  } catch (e) {
-    console.error(e);
-  }
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          views: {
+            views: 1,
+          },
+        }),
+      }).then((response) => response.json());
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   let today = new Date();
@@ -125,6 +137,29 @@ const DetailsPage = () => {
   if (!likes) {
     return <>Loading fundraiser details...</>;
   }
+
+  const handleClick = async (e) => {
+    e.preventDefault()
+    await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        comments: [
+          ...fundraiserComments,
+          {
+            name: getName.name,
+            textfield: commentTextArea.current.value,
+            image: loginSuccess.image,
+            date: momentToday,
+          },
+        ],
+      }),
+    }).then((response) => response.json());
+    commentTextArea.current.value = '';
+    fetch(`http://localhost:5200/fundraiser/comment/get/${id}`)
+      .then((response) => response.json())
+      .then((actualResponse) => setFundraiserComments(actualResponse));
+  };
 
   // const addCalendarEvent = () => {
   //   gapi.load('client:auth2', () => {
@@ -222,45 +257,31 @@ const DetailsPage = () => {
   console.log('token', fundraiser);
   return (
     <>
-      <h1 className="fundraiserTitle">{fundraiser.title}</h1>
-      <div className="container">
-        {/* <div
-          className="fundraiserImage"
-          style={{ backgroundImage: fundraiserBackgroundImage }}
-        ></div> */}
+      <div className="details">
         <div>
           <Image src={fundraiser.image} style={{ height: '20rem' }} />
-          <p>{fundraiser.description}</p>
-          {/* <button onClick={() => handleClick('en')}>English</button>
-          <button onClick={() => handleClick('chi')}>Chinese</button>
-          <p>
-            <h3>{t('Thanks.1')}</h3> <h3>{t('Why.1')}</h3>
-          </p> */}
-          {/* <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            buttonText="Sign in and authorize calendar"
-            onSuccess={responseGoogle}
-            onFailure={responseError}
-            cookiePolicy={'single_host_origin'}
-            responseType="code"
-            accessType="offline"
-            scope="openid email profile https://www.googleapis.com/auth/calendar"
-          /> */}
-          {/* <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log('resp',credentialResponse);
-            }}
-            buttonText='google'
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          /> */}
-        </div>
+          <div style={{ display: 'flex' }}>
+            <h2>Description</h2>
+          </div>
+          <Label
+            // size="tiny"
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <ClapButton
-            className="fundraiserImage"
-            onCountChange={async () => {
+            onClick={async () => {
+              const response = await createBookMark({ _id: fundraiser._id });
+              if (response) {
+                setBookMarked(true);
+                dispatch(updateUserDetails(response));
+              }
+            }}
+          >
+            <Icon name="bookmark" />
+            {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
+              ? 'Bookmarked'
+              : 'Bookmark'}
+          </Label>
+          <Label
+            style={{ cursor: 'pointer' }}
+            onClick={async () => {
               await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -273,165 +294,284 @@ const DetailsPage = () => {
                 .then((actualResponse) => setLikes(actualResponse));
               console.log(likes);
             }}
-            countTotal={likes - 1}
-            isClicked={false}
-          />
-          <UserButton dataObj={fundraiser} />
-          <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
-          <Label
-            onClick={async () => {
-              const response = await createBookMark({ _id: fundraiser._id });
-              if (response) {
-                setBookMarked(true);
-                dispatch(updateUserDetails(response));
-              }
-            }}
           >
-            {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
-              ? 'Bookmarked'
-              : 'Bookmark'}
+            {' '}
+            <Icon name="handshake" /> Approve
           </Label>
-        </div>
+          <Label icon="eye"></Label>
 
-        <div className="fundraiserDonation">
-          <div className="donationContainer">
-            <div>
-              {fundraiser.currentAmount}$<br></br>
-              <p className="fundraiserDonationDescription">of {fundraiser.targetAmount}$ raised</p>
-            </div>
-            <div>
-              {fundraiser.backers}
-              <br></br>
-              <p className="fundraiserDonationDescription">total backers</p>
-            </div>
-            <div>
-              {Math.floor((Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000)}
-              <br></br>
-              <p className="fundraiserDonationDescription">days left</p>
-            </div>
+          <p>{fundraiser.description}</p>
+          <div>
+            Fundraiser created by <UserButton dataObj={fundraiser} />
           </div>
-
-          {/* <div class="ui progress">
-            <div class="bar">
-              <div class="progress"></div>
-            </div>
-          </div> */}
-
-          <Progress
-            indicating
-            color="purple"
-            percent={
-              fundraiser.currentAmount
-                ? (fundraiser.currentAmount / fundraiser.targetAmount) * 100
-                : 0
-            }
-            progress
-            style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
-            content="Raised"
-          />
-
-          <div className="inputContainer">
-            <input
-              ref={dollarDonationAmount}
-              placeholder="Enter $ for Donation"
-              type="text"
-            ></input>
-
-            <Button className="payButton" onClick={toggle}>
-              Submit Payment
+          <h2>Comments</h2>
+          <form style={{ display: 'flex' }}>
+            <TextArea ref={commentTextArea} />
+            <Button type="submit" icon="edit" onClick={(e) => handleClick(e)}>
+              Submit
             </Button>
-          </div>
-          {toggled === true && (
-            <Elements stripe={stripeTestPromise}>
-              <PaymentForm
-                price={dollarDonationAmount.current.value}
-                id={id}
-                currentAmount={fundraiser.currentAmount}
-                backers={fundraiser.backers}
-                setFundraiser={setFundraiser}
-                setPreviousDonations={setPreviousDonations}
-                previousDonations={previousDonations}
-                name={getName.name}
-                writer={fundraiser.writer}
-              />
-            </Elements>
-          )}
-          <h3 className="previous-donations">Latest Donations:</h3>
-          {previousDonations.length > 0 ? (
-            previousDonations.map(({ sender, amount, date }) => {
+          </form>
+
+          {fundraiserComments.length > 0 &&
+            fundraiserComments.map(({ name, textfield, date, image }) => {
               return (
                 <>
-                  <div className="previous-donations">
-                    {sender} {amount}$ -{moment(date).fromNow()}
+                  <div className="comment" style={{ display: 'flex' }}>
+                    <div>
+                      <Image
+                        circular
+                        style={{ height: '1.5rem', padding: 0, display: 'flex' }}
+                        src={image ? image : ''}
+                      />
+                    </div>
+                    <div>{name}</div>
+                    <div>
+                      <span style={{ color: 'gray' }}>
+                        <Moment calendar={calendarStrings}>{date}</Moment>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="comment-message">
+                    <p></p>
+                    <i>- {textfield}</i>
                   </div>
                 </>
               );
-            })
-          ) : (
-            <div className="previous-donations">No previous donations</div>
-          )}
+            })}
+
+          {/* <TextArea />
+          <Button>Submit</Button> */}
         </div>
-      </div>
 
-      <div className="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
-        <h3 className="ui dividing header">Comments</h3>
-        {fundraiserComments.length > 0 &&
-          fundraiserComments.map(({ name, textfield, date, image }) => {
-            return (
-              <>
-                <div className="comment">
-                  <div className="content" style={{ display: 'flex' }}>
-                    <Image
-                      circular
-                      style={{ height: '2rem', padding: 0, display: 'flex' }}
-                      src={image ? image : ''}
-                    />
-                    <strong style={{ paddingLeft: '2rem' }}>{name}</strong>
-                    <div class="metadata"></div>
-                    <span style={{ color: 'gray' }}>
-                      <Moment calendar={calendarStrings}>{date}</Moment>
-                    </span>
-                  </div>
-                  <div class="text">
-                    <p>{textfield}</p>
-                  </div>
-                </div>
-              </>
-            );
-          })}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            // justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <h1 style={{ textAlign: 'center' }}>{fundraiser.title}</h1>
+          <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
+          <div>
+            {/* <div
+          className="fundraiserImage"
+          style={{ backgroundImage: fundraiserBackgroundImage }}
+        ></div> */}
 
-        <form class="ui reply form">
-          <div class="field">
-            <textarea ref={commentTextArea}></textarea>
-          </div>
-          <div
-            class="ui blue labeled submit icon button"
-            style={{ marginBottom: 100 }}
-            onClick={async () => {
-              await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  comments: [
-                    ...fundraiserComments,
-                    {
-                      name: getName.name,
-                      textfield: commentTextArea.current.value,
-                      image: loginSuccess.image,
-                      date: momentToday,
-                    },
-                  ],
-                }),
-              }).then((response) => response.json());
-              commentTextArea.current.value = '';
-              fetch(`http://localhost:5200/fundraiser/comment/get/${id}`)
-                .then((response) => response.json())
-                .then((actualResponse) => setFundraiserComments(actualResponse));
+            {/* <button onClick={() => handleClick('en')}>English</button>
+          <button onClick={() => handleClick('chi')}>Chinese</button>
+          <p>
+            <h3>{t('Thanks.1')}</h3> <h3>{t('Why.1')}</h3>
+          </p> */}
+            {/* <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            buttonText="Sign in and authorize calendar"
+            onSuccess={responseGoogle}
+            onFailure={responseError}
+            cookiePolicy={'single_host_origin'}
+            responseType="code"
+            accessType="offline"
+            scope="openid email profile https://www.googleapis.com/auth/calendar"
+          /> */}
+            {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log('resp',credentialResponse);
             }}
-          >
-            <i className="icon edit"></i> Add Reply
+            buttonText='google'
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          /> */}
+
+            <div
+              style={{
+                border: '1px solid black',
+                background: '#eee',
+                borderRadius: 15,
+                padding: '2rem',
+              }}
+            >
+              <div className="metics">
+                <div width={5} style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}>
+                  <div
+                    style={{ fontFamily: 'Muli sans-serif', fontSize: '2.5rem', fontWeight: 600 }}
+                  >
+                    {fundraiser.currentAmount}$
+                  </div>
+                  <br></br>
+                  <p>{fundraiser.targetAmount}$ raised</p>
+                </div>
+                <div width={5} style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}>
+                  <div
+                    style={{ fontFamily: 'Muli sans-serif', fontSize: '2.5rem', fontWeight: 600 }}
+                  >
+                    {fundraiser.backers}
+                  </div>
+                  <br></br>
+                  <p>donators so far</p>
+                </div>
+                <div>
+                  {Math.floor(
+                    (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000,
+                  ) > 0 ? (
+                    <>
+                      <div
+                        style={{
+                          fontFamily: 'Muli sans-serif',
+                          fontSize: '2.5rem',
+                          fontWeight: 600,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {Math.floor(
+                          (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000,
+                        )}
+                      </div>
+                      <br></br>
+                      <p
+                        style={{
+                          
+                          textAlign: 'center',
+                        }}
+                      >
+                        Days Left
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        style={{ fontFamily: 'Muli sans-serif', fontSize: '2rem', fontWeight: 600 }}
+                      >
+                        Expired
+                      </div>
+                      <br></br>
+                      <p>donation open</p>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <Progress
+                indicating
+                color="purple"
+                percent={
+                  fundraiser.currentAmount
+                    ? (fundraiser.currentAmount / fundraiser.targetAmount) * 100
+                    : 0
+                }
+                progress
+                style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
+                content="Raised"
+              />
+
+              {/* <Button.Group size="tiny"> */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  maxWidth: '100%',
+                  gap: '1rem',
+                  // border: '1px yellow solid',
+                }}
+              >
+                <Button toggle circular size="tiny">
+                  $10
+                </Button>
+                <Button toggle circular size="tiny">
+                  $20
+                </Button>
+                <Button toggle circular size="tiny">
+                  $50
+                </Button>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  maxWidth: '100%',
+                  // border: '1px yellow solid',
+                }}
+              >
+                <p>or</p>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  paddingBottom: '1rem',
+                  maxWidth: '100%',
+                  // border: '1px yellow solid',
+                }}
+              >
+                <Input ref={dollarDonationAmount} placeholder="Enter $ for Donation" type="text" />
+
+                <Button className="payButton" onClick={toggle}>
+                  Submit Payment
+                </Button>
+              </div>
+
+              {toggled === true && (
+                <Elements stripe={stripeTestPromise}>
+                  <PaymentForm
+                    price={dollarDonationAmount.current.value}
+                    id={id}
+                    currentAmount={fundraiser.currentAmount}
+                    backers={fundraiser.backers}
+                    setFundraiser={setFundraiser}
+                    setPreviousDonations={setPreviousDonations}
+                    previousDonations={previousDonations}
+                    name={getName.name}
+                    writer={fundraiser.writer}
+                  />
+                </Elements>
+              )}
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  maxHeight: '10rem',
+                  paddingBottom: '1rem',
+                  maxWidth: '100%',
+                  // border: '1px yellow solid',
+                }}
+              >
+                {' '}
+                <h3>Latest Donations:</h3>
+                {previousDonations.length > 0 ? (
+                  <div
+                    style={{
+                      overflow: 'scroll',
+
+                      // border: '1px yellow solid',
+                    }}
+                  >
+                    {previousDonations.map(({ sender, amount, date }) => {
+                      return (
+                        <div>
+                          {sender} {amount}$ -{moment(date).fromNow()}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="previous-donations">No previous donations</div>
+                )}
+              </div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

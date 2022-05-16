@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
-import { Doughnut } from 'react-chartjs-2';
+// import { Doughnut } from 'react-chartjs-2';
 // import {
 //   Chart,
 //   ChartLegend,

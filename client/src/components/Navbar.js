@@ -117,7 +117,7 @@ const Navbar = () => {
           trigger={
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
-              {loginSuccess.notifications.filter((item) => item.typeof !== 'message') > 0 && (
+              {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length > 0 && (
                 <Label color="teal">{loginSuccess.notifications.length}</Label>
               )}
             </Menu.Item>
