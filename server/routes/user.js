@@ -1,5 +1,16 @@
 const router = require('express').Router();
 const {
+  createMessage,
+  fetchMessages,
+  fetchAllConversations,
+  
+} = require('../controllers/conversations.controller');
+const {
+  fetchUserCreatedFundraisers,
+  bookmarkFundraisers,
+} = require('../controllers/fundraiser.controller');
+
+const {
   registerUser,
   loginUser,
   createCategories,
@@ -8,9 +19,11 @@ const {
   createNotification,
   respondToNotification,
   getAccountDetails,
-  getUserDetailsTest
+  getUserDetailsTest,
   updateAvatarPicture,
+ 
 } = require('../controllers/user.controller');
+
 const { authMiddleware } = require('../middlewares/auth');
 
 // Show all the fundraisers
@@ -52,5 +65,18 @@ router.get('/:id', authMiddleware, getUserDetails);
 router.post('/test/:id',  getUserDetailsTest);
 //change avatar
 router.put('/account', authMiddleware, updateAvatarPicture);
+
+
+//mesages 
+router.post('/messages/create',authMiddleware, createMessage);
+router.get('/messages/:id/:uid', authMiddleware, fetchMessages);
+router.get('/messages/:id', authMiddleware, fetchAllConversations);
+
+
+//fundraisers
+router.get('/fundraiser/:id', authMiddleware, fetchUserCreatedFundraisers);
+
+router.post('/fundraiser/bookmark', authMiddleware, bookmarkFundraisers);
+
 
 module.exports = router;

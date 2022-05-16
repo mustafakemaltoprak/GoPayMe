@@ -16,7 +16,7 @@ import {
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { fetchData } from '../services/fundraisers-services';
 
-const Following = () => {
+const Following = ({ favorites }) => {
   const [data, setData] = useState([]);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(6);
@@ -36,8 +36,11 @@ const Following = () => {
     const variables = {
       skip: skip,
       limit: limit,
-      following: loginSuccess.following,
+      following: favorites ? '' : loginSuccess.following,
+      bookmarked: favorites ? loginSuccess.bookmarked : '',
+      categories: loginSuccess.categories
     };
+    // if (!favorites) {
     fetchData(variables).then((response) => {
       // console.log('ressss',response)
       setCount(response.count);
@@ -45,12 +48,13 @@ const Following = () => {
       //  dispatch(fetchFundraisers([...data, ...response.docs]));
       setData([...data, ...response.docs]);
       // console.log('fetched data', response)
+      // });
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [limit, skip]);
 
-
-  console.log('foloowing data', data)
+  console.log('foloowing data', data);
 
   return (
     <div
@@ -70,7 +74,9 @@ const Following = () => {
                   load more
                 </Label>
               ) : (
-                <p style={{ textAlign: 'center' }}>Your following hasnt created anymore followers </p>
+                <p style={{ textAlign: 'center' }}>
+                  Your following hasnt created anymore followers{' '}
+                </p>
               )}
             </>
           ) : (

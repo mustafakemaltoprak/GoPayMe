@@ -148,7 +148,7 @@ export const fetchUserDetails = async (id) => {
 
   const config = confighelper(token);
 
-  console.log('tok', token);
+  // console.log('tok', token);
 
   const { data } = await axios.get(`/users/${id}`, config);
   console.log('userDetails Info', data);
@@ -164,7 +164,7 @@ export const notificationRespond = async (payload) => {
 
   const config = confighelper(token);
 
-  console.log('tok', token);
+  // console.log('tok', token);
 
   const { data } = await axios.post(`/users/account`, { ...payload, _id }, config);
 
@@ -180,9 +180,25 @@ export const getAccountDetails = async () => {
 
   const config = confighelper(token);
 
-  console.log('tok', token);
+  // console.log('tok', token);
 
   const { data } = await axios.get(`/users/account`, config);
+
+  console.log();
+  if (data) {
+    // console.log('that was updated!');
+    return data;
+  }
+};
+
+export const createBookMark = async (payload) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  // console.log('tok', token);
+
+  const { data } = await axios.post(`/users/fundraiser/bookmark`, payload, config);
 
   console.log();
   if (data) {
@@ -197,7 +213,7 @@ export const avatarUpdate = async (payload) => {
   console.log('avatar payloadd', payload)
   const config = confighelper(token);
 
-  console.log('tok', token);
+  // console.log('tok', token);
 
   const { data } = await axios.put(`/users/account`, payload, config);
 

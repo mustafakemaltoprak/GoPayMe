@@ -12,29 +12,26 @@ const userSchema = new Schema({
     {
       typeof: {
         type: String,
-        enum: ['follow', 'reject', 'message', 'accept'],
+        enum: ['follow', 'reject', 'message', 'accept', 'donation'],
       },
       targetUser: {
         // ref: 'User',
         // type: mongoose.Schema.ObjectId,
         type: String,
       },
+      amount: Number,
       note: String,
       senderName: String,
-      senderId: String
+      senderId: String,
+      date: Date,
     },
   ],
   test: {
-    default:  0,
-    type: Number
+    default: 0,
+    type: Number,
   },
-  following: [
-    {type: mongoose.Schema.ObjectId,
-      ref: 'User'
-    
-    }
-    
-  ],
+  following: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  bookmarked: [{ type: mongoose.Schema.ObjectId, ref: 'Fundraiser' }],
   userId: String,
   image: {
     type: String,

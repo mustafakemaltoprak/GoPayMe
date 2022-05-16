@@ -3,6 +3,7 @@ const { db } = require('../models/user.model');
 const User = require('../models/user.model');
 
 const getAllFundraisers = async (req, res) => {
+  console.log(req.body);
   const skip = req.body.skip && parseInt(req.body.skip);
   const limit = req.body.limit && parseInt(req.body.limit);
   //   Fundraiser.find()
@@ -15,19 +16,65 @@ const getAllFundraisers = async (req, res) => {
   // console.log('user', req.body);
 
   if (req.body.following) {
-    // const foundUser = await User.findOne({ userId: req.user.userId });
-    console.log('fired');
+    // const foundUser = await User.findOne({ userId: req.user.userId });\
+    console.log('fired',req.body);
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
       },
     });
     const writers = foundWriters.map((user) => user.userId);
+
+    const options =
+      req.body.categories.length > 0
+        ? {
+            categories: {
+              $in: req.body.categories,
+            },
+          }
+        : {};
     Fundraiser.find({
       writer: {
         $in: writers,
       },
+      // categories: {
+      //   $in: req.body.categories,
+      // },
     })
+      .find(options)
+
+      .skip(skip)
+      .limit(limit)
+      .exec((err, docs) => {
+        if (err) res.status(400).send({ error: err.message });
+        res.status(201).send({ docs, count: docs.length });
+      });
+    return;
+  }
+
+  if (req.body.bookmarked) {
+    // // const foundUser = await User.findOne({ userId: req.user.userId });
+    // console.log('fired');
+    // // const foundWriters = await User.find({
+    // //   _id: {
+    // //     $in: req.body.bookmarked,
+    // //   },
+    // // });
+    // const writers = foundWriters.map((user) => user.userId);
+    const options =
+      req.body.categories.length > 0
+        ? {
+            categories: {
+              $in: req.body.categories,
+            },
+          }
+        : {};
+    Fundraiser.find({
+      _id: {
+        $in: req.body.bookmarked,
+      },
+    })
+      .find(options)
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -37,7 +84,15 @@ const getAllFundraisers = async (req, res) => {
     return;
   }
 
-  Fundraiser.find()
+  const options =
+    req.body.categories.length > 0
+      ? {
+          categories: {
+            $in: req.body.categories,
+          },
+        }
+      : {};
+  Fundraiser.find(options)
     .skip(skip)
     .limit(limit)
     .exec((err, docs) => {
@@ -88,6 +143,7 @@ function deleteFundraiser(req, res) {
 
 function findSpecificFundraiser(req, res) {
   Fundraiser.findById(req.params.id)
+    .populate('writerId')
     .then((fundraiser) => res.json(fundraiser))
     .catch((err) => res.status(400).json('Error' + err));
 }
@@ -191,6 +247,30 @@ function addView(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+const fetchUserCreatedFundraisers = async (req, res) => {
+  const createdFundraisers = await Fundraiser.find({ writer: req.params.id });
+
+  res.status(200).send(createdFundraisers);
+  try {
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+const bookmarkFundraisers = async (req, res) => {
+  const bookmarkedFundraiser = await User.findOneAndUpdate(
+    { userId: req.user.userId },
+    { $push: { bookmarked: req.body._id } },
+    { new: true },
+  ).populate('bookmarked');
+
+  res.status(200).send(bookmarkedFundraiser);
+  try {
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllFundraisers,
   createFundraiser,
@@ -205,4 +285,6 @@ module.exports = {
   addView,
   addPrevDonation,
   getPrevDonations,
+  fetchUserCreatedFundraisers,
+  bookmarkFundraisers,
 };

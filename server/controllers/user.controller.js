@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const userExists = await User.findOne({ userId }).populate('following');
+    const userExists = await User.findOne({ userId }).populate('following').populate('bookmarked')
 
     if (!userExists) {
       //has not signed in before
@@ -44,6 +44,7 @@ const loginUser = async (req, res) => {
         newUser: true,
         following: userCreated.following,
         description: userCreated.description,
+        notifications: userCreated.notifications,
         _id: userCreated._id,
         token,
       });
@@ -100,7 +101,7 @@ const createNotification = async (req, res) => {
       { $push: { notifications: req.body } }
     );
 
-    console.log('user', userFoundandUpdated);
+    console.log('was pushed into account', userFoundandUpdated);
     res.status(201).send({
       success: true,
     });
@@ -114,9 +115,11 @@ const getUserDetails = async (req, res) => {
   try {
     console.log('registering', req.body, req.user);
 
-    const userFound = await User.findOne({ userId: req.params.id });
+    const userFound = await User.findOne({ userId: req.params.id })
+      .populate('following')
+      .populate('bookmarked');
 
-    console.log('user', userFound);
+    // console.log('user', userFound);
     res.status(201).send(userFound);
   } catch (error) {
     res.status(404).send({ error: error.message });
@@ -151,7 +154,7 @@ const respondToNotification = async (req, res) => {
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
     }
 
-    if (req.body.response === 'reject') {
+    if (req.body.response === 'reject' || req.body.response === 'dismiss') {
       const myProfileUpdated = await User.findOneAndUpdate(
         { userId: req.user.userId },
         {
@@ -162,7 +165,7 @@ const respondToNotification = async (req, res) => {
             },
           },
         },
-        { new: true }
+        { new: true },
       );
 
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
@@ -179,7 +182,7 @@ const getAccountDetails = async (req, res) => {
 
     const userFound = await User.findOne({ userId: req.user }).populate(
       'following'
-    );
+    ).populate('bookmarked')
 
     res.status(201).send(userFound);
   } catch (error) {
@@ -236,6 +239,15 @@ const updateAvatarPicture = async (req, res) => {
     ); */
 };
 
+  /*
+  const user = await User.findOneAndUpdate(
+      { userId: req.params.id },
+      { categories: req.body.categories },
+      { new: true },
+    ); */
+
+
+
 // function getAllUsers(req, res) {
 //   User.find()
 //     .then((users) => res.json(users))
@@ -280,5 +292,7 @@ module.exports = {
   getUserDetails,
   getAccountDetails,
   getUserDetailsTest,
+  
+  
   updateAvatarPicture,
 };

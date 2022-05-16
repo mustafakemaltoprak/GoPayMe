@@ -5,17 +5,34 @@ import PaymentForm from '../components/PaymentForm';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ClapButton from 'react-clap-button';
-import { Progress } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
+import { useSelector, useDispatch } from 'react-redux';
+// import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+
+import { Button, Image, Label, Progress } from 'semantic-ui-react';
 import moment from 'moment';
-let gapi = window.gapi;
-let DISCOVERY_DOCS = [
-  'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
-];
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import UserButton from '../components/UserButton';
+import Timer from '../components/Timer';
+import { createBookMark } from '../services/user-services';
+import { updateUserDetails } from '../redux/actions/userActions';
+
+// let gapi = window.gapi;
+let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const DetailsPage = () => {
+  const dispatch = useDispatch();
+  const { loginSuccess } = useSelector((state) => state.user);
+  function handleClick(lang) {
+    i18next.changeLanguage(lang);
+  }
+
   const [toggled, setToggled] = useState(false);
   const [fundraiser, setFundraiser] = useState(false);
+  const [bookMarked, setBookMarked] = useState(false);
   const [fundraiserComments, setFundraiserComments] = useState(false);
   const [previousDonations, setPreviousDonations] = useState(false);
   const [likes, setLikes] = useState();
@@ -23,6 +40,17 @@ const DetailsPage = () => {
   function toggle() {
     toggled ? setToggled(false) : setToggled(true);
   }
+
+  //  const responseGoogle = (response) => {
+  //    console.log('fired', response);
+
+  //    let codee;
+  //    window.addEventListener('message', ({ data }) => {
+  //      //  console.log('the data', data);
+  //      const { authResult } = data;
+  //      console.log('the data', authResult.authResult);
+  //    });
+  //  };
 
   const { id } = useParams();
 
@@ -78,6 +106,15 @@ const DetailsPage = () => {
     nextWeek: 'dddd [at] LT',
     sameElse: 'L',
   };
+
+  //  useEffect(() => {
+  //    window.gapi.load('client:auth2', () => {
+  //      window.gapi.client.init({
+  //        clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+  //        scope: 'email',
+  //      });
+  //    });
+  //  }, []);
 
   if (!likes) {
     return <>Loading fundraiser details...</>;
@@ -172,15 +209,51 @@ const DetailsPage = () => {
   //   });
   // };
 
+  const responseError = (error) => {
+    console.log('error', error);
+  };
+
+  console.log('token', fundraiser);
   return (
     <>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
       <div className="container">
-        <div
+        {/* <div
           className="fundraiserImage"
           style={{ backgroundImage: fundraiserBackgroundImage }}
-        >
+        ></div> */}
+        <div>
+          <Image src={fundraiser.image} style={{ height: '20rem' }} />
+          <p>{fundraiser.description}</p>
+          {/* <button onClick={() => handleClick('en')}>English</button>
+          <button onClick={() => handleClick('chi')}>Chinese</button>
+          <p>
+            <h3>{t('Thanks.1')}</h3> <h3>{t('Why.1')}</h3>
+          </p> */}
+          {/* <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            buttonText="Sign in and authorize calendar"
+            onSuccess={responseGoogle}
+            onFailure={responseError}
+            cookiePolicy={'single_host_origin'}
+            responseType="code"
+            accessType="offline"
+            scope="openid email profile https://www.googleapis.com/auth/calendar"
+          /> */}
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log('resp',credentialResponse);
+            }}
+            buttonText='google'
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          /> */}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <ClapButton
+            className="fundraiserImage"
             onCountChange={async () => {
               await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
                 method: 'PUT',
@@ -197,14 +270,28 @@ const DetailsPage = () => {
             countTotal={likes - 1}
             isClicked={false}
           />
+          <UserButton dataObj={fundraiser} />
+          <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
+          <Label
+            onClick={async () => {
+              const response = await createBookMark({ _id: fundraiser._id });
+              if (response) {
+                setBookMarked(true);
+                dispatch(updateUserDetails(response));
+              }
+            }}
+          >
+            {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
+              ? 'Bookmarked'
+              : 'Bookmark'}
+          </Label>
         </div>
+
         <div className="fundraiserDonation">
           <div className="donationContainer">
             <div>
               {fundraiser.currentAmount}$<br></br>
-              <p className="fundraiserDonationDescription">
-                of {fundraiser.targetAmount}$ raised
-              </p>
+              <p className="fundraiserDonationDescription">of {fundraiser.targetAmount}$ raised</p>
             </div>
             <div>
               {fundraiser.backers}
@@ -212,10 +299,7 @@ const DetailsPage = () => {
               <p className="fundraiserDonationDescription">total backers</p>
             </div>
             <div>
-              {Math.floor(
-                (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) /
-                  86400000
-              )}
+              {Math.floor((Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000)}
               <br></br>
               <p className="fundraiserDonationDescription">days left</p>
             </div>
@@ -247,9 +331,9 @@ const DetailsPage = () => {
               type="text"
             ></input>
 
-            <button className="payButton" onClick={toggle}>
+            <Button className="payButton" onClick={toggle}>
               Submit Payment
-            </button>
+            </Button>
           </div>
           {toggled === true && (
             <Elements stripe={stripeTestPromise}>
@@ -262,10 +346,11 @@ const DetailsPage = () => {
                 setPreviousDonations={setPreviousDonations}
                 previousDonations={previousDonations}
                 name={getName.name}
+                writer={fundraiser.writer}
               />
             </Elements>
           )}
-          <h3 className="previous-donations">Previous Donations:</h3>
+          <h3 className="previous-donations">Latest Donations:</h3>
           {previousDonations.length > 0 ? (
             previousDonations.map(({ sender, amount, date }) => {
               return (
@@ -281,30 +366,28 @@ const DetailsPage = () => {
           )}
         </div>
       </div>
-      <div className="fundraiserDescription">{fundraiser.description}</div>
 
-      <div class="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
-        <h3 className="ui dividing header">
-          Comments - Writer: {fundraiser.writer}
-        </h3>
+      <div className="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
+        <h3 className="ui dividing header">Comments</h3>
         {fundraiserComments.length > 0 &&
-          fundraiserComments.map(({ name, textfield, date }) => {
+          fundraiserComments.map(({ name, textfield, date, image }) => {
             return (
               <>
-                <div class="comment">
-                  <a class="avatar">
-                    <img src="/images/avatar/small/elliot.jpg"></img>
-                  </a>
-                  <div class="content">
-                    <a class="author">{name}</a>
-                    <div class="metadata">
-                      <span class="date">
-                        <Moment calendar={calendarStrings}>{date}</Moment>
-                      </span>
-                    </div>
-                    <div class="text">
-                      <p>{textfield}</p>
-                    </div>
+                <div className="comment">
+                  <div className="content" style={{ display: 'flex' }}>
+                    <Image
+                      circular
+                      style={{ height: '2rem', padding: 0, display: 'flex' }}
+                      src={image ? image : ''}
+                    />
+                    <strong style={{ paddingLeft: '2rem' }}>{name}</strong>
+                    <div class="metadata"></div>
+                    <span style={{ color: 'gray' }}>
+                      <Moment calendar={calendarStrings}>{date}</Moment>
+                    </span>
+                  </div>
+                  <div class="text">
+                    <p>{textfield}</p>
                   </div>
                 </div>
               </>
@@ -319,32 +402,28 @@ const DetailsPage = () => {
             class="ui blue labeled submit icon button"
             style={{ marginBottom: 100 }}
             onClick={async () => {
-              await fetch(
-                `http://localhost:5200/fundraiser/comment/add/${id}`,
-                {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    comments: [
-                      ...fundraiserComments,
-                      {
-                        name: getName.name,
-                        textfield: commentTextArea.current.value,
-                        date: momentToday,
-                      },
-                    ],
-                  }),
-                }
-              ).then((response) => response.json());
+              await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  comments: [
+                    ...fundraiserComments,
+                    {
+                      name: getName.name,
+                      textfield: commentTextArea.current.value,
+                      image: loginSuccess.image,
+                      date: momentToday,
+                    },
+                  ],
+                }),
+              }).then((response) => response.json());
               commentTextArea.current.value = '';
               fetch(`http://localhost:5200/fundraiser/comment/get/${id}`)
                 .then((response) => response.json())
-                .then((actualResponse) =>
-                  setFundraiserComments(actualResponse)
-                );
+                .then((actualResponse) => setFundraiserComments(actualResponse));
             }}
           >
-            <i class="icon edit"></i> Add Reply
+            <i className="icon edit"></i> Add Reply
           </div>
         </form>
       </div>

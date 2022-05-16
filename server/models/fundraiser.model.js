@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const fundraiserSchema = new Schema({
   writer: String,
+  writerId: { type: mongoose.Schema.ObjectId, ref: 'User' },
   title: String,
   targetAmount: Number,
   address: String,
@@ -41,6 +42,9 @@ const fundraiserSchema = new Schema({
     default: 0,
   },
   prevDonations: [],
+},
+{
+  timestamps:true
 });
 
 fundraiserSchema.pre('save', async function (next) {

@@ -3,13 +3,13 @@ import { Grid } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
 import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart,
-  ChartLegend,
-  ChartSeries,
-  ChartSeriesItem,
-  ChartSeriesLabels,
-} from '@progress/kendo-react-charts';
+// import {
+//   Chart,
+//   ChartLegend,
+//   ChartSeries,
+//   ChartSeriesItem,
+//   ChartSeriesLabels,
+// } from '@progress/kendo-react-charts';
 import 'hammerjs';
 
 function Dashboard() {
@@ -89,10 +89,7 @@ function Dashboard() {
 
   return (
     // <Container></Container>
-    <div
-      className="profileContainer"
-      style={{ border: 'red 2px solid', padding: '1rem' }}
-    >
+    <div className="profileContainer" style={{ border: 'gainsboro 2px solid', padding: '1rem' }}>
       <div
         className="summaryHeaderContainer"
         style={{
@@ -113,11 +110,11 @@ function Dashboard() {
           }}
         >
           <div className="headerProjects">
-            <div className="titleField">
-              <span className="projectsText">Projects Created</span>
-            </div>
-            <div className="dataField">
-              <span className="projectsData">{projectsCreated}</span>
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <strong className="projectsText">Projects Created</strong>
+              <div className="dataField">
+                <span className="projectsData">{projectsCreated}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -133,11 +130,11 @@ function Dashboard() {
           }}
         >
           <div className="headerTotalRaised">
-            <div className="titleField">
-              <span className="totalRaisedText">Total Raised</span>
-            </div>
-            <div className="dataField">
-              <span className="moneyData">{totalRaised}$</span>
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <strong className="totalRaisedText">Total Raised</strong>
+              <div className="dataField">
+                <span className="moneyData">${totalRaised}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -153,11 +150,11 @@ function Dashboard() {
           }}
         >
           <div className="headerDonators">
-            <div className="titleField">
-              <span className="donatorsText">Donators</span>
-            </div>
-            <div className="dataField">
-              <span className="donatorsData">{donators}</span>
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <strong className="donatorsText">Donators</strong>
+              <div className="dataField">
+                <span className="donatorsData">{donators}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -173,11 +170,11 @@ function Dashboard() {
           }}
         >
           <div className="headerViews">
-            <div className="titleField">
-              <span className="viewsText">Views</span>
-            </div>
-            <div className="dataField">
-              <span className="viewsData">{views}</span>
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <strong className="viewsText">Views</strong>
+              <div className="dataField">
+                <span className="viewsData">{views}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -192,26 +189,26 @@ function Dashboard() {
         }}
       >
         <div className="contentTitle">
-          <span className="contentTitleField">Your Projects</span>
+          <strong className="contentTitleField">Your Projects</strong>
         </div>
         <div
           className="projectContentDetails"
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            border: 'blue 1px solid',
+            // border: 'blue 1px solid',
           }}
         >
           <div
             className="contentLeftDetails"
-            style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
+            style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px', minHeight: '40rem'}}
           >
             <Grid.Row>
-              {data.length > 0 ? (
+              {/* {data.length  0 ? (
                 data.map((dataItem) => <CardItem data={dataItem} />)
-              ) : (
+              ) : ( */}
                 <p>You havent published any data yet</p>
-              )}
+              {/* // )} */}
 
               {/* // } */}
             </Grid.Row>
@@ -220,7 +217,7 @@ function Dashboard() {
             className="contentRightCharts"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
-            <Chart>
+            {/* <Chart>
               <ChartSeries>
                 <ChartSeriesItem
                   type="donut"
@@ -236,7 +233,7 @@ function Dashboard() {
                 </ChartSeriesItem>
               </ChartSeries>
               <ChartLegend visible={false} />
-            </Chart>
+            </Chart> */}
           </div>
         </div>
       </div>

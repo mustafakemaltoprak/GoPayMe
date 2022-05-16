@@ -21,6 +21,7 @@ import Following from '../components/Following';
 
 const Home = () => {
   const history = useHistory();
+    const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState({
@@ -55,6 +56,7 @@ const Home = () => {
     const variables = {
       skip: skip,
       limit: limit,
+      categories: loginSuccess.categories,
     };
     fetchData(variables).then((response) => {
       // console.log('ressss',response)
@@ -136,32 +138,44 @@ const Home = () => {
 
       {currentPage['Explore'] && (
         <>
-          <div
-            attached="bottom"
-            style={{ padding: '2rem', border: '1px red solid' }}
-            className="cardgrid"
-          >
+          <div attached="bottom" style={{ padding: '2rem', border: '1px red solid' }}>
+            <div className="cardgrid">
+              {!toggle && (
+                <>
+                  {data.length > 0 &&
+                    data.map((dataItem) => (
+                      <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                    ))}
+                </>
+              )}
+            </div>
             {!toggle && (
-              <>
-                {data.length > 0 &&
-                  data.map((dataItem) => (
-                    <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-                  ))}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  border: '1px green solid',
+                }}
+              >
+                {' '}
                 {count >= limit ? (
                   <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
                     load more
                   </Label>
                 ) : (
-                  <p style={{ textAlign: 'center' }}>No more fundraisers</p>
+                  <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
                 )}
-              </>
+              </div>
             )}
           </div>
           {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
         </>
       )}
 
-      {currentPage['Following'] && (<Following/>)}
+      {currentPage['Following'] && <Following />}
+
+      {currentPage['Favorites'] && <Following favorites={true}/>}
     </>
   );
 };
