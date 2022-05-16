@@ -42,6 +42,9 @@ const fundraiserSchema = new Schema({
     default: 0,
   },
   prevDonations: [],
+},
+{
+  timestamps:true
 });
 
 fundraiserSchema.pre('save', async function (next) {

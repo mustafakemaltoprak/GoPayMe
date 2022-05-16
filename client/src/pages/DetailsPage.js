@@ -13,6 +13,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Image, Label, Progress } from 'semantic-ui-react';
 import moment from 'moment';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import UserButton from '../components/UserButton';
 
 // let gapi = window.gapi;
 let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
@@ -215,7 +216,7 @@ const DetailsPage = () => {
 
 
 
-  // console.log('token', process.env.REACT_APP_GOOGLE_CLIENT_ID);
+  console.log('token', fundraiser);
   return (
     <>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
@@ -272,7 +273,7 @@ const DetailsPage = () => {
             countTotal={likes - 1}
             isClicked={false}
           />
-          <Label>calendar event</Label>
+          <UserButton dataObj = {fundraiser}/>
         </div>
 
         <div className="fundraiserDonation">

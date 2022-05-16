@@ -87,7 +87,8 @@ function deleteFundraiser(req, res) {
 }
 
 function findSpecificFundraiser(req, res) {
-  Fundraiser.findById(req.params.id).populate('writerId')
+  Fundraiser.findById(req.params.id)
+    .populate('writerId')
     .then((fundraiser) => res.json(fundraiser))
     .catch((err) => res.status(400).json('Error' + err));
 }
@@ -191,6 +192,16 @@ function addView(req, res) {
     .catch((err) => res.status(400).json('Error: ' + err));
 }
 
+const fetchUserCreatedFundraisers = async (req, res) => {
+  const createdFundraisers = await Fundraiser.find({ writer: req.params.id });
+
+  res.status(200).send(createdFundraisers);
+  try {
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllFundraisers,
   createFundraiser,
@@ -205,4 +216,5 @@ module.exports = {
   addView,
   addPrevDonation,
   getPrevDonations,
+  fetchUserCreatedFundraisers,
 };

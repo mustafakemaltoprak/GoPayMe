@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }} borderless>
       <Container>
-        <Menu.Item as={Link} exact to="/home" header style={{ border: 'none' }}>
+        <Menu.Item as={Link} to="/home" header style={{ border: 'none' }}>
           <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
           GoPayME
           <Icon name="money" />
