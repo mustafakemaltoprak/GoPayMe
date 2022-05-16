@@ -191,6 +191,22 @@ export const getAccountDetails = async () => {
   }
 };
 
+export const createBookMark = async (payload) => {
+  const { token } = JSON.parse(localStorage.getItem('userInfo'));
+
+  const config = confighelper(token);
+
+  // console.log('tok', token);
+
+  const { data } = await axios.post(`/users/fundraiser/bookmark`, payload, config);
+
+  console.log();
+  if (data) {
+    // console.log('that was updated!');
+    return data;
+  }
+};
+
 export const avatarUpdate = async (payload) => {
   const { token } = JSON.parse(localStorage.getItem('userInfo'));
 

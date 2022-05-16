@@ -10,24 +10,27 @@ import i18next from 'i18next';
 // import { GoogleLogin } from 'react-google-login';
 import { GoogleLogin } from '@react-oauth/google';
 
-import { Image, Label, Progress } from 'semantic-ui-react';
+import { Button, Image, Label, Progress } from 'semantic-ui-react';
 import moment from 'moment';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import UserButton from '../components/UserButton';
+import Timer from '../components/Timer';
+import { createBookMark } from '../services/user-services';
 
 // let gapi = window.gapi;
 let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const DetailsPage = () => {
-   const { t } = useTranslation();
+  const { t } = useTranslation();
 
-   function handleClick(lang) {
-     i18next.changeLanguage(lang);
-   }
+  function handleClick(lang) {
+    i18next.changeLanguage(lang);
+  }
 
   const [toggled, setToggled] = useState(false);
   const [fundraiser, setFundraiser] = useState(false);
+  const [bookMarked, setBookMarked] = useState(false);
   const [fundraiserComments, setFundraiserComments] = useState(false);
   const [previousDonations, setPreviousDonations] = useState(false);
   const [likes, setLikes] = useState();
@@ -46,8 +49,6 @@ const DetailsPage = () => {
   //      console.log('the data', authResult.authResult);
   //    });
   //  };
-
-   
 
   const { id } = useParams();
 
@@ -94,7 +95,6 @@ const DetailsPage = () => {
   const commentTextArea = useRef();
 
   let fundraiserBackgroundImage = `url("${fundraiser.image}")`;
-  
 
   const calendarStrings = {
     lastDay: '[Yesterday at] LT',
@@ -104,7 +104,7 @@ const DetailsPage = () => {
     nextWeek: 'dddd [at] LT',
     sameElse: 'L',
   };
-  
+
   //  useEffect(() => {
   //    window.gapi.load('client:auth2', () => {
   //      window.gapi.client.init({
@@ -117,7 +117,6 @@ const DetailsPage = () => {
   if (!likes) {
     return <>Loading fundraiser details...</>;
   }
-  
 
   // const addCalendarEvent = () => {
   //   gapi.load('client:auth2', () => {
@@ -207,14 +206,10 @@ const DetailsPage = () => {
   //       });
   //   });
   // };
-  
 
- 
   const responseError = (error) => {
     console.log('error', error);
   };
-
-
 
   console.log('token', fundraiser);
   return (
@@ -273,7 +268,18 @@ const DetailsPage = () => {
             countTotal={likes - 1}
             isClicked={false}
           />
-          <UserButton dataObj = {fundraiser}/>
+          <UserButton dataObj={fundraiser} />
+          <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
+          <Label
+            onClick={async () => {
+              const response = await createBookMark({ _id: fundraiser._id });
+              if (response) {
+                setBookMarked(true);
+              }
+            }}
+          >
+            {bookMarked ? 'Bookmarked' : 'Bookmark'}
+          </Label>
         </div>
 
         <div className="fundraiserDonation">
@@ -320,9 +326,9 @@ const DetailsPage = () => {
               type="text"
             ></input>
 
-            <button className="payButton" onClick={toggle}>
+            <Button className="payButton" onClick={toggle}>
               Submit Payment
-            </button>
+            </Button>
           </div>
           {toggled === true && (
             <Elements stripe={stripeTestPromise}>

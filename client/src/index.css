@@ -287,12 +287,12 @@ button:active {
 }
 
 .countdown-timer {
-    width: 600px;
+    /* width: 600px; */
     height: 100px;
     border: 2px solid black;
 
     font-family: "Oswald";
-    font-size: 30px;
+    font-size: 16px;
 
     display: flex;
     justify-content: center;

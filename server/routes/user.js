@@ -3,8 +3,12 @@ const {
   createMessage,
   fetchMessages,
   fetchAllConversations,
+  
 } = require('../controllers/conversations.controller');
-const { fetchUserCreatedFundraisers } = require('../controllers/fundraiser.controller');
+const {
+  fetchUserCreatedFundraisers,
+  bookmarkFundraisers,
+} = require('../controllers/fundraiser.controller');
 
 const {
   registerUser,
@@ -69,7 +73,10 @@ router.get('/messages/:id/:uid', authMiddleware, fetchMessages);
 router.get('/messages/:id', authMiddleware, fetchAllConversations);
 
 
-//mesages 
+//fundraisers
 router.get('/fundraiser/:id', authMiddleware, fetchUserCreatedFundraisers);
+
+router.post('/fundraiser/bookmark', authMiddleware, bookmarkFundraisers);
+
 
 module.exports = router;

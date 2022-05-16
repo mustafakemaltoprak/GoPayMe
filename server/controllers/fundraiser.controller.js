@@ -202,6 +202,21 @@ const fetchUserCreatedFundraisers = async (req, res) => {
   }
 };
 
+const bookmarkFundraisers = async (req, res) => {
+  const bookmarkedFundraiser = await User.findOneAndUpdate(
+    { userId: req.user.userId },
+    { $push: { bookmarked: req.body._id } },
+    { new: true },
+  );
+
+  res.status(200).send(bookmarkedFundraiser);
+  try {
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllFundraisers,
   createFundraiser,
@@ -217,4 +232,5 @@ module.exports = {
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,
+  bookmarkFundraisers,
 };
