@@ -25,7 +25,7 @@ function Dashboard() {
   const [projectNames, setProjectNames] = useState(['']); // ['Street Artists', 'GoUkraine', 'ForFood']
   const [projectRaised, setProjectRaised] = useState([0]); // [3000, 1000, 2000]
 
-  const [testUseState, setTestUseState] = useState([])
+  const [lastTwentyFourHours, setLastTwentyFourHours] = useState(0)
 
   // money per donators
   const [donatorNames, setDonatorNames] = useState([]); // ['Mustafa', 'Daniel', 'Busayo']
@@ -134,6 +134,34 @@ function Dashboard() {
     ],
   };
 
+  const dataPieChart4 = {
+    labels: ["John"],
+    // labels: [donators],
+    datasets: [
+      {
+        label: '# Target Amount',
+        // data: [totalRaised],
+        data: [12],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   // first load of dashboard
   if (!chartPickedByUser) {
     setProjectNames(data.map((item) => item.title));
@@ -164,6 +192,8 @@ function Dashboard() {
     reactDonutChartStrokeColor = color;
   };
 
+
+
   useEffect(() => {
     if (fundraisers.length > 0) {
       const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
@@ -172,7 +202,22 @@ function Dashboard() {
     setLoaded(true);
   }, [fundraisers, loginSuccess]);
 
-  let testArray = []
+
+  function getFormattedDate(date) {
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    return month + '/' + day + '/' + year;
+  }
+
+  let todayFormatted = getFormattedDate(new Date());
+
+  const [totalTwentyFourHours, setTotalTwentyFourHours] = useState([])
 
   useEffect(() => {
     if (loaded) {
@@ -181,6 +226,14 @@ function Dashboard() {
 
       setProjectViewsNames(data.map((item) => item.title));
       setProjectViews(data.map((item) => item.views));
+
+      const lastDonations = data.flatMap(item => item.prevDonations);
+      const last24hDonations = lastDonations.filter(donation => {
+        return new Date(donation.date ).getTime() > (new Date().getTime() - (24*60*60*1000));
+      })
+      const sumLast24h = last24hDonations.reduce((acc, curr) => acc+parseInt(curr.amount), 0);
+      console.log(sumLast24h);
+      setLastTwentyFourHours(sumLast24h)
 
       for (let i = 0; i < data.length; i++) {
         setTotalRaised((prev) => prev + data[i].currentAmount);
@@ -195,6 +248,8 @@ function Dashboard() {
 
   console.log('donator names', donatorNames.flat());
   console.log('donator amount', donatorPaid.flat());
+
+  console.log("test", totalTwentyFourHours)
 
   // console.log(projectNames.length);
   // if (projectNames.length === 0) {
@@ -269,10 +324,11 @@ function Dashboard() {
         >
           <div className="headerProjects">
             <div className="titleField">
-              <span className="projectsText">Projects Created</span>
+              <span className="projectsText">Projects Created </span>
             </div>
             <div className="dataField">
-              <span className="projectsData">{projectsCreated}</span>
+              {/* <span className="projectsData">{projectsCreated}</span> */}
+              <span className="projectsData">{projectsCreated} ss {lastTwentyFourHours}</span>
             </div>
           </div>
         </div>
@@ -292,7 +348,7 @@ function Dashboard() {
               <span className="totalRaisedText">Total Raised</span>
             </div>
             <div className="dataField">
-              <span className="moneyData">{totalRaised}$</span>
+              <span className="moneyData">{totalRaised}$ </span>
             </div>
           </div>
         </div>
@@ -373,7 +429,7 @@ function Dashboard() {
             style={{
               position: 'relative',
               'margin-left': '0px',
-              width: '30%',
+              width: '20%',
               // border: 'orange 1px solid',
               // margin: '5px 5px',
               // width: '40%',
@@ -383,7 +439,7 @@ function Dashboard() {
             <Grid
               columns={2}
               divided
-              style={{ width: '60rem', justify: 'flex-end', margin: 'auto' }}
+              style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
             >
               <select className="chartInfo" name="chartSelected" onChange={handleOnChange}>
                 <option value=""> -- Chart Selection -- </option>
@@ -396,7 +452,7 @@ function Dashboard() {
                   <Pie
                     data={chartPickedByUser}
                     options={{
-                      cutout: '70%',
+                      cutout: '90%',
                       responsive: true,
                       plugins: {
                         legend: {
@@ -418,8 +474,9 @@ function Dashboard() {
                   />
                 </Grid.Column>
                 <Grid.Column>
+                  <div style={{}}>75%</div>
                   <Doughnut
-                    data={dataPieChart2}
+                    data={dataPieChart4}
                     style={{
                       // height: '50%',
                       // width: '100%',
