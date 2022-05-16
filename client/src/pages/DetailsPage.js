@@ -30,6 +30,7 @@ const DetailsPage = () => {
     i18next.changeLanguage(lang);
   }
 
+  let momentToday = new Date();
   const [toggled, setToggled] = useState(false);
   const [fundraiser, setFundraiser] = useState(false);
   const [bookMarked, setBookMarked] = useState(false);
@@ -71,17 +72,22 @@ const DetailsPage = () => {
       .then((response) => response.json())
       .then((actualResponse) => setLikes(actualResponse));
 
-    fetch(`http://localhost:5200/fundraiser/view/${id}`, {
+    try {
+      fetch(`http://localhost:5200/fundraiser/view/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        views: 1,
+        views: {
+          views: 1,
+        },
       }),
     }).then((response) => response.json());
+  } catch (e) {
+    console.error(e);
+  }
   }, []);
 
   let today = new Date();
-  let momentToday = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mm = String(today.getMonth() + 1).padStart(2, '0');
   let yyyy = today.getFullYear();

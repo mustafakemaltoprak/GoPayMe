@@ -210,7 +210,7 @@ export const createBookMark = async (payload) => {
 export const avatarUpdate = async (payload) => {
   const { token } = JSON.parse(localStorage.getItem('userInfo'));
 
-  console.log('avatar payloadd', payload)
+  // console.log('avatar payloadd', payload)
   const config = confighelper(token);
 
   // console.log('tok', token);

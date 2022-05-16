@@ -237,7 +237,7 @@ const searchbyTerm = async (req, res) => {
 function addView(req, res) {
   Fundraiser.findById(req.params.id)
     .then((fundraiser) => {
-      fundraiser.views = fundraiser.views + req.body.views;
+      fundraiser.views = fundraiser.views + req.body.views.views
 
       fundraiser
         .save()
@@ -283,6 +283,7 @@ module.exports = {
   getAllLikes,
   searchbyTerm,
   addView,
+  getViews,
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,
