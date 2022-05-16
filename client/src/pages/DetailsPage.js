@@ -7,6 +7,7 @@ import Moment from 'react-moment';
 import ClapButton from 'react-clap-button';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
+import { useSelector, useDispatch } from 'react-redux';
 // import { GoogleLogin } from 'react-google-login';
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -16,14 +17,15 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import UserButton from '../components/UserButton';
 import Timer from '../components/Timer';
 import { createBookMark } from '../services/user-services';
+import { updateUserDetails } from '../redux/actions/userActions';
 
 // let gapi = window.gapi;
 let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const DetailsPage = () => {
-  const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const { loginSuccess } = useSelector((state) => state.user);
   function handleClick(lang) {
     i18next.changeLanguage(lang);
   }
@@ -275,10 +277,13 @@ const DetailsPage = () => {
               const response = await createBookMark({ _id: fundraiser._id });
               if (response) {
                 setBookMarked(true);
+                dispatch(updateUserDetails(response));
               }
             }}
           >
-            {bookMarked ? 'Bookmarked' : 'Bookmark'}
+            {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
+              ? 'Bookmarked'
+              : 'Bookmark'}
           </Label>
         </div>
 
@@ -365,12 +370,16 @@ const DetailsPage = () => {
       <div className="ui comments" style={{ marginLeft: 150, marginTop: 100 }}>
         <h3 className="ui dividing header">Comments</h3>
         {fundraiserComments.length > 0 &&
-          fundraiserComments.map(({ name, textfield, date }) => {
+          fundraiserComments.map(({ name, textfield, date, image }) => {
             return (
               <>
                 <div className="comment">
                   <div className="content" style={{ display: 'flex' }}>
-                    <img src="/images/avatar/small/elliot.jpg" alt="" />
+                    <Image
+                      circular
+                      style={{ height: '2rem', padding: 0, display: 'flex' }}
+                      src={image ? image : ''}
+                    />
                     <strong style={{ paddingLeft: '2rem' }}>{name}</strong>
                     <div class="metadata"></div>
                     <span style={{ color: 'gray' }}>
@@ -402,6 +411,7 @@ const DetailsPage = () => {
                     {
                       name: getName.name,
                       textfield: commentTextArea.current.value,
+                      image: loginSuccess.image,
                       date: momentToday,
                     },
                   ],

@@ -28,6 +28,30 @@ const getAllFundraisers = async (req, res) => {
         $in: writers,
       },
     })
+
+      .skip(skip)
+      .limit(limit)
+      .exec((err, docs) => {
+        if (err) res.status(400).send({ error: err.message });
+        res.status(201).send({ docs, count: docs.length });
+      });
+    return;
+  }
+
+  if (req.body.bookmarked) {
+    // // const foundUser = await User.findOne({ userId: req.user.userId });
+    // console.log('fired');
+    // // const foundWriters = await User.find({
+    // //   _id: {
+    // //     $in: req.body.bookmarked,
+    // //   },
+    // // });
+    // const writers = foundWriters.map((user) => user.userId);
+    Fundraiser.find({
+      _id: {
+        $in: req.body.bookmarked,
+      },
+    })
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -207,7 +231,7 @@ const bookmarkFundraisers = async (req, res) => {
     { userId: req.user.userId },
     { $push: { bookmarked: req.body._id } },
     { new: true },
-  );
+  ).populate('bookmarked');
 
   res.status(200).send(bookmarkedFundraiser);
   try {
@@ -215,7 +239,6 @@ const bookmarkFundraisers = async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAllFundraisers,

@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const userExists = await User.findOne({ userId }).populate('following');
+    const userExists = await User.findOne({ userId }).populate('following').populate('bookmarked')
 
     if (!userExists) {
       //has not signed in before
@@ -115,7 +115,9 @@ const getUserDetails = async (req, res) => {
   try {
     console.log('registering', req.body, req.user);
 
-    const userFound = await User.findOne({ userId: req.params.id }).populate('following')
+    const userFound = await User.findOne({ userId: req.params.id })
+      .populate('following')
+      .populate('bookmarked');
 
     // console.log('user', userFound);
     res.status(201).send(userFound);
@@ -180,7 +182,7 @@ const getAccountDetails = async (req, res) => {
 
     const userFound = await User.findOne({ userId: req.user }).populate(
       'following'
-    );
+    ).populate('bookmarked')
 
     res.status(201).send(userFound);
   } catch (error) {
