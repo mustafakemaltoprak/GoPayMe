@@ -15,12 +15,14 @@ import {
 } from 'semantic-ui-react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { fetchData } from '../services/fundraisers-services';
+import Loader from './Loader';
 
 const Following = ({ favorites }) => {
   const [data, setData] = useState([]);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(6);
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { loginSuccess } = useSelector((state) => state.user);
 
@@ -33,12 +35,13 @@ const Following = ({ favorites }) => {
   };
 
   useEffect(() => {
+    setLoading(true)
     const variables = {
       skip: skip,
       limit: limit,
       following: favorites ? '' : loginSuccess.following,
       bookmarked: favorites ? loginSuccess.bookmarked : '',
-      categories: loginSuccess.categories
+      categories: loginSuccess.categories,
     };
     // if (!favorites) {
     fetchData(variables).then((response) => {
@@ -47,6 +50,7 @@ const Following = ({ favorites }) => {
 
       //  dispatch(fetchFundraisers([...data, ...response.docs]));
       setData([...data, ...response.docs]);
+      setLoading(false);
       // console.log('fetched data', response)
       // });
     });
@@ -57,34 +61,40 @@ const Following = ({ favorites }) => {
   console.log('foloowing data', data);
 
   return (
-    <div
-      attached="bottom"
-      style={{ padding: '2rem', border: '1px red solid' }}
-      className="cardgrid"
-    >
-      {
-        <>
-          {data.length > 0 ? (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div
+          attached="bottom"
+          style={{ padding: '2rem', border: '1px red solid' }}
+          className="cardgrid"
+        >
+          {
             <>
-              {data.map((dataItem) => (
-                <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-              ))}
-              {count >= limit ? (
-                <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                  load more
-                </Label>
+              {data.length > 0 ? (
+                <>
+                  {data.map((dataItem) => (
+                    <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                  ))}
+                  {count >= limit ? (
+                    <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                      load more
+                    </Label>
+                  ) : (
+                    <p style={{ textAlign: 'center' }}>
+                      Your following hasnt created anymore followers{' '}
+                    </p>
+                  )}
+                </>
               ) : (
-                <p style={{ textAlign: 'center' }}>
-                  Your following hasnt created anymore followers{' '}
-                </p>
+                <p>People you follow have not created any fundraisers</p>
               )}
             </>
-          ) : (
-            <p>People you follow have not created any fundraisers</p>
-          )}
-        </>
-      }
-    </div>
+          }
+        </div>
+      )}
+    </>
   );
 };
 

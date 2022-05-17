@@ -11,6 +11,7 @@ import {
   Checkbox,
   Dropdown,
   Label,
+  Loader,
 } from 'semantic-ui-react';
 import { fetchData } from '../services/fundraisers-services';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,7 @@ const Home = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(6);
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = (id) => {
     history.push(`/fundraiser/${id}`);
@@ -53,6 +55,7 @@ const Home = () => {
     // return { ...prev, [arg]: true };
   };
   useEffect(() => {
+    setLoading(true)
     const variables = {
       skip: skip,
       limit: limit,
@@ -64,6 +67,7 @@ const Home = () => {
 
       dispatch(fetchFundraisers([...data, ...response.docs]));
       setData([...data, ...response.docs]);
+      setLoading(false)
       // console.log('fetched data', response)
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,46 +140,49 @@ const Home = () => {
         </Menu.Menu>
       </Menu>
 
-      {currentPage['Explore'] && (
-        <>
-          <div attached="bottom" style={{ padding: '2rem', border: '1px red solid' }}>
-            <div className="cardgrid">
-              {!toggle && (
-                <>
-                  {data.length > 0 &&
-                    data.map((dataItem) => (
-                      <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-                    ))}
-                </>
-              )}
-            </div>
-            {!toggle && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  border: '1px green solid',
-                }}
-              >
-                {' '}
-                {count >= limit ? (
-                  <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                    load more
-                  </Label>
-                ) : (
-                  <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
+      {currentPage['Explore'] &&
+        (loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div attached="bottom" style={{ padding: '2rem', border: '1px red solid' }}>
+              <div className="cardgrid">
+                {!toggle && (
+                  <>
+                    {data.length > 0 &&
+                      data.map((dataItem) => (
+                        <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                      ))}
+                  </>
                 )}
               </div>
-            )}
-          </div>
-          {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
-        </>
-      )}
+              {!toggle && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: '1px green solid',
+                  }}
+                >
+                  {' '}
+                  {count >= limit ? (
+                    <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                      load more
+                    </Label>
+                  ) : (
+                    <p style={{ textAlign: 'center', marginTop: '2rem' }}>No more fundraisers</p>
+                  )}
+                </div>
+              )}
+            </div>
+            {toggle && <div>{data.length > 0 && <Maps data={data} key={8888} />}</div>}
+          </>
+        ))}
 
       {currentPage['Following'] && <Following />}
 
-      {currentPage['Favorites'] && <Following favorites={true}/>}
+      {currentPage['Favorites'] && <Following favorites={true} />}
     </>
   );
 };

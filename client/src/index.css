@@ -3,11 +3,11 @@
 body {
   margin: 0;
   font-family: Abel, Arial, Verdana, sans-serif !important;
-  background:   #cff2dc !important;
+  background: #cff2dc !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas,'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 input[type='text']:focus,
@@ -21,12 +21,12 @@ h3,
 h4,
 h5,
 h6,
-.metrics-text, p {
+.metrics-text,
+p {
   /* margin: 0 0 30px; */
   color: #444 !important;
   /* width: 100%; */
 }
-
 
 form p {
   color: rgb(184, 109, 109);
@@ -38,19 +38,19 @@ form p {
 }
 
 .ui.fixed.menu {
-   background: #cff2dc !important;
-     background: #fff;
-     padding: .5rem 0;
+  background: #cff2dc !important;
+  background: #fff;
+  padding: 0.5rem 0;
 }
 
 .enclosed {
-background: #444;
-color: #cff2dc;
- padding: 5px 5px;
+  background: #444;
+  color: #cff2dc;
+  padding: 5px 5px;
 }
 
 .ui .vertical {
-   background: #cff2dc !important;
+  background: #cff2dc !important;
 }
 
 .ui a {
@@ -58,14 +58,14 @@ color: #cff2dc;
   justify-content: s;
 }
 
-
 .comment > * {
- padding-right: .9rem;
+  padding-right: 0.9rem;
 }
 
-.payments-button, .toggle-btn {
+.payments-button,
+.toggle-btn {
   color: white !important;
-  background:  #753BBD !important;
+  background: #753bbd !important;
 }
 
 .comment-message {
@@ -77,7 +77,6 @@ color: #cff2dc;
   display: grid !important;
   /* color: #4e567d; */
   grid-template-columns: 45% 55%;
- 
 }
 
 .details-col1 > * {
@@ -88,8 +87,6 @@ color: #cff2dc;
   background: wheat !important;
 }
 
-
-
 /* .details > * {
   border: 2px solid green;
 } */
@@ -98,7 +95,6 @@ color: #cff2dc;
   grid-template-columns: 30% 35% 35%;
   /* background: #fff; */
 }
-
 
 /* *,
 body,
@@ -109,23 +105,22 @@ body,
   box-sizing: border-box !important;
  background: linear-gradient(45deg, #92bCa6, #A2CCB6);
    /* background: linear-gradient(#dE685E, #EE786E); */
-     /* background: linear-gradient(#f8f8f8, #fff); */
-      /* background: linear-gradient(45deg, #92bCa6, #A2CCB6); */
-      /* linear-gradient(45deg, #7175da, #9790F2); */
-  /* background-image: linear-gradient(45deg, #7175da, #9790F2); */
-  /* background-image: linear-gradient(
+/* background: linear-gradient(#f8f8f8, #fff); */
+/* background: linear-gradient(45deg, #92bCa6, #A2CCB6); */
+/* linear-gradient(45deg, #7175da, #9790F2); */
+/* background-image: linear-gradient(45deg, #7175da, #9790F2); */
+/* background-image: linear-gradient(
     135deg,
     rgb(24, 107, 115) 0%,
     rgb(33, 138, 174) 69%,
     rgb(32, 167, 172) 89%
   ); */
-  /* justify-content: ; */
+/* justify-content: ; */
 /* }  */
 /* 
 body {
    background: #80afcd;
 } */
-
 
 /* .ui {
      background: linear-gradient(45deg, #92bCa6, #A2CCB6)!important;
@@ -137,7 +132,6 @@ body {
 /* .cool {
   margin: auto !important;
 } */
-
 
 .ui.cool.sidebar {
   /* width: 315px !important; */
@@ -217,7 +211,6 @@ body {
 .fundraiserDonationDescription {
   font-size: x-small;
 }
-
 
 .donationContainer {
   display: flex;
@@ -384,47 +377,40 @@ button:active {
 
 .ui.button {
   /* background: #ff6a5e!important; */
-    /* background:  #753BBD !important; */
+  /* background:  #753BBD !important; */
 }
 
 .ui.label {
   background: #e9f877 !important;
 }
 
-
-
-
-
 .contactName:hover {
-  
   background: gainsboro !important;
   transform: scale(1.03);
   transition: all 0.5ms linear;
-   
 }
 
 .countdown-timer {
-    /* width: 600px; */
-    height: 50px;
-    border: 2px solid black;
+  /* width: 600px; */
+  height: 50px;
+  border: 2px solid black;
 
-    font-family: "Oswald";
-    font-size: 16px;
+  font-family: 'Oswald';
+  font-size: 16px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .countdown-timer span {
-    margin-left: 5px;
-    margin-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .two-numbers {
-    width: 2ch;
+  width: 2ch;
 }
-
 
 /* .container {
     height: 50px;
@@ -436,3 +422,53 @@ button:active {
     /* display: flex;
     justify-content: center; */
 /* }  */
+
+/* // Animation */
+@keyframes flip {
+  0% {
+    transform: rotateY(0);
+  }
+  100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+/* .overlay-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	width: 100vw ;
+  height: 100vh;
+  background-color: #F1F2E6;
+} */
+
+.loader {
+  width: 65px;
+  margin: auto;
+   z-index: 995598;
+}
+.loader__image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loader__coin {
+  animation: flip 0.5s ease-in-out infinite alternate-reverse both;
+}
+
+.loading-overlay {
+  /* display: none; */
+  background: rgba(255, 255, 255, 0.7);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  z-index: 995598;
+  align-items: center;
+  justify-content: center;
+
+}
+

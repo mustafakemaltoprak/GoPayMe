@@ -79,13 +79,13 @@ const GroupMessages = () => {
 
   console.log('all current', allCurrentMessages );
   return (
-    <Grid columns={2} divided>
+    <Grid columns={2} divided style={{marginTop: '1.5rem'}}>
       <Grid.Row>
-        <Grid.Column width={5} style={{ border: '1px solid red', overflow: 'hidden' }}>
+        <Grid.Column width={5} style={{ border: '10px solid gray', overflow: 'hidden' }}>
           {contactNames.length > 0 && (
             <div
               style={{
-                overflowY: 'scroll',
+                overflowY: 'auto',
                 height: '100%',
                 textAlign: 'center',
               }}
@@ -164,7 +164,7 @@ const GroupMessages = () => {
                   justifyContent: 'flex-end',
                   flexDirection: 'column',
                   padding: '1rem',
-                  overflow: 'hidden',
+                  overflowY: 'auto',
                 }}
               >
                 <div

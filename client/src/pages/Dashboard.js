@@ -14,6 +14,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
 
 import 'hammerjs';
+import Loader from '../components/Loader';
 
 // import { xorBy } from 'lodash';
 
@@ -497,6 +498,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <Loader />
     </div>
   );
 }

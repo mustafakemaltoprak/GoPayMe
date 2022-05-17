@@ -39,10 +39,10 @@ const Navbar = () => {
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex' }}>
-          <h1>
+        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <h2 style={{height: '.5rem'}}>
             <span class="enclosed">goPay</span>Me
-          </h1>
+          </h2>
           {/* <Icon name="money" /> */}
           <div style={{ marginLeft: '.5rem' }}>
             <img src="https://www.dropbox.com/s/fzc3fidyxqbqhnj/loader-coin.png?raw=1" alt="" />
