@@ -25,7 +25,7 @@ const SearchComponent = () => {
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>{obj.name}</div>
-            <Label style={{ color: 'green' }} onClick={() => history.push(`profile/${obj.userId}`)}>
+            <Label style={{ color: 'green' }} onClick={() => history.push(`/profile/${obj.userId}`)}>
               view user
             </Label>
           </>

@@ -320,7 +320,7 @@ const DetailsPage = () => {
               }}
             >
               {' '}
-              <Icon name="handshake" /> Approve
+              <Icon name="handshake" /> Approve {likes ?? fundraiser.likes}
             </Label>
             <Label icon="eye">
               <Icon name="eye" />

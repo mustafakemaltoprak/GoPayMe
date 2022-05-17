@@ -39,8 +39,19 @@ const Navbar = () => {
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={()=> history.push('/home', {explore: true})}>
-          <h2 style={{height: '.5rem'}}>
+        <Menu.Item
+          as={Link}
+          to="/home"
+          header
+          style={{
+            border: 'none',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={() => history.push('/home', { explore: true })}
+        >
+          <h2 style={{ height: '.5rem' }}>
             <span class="enclosed">goPay</span>Me
           </h2>
           {/* <Icon name="money" /> */}
@@ -68,7 +79,7 @@ const Navbar = () => {
         {/* </Menu.Item> */}
         <Popup
           trigger={
-            <Menu.Item as="a" style={{marginLeft: 'auto'}}>
+            <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
               <Icon name="mail" /> Messages
               {loginSuccess.notifications.filter((item) => item.typeof === 'message').length >
                 0 && <Label color="red">{loginSuccess.notifications.length}</Label>}
@@ -86,11 +97,14 @@ const Navbar = () => {
               <Segment vertical>
                 <p>New Message from {item.senderName}</p>
                 <p>Sent {moment(item.date).fromNow()}</p>
-                {item.typeof === 'donation' && (
+                {/* {
+                item.typeof === 'donation' && (
                   <p>
                     {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
                   </p>
-                )}
+                )
+                
+                } */}
                 <Label
                   // as={NavLink}
                   // to='/'
@@ -101,6 +115,7 @@ const Navbar = () => {
                 </Label>
                 <Label
                   style={{ cursor: 'pointer' }}
+                  color="red"
                   onClick={async () => {
                     const payload = {
                       senderId: item.senderId,
@@ -118,6 +133,8 @@ const Navbar = () => {
         </Popup>
 
         <Popup
+          basic
+          style={{ padding: '1rem', background: '#cff2dc' }}
           trigger={
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
@@ -149,7 +166,7 @@ const Navbar = () => {
                     })
                   }
                 >
-                  View
+                  view
                 </Label>
                 {item.typeof === 'donation' && (
                   <Label
@@ -163,6 +180,7 @@ const Navbar = () => {
                       const response = await notificationRespond(payload);
                       if (response) dispatch(updateUserDetails(response));
                     }}
+                    color={'red'}
                   >
                     dismiss
                   </Label>

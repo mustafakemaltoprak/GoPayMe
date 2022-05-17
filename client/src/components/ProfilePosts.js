@@ -1,17 +1,21 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Progress, Table } from 'semantic-ui-react';
+import { Icon, Progress, Table } from 'semantic-ui-react';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
+import CreateModal from './CreateModal';
 
-const ProfilePosts = () => {
+const ProfilePosts = ({ dataProp }) => {
   const location = useLocation();
   const url = location.pathname.split('/').slice(-1)[0];
-  
-  const [data, setData] = useState([]);
+
+  const [data, setData] = useState(dataProp ?? []);
+    const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetchUserCreatedFundraisers(url).then((response) => setData(response));
+    if (!dataProp) {
+      fetchUserCreatedFundraisers(url).then((response) => setData(response));
+    }
   }, [url]);
   return (
     <>
@@ -23,6 +27,7 @@ const ProfilePosts = () => {
             <Table.HeaderCell>Progress</Table.HeaderCell>
             <Table.HeaderCell>Current Amount</Table.HeaderCell>
             <Table.HeaderCell>Target Amount</Table.HeaderCell>
+            {dataProp && <Table.HeaderCell>Edit</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
 
@@ -45,7 +50,9 @@ const ProfilePosts = () => {
                   }
                 >
                   {Math.floor((Date.parse(item.deadlineDate) - Date.parse(new Date())) / 86400000) <
-                    1 ? 'Expired' : 'Active'}
+                  1
+                    ? 'Expired'
+                    : 'Active'}
                 </Table.Cell>
                 {/* <Table.Cell>{moment(item?.createdAt).fromNow()}</Table.Cell> */}
                 <Table.Cell>
@@ -64,6 +71,12 @@ const ProfilePosts = () => {
                 </Table.Cell>
                 <Table.Cell>{item.currentAmount}</Table.Cell>
                 <Table.Cell>{item.targetAmount}</Table.Cell>
+                {dataProp && (
+                  <Table.Cell>
+                    <Icon name="edit" onClick={() => setOpen(true)} style={{cursor: 'pointer'}}/> Edit
+                  </Table.Cell>
+                )}
+                {open && <CreateModal open={open} setOpen={setOpen} editData={item} />}
               </Table.Row>
             ))}
           </Table.Body>

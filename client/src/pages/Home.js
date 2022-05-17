@@ -20,16 +20,20 @@ import CardItem from '../components/Card';
 import Maps from '../components/Maps';
 import Following from '../components/Following';
 
-const Home = () => {
+const Home = (props) => {
   const history = useHistory();
+  const location = useLocation()
+    const exploreProp = props.history.location?.state?.explore;
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState({
     Favorites: false,
     Following: false,
-    Explore: true,
+    Explore: exploreProp ?? true,
   });
+
+  console.log('explore',location);
   const [toggle, setToggle] = useState(false);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(6);

@@ -5,7 +5,7 @@ import { createFundraiser } from '../services/fundraisers-services';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { createFundraiserAction } from '../redux/actions/fundraiserActions';
+import { createFundraiserAction, editFundraiserAction } from '../redux/actions/fundraiserActions';
 import upload from '../utils/uploadToCloudinary';
 import { toast } from 'react-toastify';
 
@@ -40,7 +40,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   ];
 
   // categoryOptions = editData.map(item =>  categories)
-const defaultCatArray = [];
+  const defaultCatArray = [];
   if (editData) {
     categoryOptions = categoryOptions.map((item, index) => {
       if (editData.categories.includes(item.value)) {
@@ -52,7 +52,7 @@ const defaultCatArray = [];
     });
   }
 
-  console.log('edit data', categoryOptions);
+  // console.log('edit data', categoryOptions);
   const {
     register,
     handleSubmit,
@@ -65,6 +65,7 @@ const defaultCatArray = [];
   });
 
   const onSubmit = async (formObj) => {
+    console.log('form', new Date());
     setloading(true);
     // console.log(
     //   'first',
@@ -75,7 +76,7 @@ const defaultCatArray = [];
     //   categories.map((category) => category.value),
     // );
     // return
-    if (categories.length < 1) {
+    if (categories.length < 1 && !editData) {
       console.log('yes');
       setCategoriesError(true);
       setTimeout(() => {
@@ -85,29 +86,45 @@ const defaultCatArray = [];
     }
 
     // setloading(true)
-    const profilePicUrl = await upload(formObj.image[0]);
-    // createFundraiser(formObj)
-
+    let profilePicUrl;
+    if (formObj.image.length > 0) {
+      // profilePicUrl = await upload(formObj.image[0]);
+      // createFundraiser(formObj)
+    }
     formObj = {
       ...formObj,
       // image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 1)] : formObj.image[0],
-      image: profilePicUrl,
+      image: profilePicUrl ? profilePicUrl : editData.image,
       writer: loginSuccess.userId,
       writerId: loginSuccess._id,
       token: loginSuccess.token,
       targetAmount: Number(formObj.targetAmount),
-      deadlineDate: new Date(formObj.deadlineDate),
-      categories: categories.map((category) => category.value),
+      deadlineDate: editData ? editData.deadlineDate : new Date(formObj.deadlineDate),
+      categories:
+        editData && categories.length === 0
+          ? loginSuccess.categories
+          : categories.map((category) => category.value),
       // image: image: profilePicUrl
     };
     console.log('formObject', formObj);
-    const data = await createFundraiser(formObj);
-    console.log('our data', data);
-    if (data) {
-      dispatch(createFundraiserAction(data));
-      toast.success('Fundraiser created');
-      setloading(false);
-      setOpen(false);
+
+    if (editData) {
+      const data = await createFundraiser(formObj);
+      if (data) {
+        dispatch(editFundraiserAction(data));
+        toast.success('Fundraiser edited!');
+        setloading(false);
+        setOpen(false);
+      }
+    } else {
+      const data = await createFundraiser(formObj);
+      console.log('our data', data);
+      if (data) {
+        dispatch(createFundraiserAction(data));
+        toast.success('Fundraiser created');
+        setloading(false);
+        setOpen(false);
+      }
     }
 
     // setOpen(false);
@@ -143,6 +160,7 @@ const defaultCatArray = [];
                 {...register('title', {
                   required: 'Name is required.',
                 })}
+                disabled={editData && true}
               />
               <p style={{ color: '#9d0f0f' }}>{errors.title?.message}</p>
             </Form.Field>
@@ -160,6 +178,7 @@ const defaultCatArray = [];
                 {...register('targetAmount', {
                   required: 'Target is required.',
                 })}
+                disabled={editData && true}
               />
               <p style={{ color: '#9d0f0f' }}>{errors.targetAmount?.message}</p>
             </Form.Field>
