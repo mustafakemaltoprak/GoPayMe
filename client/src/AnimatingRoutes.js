@@ -1,6 +1,5 @@
-import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
 import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -16,17 +15,15 @@ import MyProfile from './pages/MyProfile';
 import ScrollToTop from './components/ScrollToTop';
 import { Suspense } from 'react';
 import Loader from './components/Loader';
-import AnimatingRoutes from './AnimatingRoutes';
 
-// import 'leaflet/dist/leaflet.css';
+import {AnimatePresence} from 'framer-motion'
 
-function App() {
+function AnimatingRoutes() {
+  const location = useLocation();
   return (
-    <div>
-      <Router>
-        <ScrollToTop/>
-        <AnimatingRoutes/>
-        {/* <Switch>
+    <>
+      <AnimatePresence>
+        <Switch location={location} key={location.pathname}>
           <Route path="/login" component={Login} />
 
           <Route path="/categories" component={Categories} />
@@ -64,11 +61,10 @@ function App() {
               </>
             )}
           />
-        </Switch> */}
-        <ToastContainer position="bottom-right" autoClose={5000} />
-      </Router>
-    </div>
-  );
+        </Switch>
+      </AnimatePresence>
+    </>
+  )
 }
 
-export default App;
+export default AnimatingRoutes
