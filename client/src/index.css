@@ -290,7 +290,14 @@ button:active {
     width: 2ch;
 }
 
-/* dashboard */
+/* LOGIN PAGE */
+.loginTexting {
+  height: 100% !important;
+  background-color: #F2F4F6;
+  min-height: 100% !important;
+}
+
+/* dashboard PAGE */
 .summaryHeaderContainer .summaryCard {
   flex: 1;
   padding: 10px;
@@ -317,7 +324,7 @@ box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
   outline: none;
 }
 
-/* My Profile */
+/* My Profile PAGE*/
 .avatarSelection .rowImages img {
   /* border: black 1px solid; */
   width: 100px;

@@ -22,8 +22,8 @@ function App() {
   return (
     <div>
       <Router>
-        {/* <Switch> */}
           <AnimatingRoutes />
+        {/* <Switch> */}
           {/* <Route path="/login" component={Login} />
 
           <Route path="/categories" component={Categories} />
