@@ -39,6 +39,7 @@ form p {
 
 .ui.fixed.menu {
    background: #cff2dc !important;
+     background: #fff;
 }
 
 .ui .vertical {
@@ -55,6 +56,11 @@ form p {
  padding-right: .9rem;
 }
 
+.payments-button, .toggle-btn {
+  color: white !important;
+  background:  #753BBD !important;
+}
+
 .comment-message {
   display: grid;
   grid-template-columns: 10% auto;
@@ -67,12 +73,23 @@ form p {
  
 }
 
+.details-col1 > * {
+  padding-bottom: 1rem;
+}
+
+.details input {
+  background: wheat !important;
+}
+
+
+
 /* .details > * {
   border: 2px solid green;
 } */
 .metics {
   display: grid;
   grid-template-columns: 30% 35% 35%;
+  /* background: #fff; */
 }
 
 
@@ -359,12 +376,15 @@ button:active {
 }
 
 .ui.button {
-  background: #ff6a5e!important;
+  /* background: #ff6a5e!important; */
+    /* background:  #753BBD !important; */
 }
 
 .ui.label {
   background: #e9f877 !important;
 }
+
+
 
 
 

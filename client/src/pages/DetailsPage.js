@@ -54,6 +54,18 @@ const DetailsPage = () => {
     toggled ? setToggled(false) : setToggled(true);
   }
 
+  const [categories, setCategories] = useState({
+    10: false,
+    20: false,
+    50: false,
+  });
+
+   const handleCategories = (arg) => {
+     // setCategories(prev => {...prev, egef: !categories[arg]})
+     setCategories((prev) => {
+       return { ...prev, [arg]: !categories[arg] };
+     });
+   };
   //  const responseGoogle = (response) => {
   //    console.log('fired', response);
 
@@ -139,7 +151,7 @@ const DetailsPage = () => {
   }
 
   const handleClick = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     await fetch(`http://localhost:5200/fundraiser/comment/add/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -264,8 +276,9 @@ const DetailsPage = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignContent: 'center',
-            padding: '0 2rem'
+            padding: '0 2rem',
           }}
+          className="details-col1"
         >
           <Image src={fundraiser.image} style={{ height: '20rem' }} />
           <div style={{ display: 'flex' }}>
@@ -312,12 +325,12 @@ const DetailsPage = () => {
           </div>
 
           <p>{fundraiser.description}</p>
-          <div>
-            Fundraiser created by <UserButton dataObj={fundraiser} />
-          </div>
+          <i>
+            This Fundraiser was created by <UserButton dataObj={fundraiser} />
+          </i>
           <h2>Comments</h2>
           <form style={{ display: 'flex' }}>
-            <TextArea ref={commentTextArea} />
+            <textarea ref={commentTextArea} />
             <Button type="submit" icon="edit" onClick={(e) => handleClick(e)}>
               Submit
             </Button>
@@ -335,9 +348,9 @@ const DetailsPage = () => {
                         src={image ? image : ''}
                       />
                     </div>
-                    <div>{name}</div>
+                    <strong>{name}</strong>
                     <div>
-                      <span style={{ color: 'gray' }}>
+                      <span style={{ color: 'gray', fontSize: '1rem' }}>
                         <Moment calendar={calendarStrings}>{date}</Moment>
                       </span>
                     </div>
@@ -359,7 +372,7 @@ const DetailsPage = () => {
             display: 'flex',
             flexDirection: 'column',
             // justifyContent: 'center',
-            
+
             alignContent: 'center',
           }}
         >
@@ -397,12 +410,13 @@ const DetailsPage = () => {
           /> */}
 
             <div
+              className="payments-dashboard"
               style={{
-                border: '1px solid black',
-                background: '#eee',
+                border: 'none',
+                background: '#fff',
                 borderRadius: 15,
                 padding: '2rem',
-                marginTop: '1rem'
+                marginTop: '1rem',
               }}
             >
               <div className="metics">
@@ -444,7 +458,13 @@ const DetailsPage = () => {
                         )}
                       </div>
                       <br></br>
-                      <p style={{}}>Days Left</p>
+                      <p
+                        style={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        Days Left
+                      </p>
                     </>
                   ) : (
                     <>
@@ -463,11 +483,11 @@ const DetailsPage = () => {
                 color="purple"
                 percent={
                   fundraiser.currentAmount
-                    ? (fundraiser.currentAmount / fundraiser.targetAmount) * 100
+                    ? Math.floor((fundraiser.currentAmount / fundraiser.targetAmount) * 100)
                     : 0
                 }
                 progress
-                style={{ margin: '0 2rem 2rem 2rem', height: '2rem' }}
+                style={{ margin: '1rem 2rem 2rem 2rem', height: '2rem' }}
                 content="Raised"
               />
 
@@ -483,13 +503,31 @@ const DetailsPage = () => {
                   // border: '1px yellow solid',
                 }}
               >
-                <Button toggle circular size="tiny">
+                <Button
+                  toggle
+                  circular
+                  size="tiny"
+                  className={`${categories['10'] && 'toggle-btn'}`}
+                  onClick={() => handleCategories('10')}
+                >
                   $10
                 </Button>
-                <Button toggle circular size="tiny">
+                <Button
+                  toggle
+                  circular
+                  size="tiny"
+                  onClick={() => handleCategories('20')}
+                  className={`${categories['20'] && 'toggle-btn'}`}
+                >
                   $20
                 </Button>
-                <Button toggle circular size="tiny">
+                <Button
+                  toggle
+                  circular
+                  size="tiny"
+                  onClick={() => handleCategories('50')}
+                  className={`${categories['50'] && 'toggle-btn'}`}
+                >
                   $50
                 </Button>
               </div>
@@ -517,9 +555,14 @@ const DetailsPage = () => {
                   // border: '1px yellow solid',
                 }}
               >
-                <input type='number' ref={dollarDonationAmount} placeholder="Enter $ for Donation"  style={{padding: '0.5rem', border:  'none'}}/>
+                <input
+                  type="number"
+                  ref={dollarDonationAmount}
+                  placeholder="Enter $ for Donation"
+                  style={{ padding: '0.5rem', border: 'none', background: 'white' }}
+                />
 
-                <Button className="payButton" onClick={toggle}>
+                <Button className="payments-button" onClick={toggle}>
                   Submit Payment
                 </Button>
               </div>
@@ -558,7 +601,7 @@ const DetailsPage = () => {
                 {previousDonations.length > 0 ? (
                   <div
                     style={{
-                      overflow: 'scroll',
+                      overflowY: 'scroll',
 
                       // border: '1px yellow solid',
                     }}
