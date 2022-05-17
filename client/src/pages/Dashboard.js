@@ -13,6 +13,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
 
 import 'hammerjs';
+import parse from 'html-react-parser';
 
 // import { xorBy } from 'lodash';
 
@@ -178,10 +179,25 @@ function Dashboard() {
     console.log('first loading dashboard')
   }
 
+  let leftChartText = "";
   const handleOnChange = (arg) => {
+    console.log('leftChartText arg', arg.target.value);
     let testObj = JSON.parse(arg.target.value);
     setChartPickedByUser(testObj);
+    if (arg.target.value === JSON.stringify(dataPieChart)) {
+      leftChartText = "Fundraisers";
+    } else if (arg.target.value === JSON.stringify(dataPieChart2)) {
+      leftChartText = "Donators";
+    } else if (arg.target.value === JSON.stringify(dataPieChart3)) {
+      leftChartText = "Views";
+    } else {
+      leftChartText = "";
+    }
+    console.log('leftChartText', leftChartText);
+    return leftChartText
   };
+  const dynamicStringSpan = '<p>{leftChartText}</p>';
+
 
   const labelContent = (e) => e.category;
 
@@ -240,8 +256,9 @@ function Dashboard() {
         return new Date(donation.date ).getTime() > (new Date().getTime() - (24*60*60*1000));
       })
       const sumLast24h = last24hDonations.reduce((acc, curr) => acc+parseInt(curr.amount), 0);
-      console.log(sumLast24h);
+      console.log(sumLast24h); //TO BE DELETED
       setLastTwentyFourHours(sumLast24h)
+      console.log('fired last 24HS', lastTwentyFourHours); //TO BE DELETED
 
       for (let i = 0; i < data.length; i++) {
         setTotalRaised((prev) => prev + data[i].currentAmount);
@@ -357,7 +374,7 @@ function Dashboard() {
                   <Icon name="small money bill alternate outline" style={{'margin-left': '3px',
                   // color: '#E0A030',
                   }} />
-                  ${totalRaised}
+                  {totalRaised}$
               </span>
             </div>
             <div className="dataField">
@@ -520,10 +537,25 @@ function Dashboard() {
               </select>
               <Grid.Row>
                 <Grid.Column>
+                  <div style={{position: 'absolute',
+                    marginTop: '46%',
+                    marginLeft: '46%',
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -50%)'
+                    }}>
+                    {/* <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
+                      fontSize: '1.2em',
+                      fontVariantNumeric: 'slashed-zero',
+                      color: '#ff9933',
+                      }}>
+                      {parse(dynamicStringSpan)}<br></br>statistics
+                    </span> */}
+                  </div>
                   <Pie
                     data={chartPickedByUser}
                     options={{
-                      cutout: '90%',
+                      cutout: '60%',
+                      borderRadius: '30',
                       responsive: true,
                       animation: {
                         animationRotate: true,
@@ -559,7 +591,7 @@ function Dashboard() {
                         fontVariantNumeric: 'slashed-zero',
                         color: '#ff9933',
                         }}>
-                        {lastTwentyFourHours} raised<br></br>last 24 hours
+                        {lastTwentyFourHours}$ raised<br></br>last 24 hours
                       </span>
                     </div>
                   <Doughnut

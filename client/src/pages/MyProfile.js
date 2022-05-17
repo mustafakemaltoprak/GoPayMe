@@ -37,8 +37,7 @@ const MyProfile = ({history}) => {
     Requests: requestsProp ?? false,
     Messages: messageProp ?? false,
   });
-
-
+  console.log('login OBJ', loginSuccess)//To Be Deleted
 
   const [currentNote, setCurrentNote] = useState('');
 
@@ -49,6 +48,8 @@ const MyProfile = ({history}) => {
   const avatar4 = 'https://react.semantic-ui.com/images/avatar/large/molly.png';
   const avatar5 = 'https://react.semantic-ui.com/images/avatar/large/jenny.jpg';
   const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
+  const avatar7 = 'https://react.semantic-ui.com/images/avatar/large/joe.jpg';
+  const avatar8 = 'https://react.semantic-ui.com/images/avatar/large/ade.jpg';
   const [image, setImage] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -181,54 +182,55 @@ const MyProfile = ({history}) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 border: 'black 2px solid',
-                width: '130px%',
+                width: '900px',
               }}
             >
-              <div className="currentCardContainer" style={{ flex: '1' }}>
-                <Card style={{width: '200px', height: 'auto'}}>
-                  <Image src={image} wrapped ui={false} style={{'border-radius': '50%'}} />
+              <div className="currentCardContainer" style={{ flex: '1', margin: '0 !important', justifyContent: 'center', alignItems: 'center'}}>
+                <Card style={{width: '200px', height: 'auto', }}>
+                  <Image src={image}
+                    wrapped ui={false}
+                    size='small circular'
+                    // style={{'border-radius': '50%'}}
+                    />
                   <Card.Content>
-                    <Card.Header>Matthew</Card.Header>
+                    <Card.Header>{loginSuccess.name}</Card.Header>
                     <Card.Meta>
-                      <span className="date">Joined in 2015</span>
+                      <span className="userCardEmail" style={{ color: 'black' }}>{loginSuccess.email}</span>
                     </Card.Meta>
-                    <Card.Description>
+                    {/* <Card.Description>
                       Matthew is a musician living in Nashville
                       <Icon name="edit" style={{'margin-left': '3px'}} />
-                    </Card.Description>
+                    </Card.Description> */}
                   </Card.Content>
-                  <Card.Content extra>
+                  <Card.Content extra style={{ 'text-align': 'center', color: 'black' }}>
                     <Icon name="user" />
                     Your Categories List:
-                    <ul style={{'text-align': 'center', 'list-style-type': 'none', 'text-transform': 'capitalize'}}>
+                    <ul style={{'display': 'block',
+                      'list-style-type': 'none',
+                      'text-transform': 'capitalize',
+                      // 'margin-right': 'auto',
+                      // 'margin-left': 'auto',
+                      // border: 'black 1px solid',
+                      }}>
                       {selectedCategories.map(item => (
-                        <li key={item}>{item}</li>
+                        <li key={item} style={{marginRight: '30%',
+                          // border: 'red 1px solid',
+                          }}>{item}</li>
                       ))}
                     </ul>
                   </Card.Content>
                 </Card>
-                <div>
-                  <a href="/profile">
-                    <Button primary>
-                      <Icon name="user"></Icon>
-                    </Button>
-                  </a>
-                  <a href="/messages">
-                    <Button secondary>
-                      <Icon name="rocketchat"></Icon>
-                    </Button>
-                  </a>
-                </div>
               </div>
               <div className="userContentContainer"
                 style={{
                   flex: '2',
                   display: 'flex',
-                  border: 'black 1px solid',
+                  border: 'green 1px solid',
                   flexDirection: 'column',
+                  maxWidth: '100%',
                 }}
               >
-                <h2>Edit your information</h2>
+                <h2 style={{textAlign: 'center',}}>Edit your information</h2>
                 <div
                   className="avatarSelection"
                   style={{
@@ -243,78 +245,55 @@ const MyProfile = ({history}) => {
                       src={avatar1}
                       alt=""
                       onClick={() => handleAvatarSelection(avatar1)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
+                      style={{}}
                     />
                     <img
                       src={avatar2}
                       alt=""
                       onClick={() => handleAvatarSelection(avatar2)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
+                      style={{}}
                     />
                     <img
                       src={avatar3}
                       alt=""
                       onClick={() => handleAvatarSelection(avatar3)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
+                      style={{}}
+                    />
+                    <img
+                      src={avatar4}
+                      alt=""
+                      onClick={() => handleAvatarSelection(avatar4)}
+                      style={{}}
                     />
                   </div>
                   <div className="rowImages"
                     style={{ display: 'flex' }}
                   >
                     <img
-                      src={avatar4}
-                      alt=""
-                      onClick={() => handleAvatarSelection(avatar4)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
-                    />
-                    <img
                       src={avatar5}
                       alt=""
                       onClick={() => handleAvatarSelection(avatar5)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
+                      style={{}}
                     />
                     <img
                       src={avatar6}
                       alt=""
                       onClick={() => handleAvatarSelection(avatar6)}
-                      style={{
-                        width: '130px',
-                        height: '130px',
-                        'border-radius': '50%',
-                        'margin-left': '50px',
-                        'margin-top': '20px',
-                      }}
+                      style={{}}
                     />
+                    <img
+                      src={avatar7}
+                      alt=""
+                      onClick={() => handleAvatarSelection(avatar7)}
+                      style={{}}
+                    />
+                    <img
+                      src={avatar8}
+                      alt=""
+                      onClick={() => handleAvatarSelection(avatar8)}
+                      style={{}}
+                    />
+
                   </div>
                 </div>
 
