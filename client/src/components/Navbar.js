@@ -68,7 +68,7 @@ const Navbar = () => {
         {/* </Menu.Item> */}
         <Popup
           trigger={
-            <Menu.Item as="a">
+            <Menu.Item as="a" style={{marginLeft: 'auto'}}>
               <Icon name="mail" /> Messages
               {loginSuccess.notifications.filter((item) => item.typeof === 'message').length >
                 0 && <Label color="red">{loginSuccess.notifications.length}</Label>}
