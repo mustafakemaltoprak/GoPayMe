@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Grid,
-  Label,
-  Menu,
-  Segment,
-  Card,
-  Image,
-  Icon,
-} from 'semantic-ui-react';
+import { Button, Grid, Label, Menu, Segment, Card, Image, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -31,15 +22,14 @@ const MyProfile = ({history}) => {
 
   const requestsProp = history.location?.state?.requestsProp;
 
-   const socket = useRef();
+  const socket = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState({
-    Account: messageProp || requestsProp ? false: true,
+    Account: messageProp || requestsProp ? false : true,
     Requests: requestsProp ?? false,
     Messages: messageProp ?? false,
   });
-  console.log('login OBJ', loginSuccess)//To Be Deleted
 
   const [currentNote, setCurrentNote] = useState('');
 
@@ -50,24 +40,28 @@ const MyProfile = ({history}) => {
   const avatar4 = 'https://react.semantic-ui.com/images/avatar/large/molly.png';
   const avatar5 = 'https://react.semantic-ui.com/images/avatar/large/jenny.jpg';
   const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
+
   const avatar7 = 'https://react.semantic-ui.com/images/avatar/large/joe.jpg';
   const avatar8 = 'https://react.semantic-ui.com/images/avatar/large/ade.jpg';
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(loginSuccess.image);
+
   const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [categories, setCategories] = useState({
-    charity: false,
-    healthcare: false,
-    art: false,
-    humanitarian: false,
-    animals: false,
-    sports: false,
+    charity: loginSuccess.categories.includes('charity') ?? false,
+    healthcare: loginSuccess.categories.includes('healthcare') ?? false,
+    art: loginSuccess.categories.includes('art') ?? false,
+    humanitarian: loginSuccess.categories.includes('humanitarian') ?? false,
+    animals: loginSuccess.categories.includes('animals') ?? false,
+    sports: loginSuccess.categories.includes('sports') ?? false,
   });
 
   const handleAvatarSelection = async (arg) => {
     const payload = { image: arg };
     try {
-      await avatarUpdate(payload);
+      const response = await avatarUpdate(payload);
+      console.log('response', response);
+      dispatch(updateUserDetails(response));
       setImage(arg);
     } catch (e) {
       console.error(e);
@@ -77,6 +71,7 @@ const MyProfile = ({history}) => {
 
   const handleClick = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
+
     setCategories((prev) => {
       return { ...prev, [arg]: !categories[arg] };
     });
@@ -93,8 +88,16 @@ const MyProfile = ({history}) => {
     console.log('ARRAYY', categoriesArr);
 
     try {
-      await postCategories({ categories: categoriesArr, userId: loginSuccess.userId });
-      setSelectedCategories(categoriesArr);
+      const response = await postCategories({
+        categories: categoriesArr,
+        userId: loginSuccess.userId,
+      });
+
+      if (response) {
+        dispatch(updateUserDetails(response));
+        setSelectedCategories(categoriesArr);
+      }
+      // dispatch(updateUserDetails(response))
     } catch (e) {
       console.error(e);
     }
@@ -109,20 +112,19 @@ const MyProfile = ({history}) => {
     });
   }, []);
 
-     useEffect(() => {
-       socket.current = io('ws://localhost:8900');
-     }, [])
+  useEffect(() => {
+    socket.current = io('ws://localhost:8900');
+  }, []);
 
-    useEffect(() => {
-
-      if(socket.current){
-        console.log('yesssss')
-        socket.current.emit('addUser', loginSuccess.userId);
-        socket.current.on('getUsers', (users) => {
-          console.log('socket users', users);
-        });
-      }
-    }, [loginSuccess]);
+  useEffect(() => {
+    if (socket.current) {
+      console.log('yesssss');
+      socket.current.emit('addUser', loginSuccess.userId);
+      socket.current.on('getUsers', (users) => {
+        console.log('socket users', users);
+      });
+    }
+  }, [loginSuccess]);
 
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
@@ -180,7 +182,8 @@ const MyProfile = ({history}) => {
             style={{ paddingTop: '2rem', border: '1px red solid' }}
             className="cardgrid"
           >
-            <div className="userAvatarContainer"
+            <div
+              className="userAvatarContainer"
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -188,6 +191,7 @@ const MyProfile = ({history}) => {
                 width: '900px',
               }}
             >
+
               <div className="currentCardContainer" style={{ flex: '1', margin: '0 !important', justifyContent: 'center', alignItems: 'center'}}>
                 <Card style={{width: '200px', height: 'auto', }}>
                   <Image src={image}
@@ -208,23 +212,22 @@ const MyProfile = ({history}) => {
                   <Card.Content extra style={{ 'text-align': 'center', color: 'black' }}>
                     <Icon name="user" />
                     Your Categories List:
-                    <ul style={{'display': 'block',
-                      'list-style-type': 'none',
-                      'text-transform': 'capitalize',
-                      // 'margin-right': 'auto',
-                      // 'margin-left': 'auto',
-                      // border: 'black 1px solid',
-                      }}>
-                      {selectedCategories.map(item => (
-                        <li key={item} style={{marginRight: '30%',
-                          // border: 'red 1px solid',
-                          }}>{item}</li>
+                    <ul
+                      style={{
+                        'text-align': 'center',
+                        'list-style-type': 'none',
+                        'text-transform': 'capitalize',
+                      }}
+                    >
+                      {selectedCategories.map((item) => (
+                        <li key={item}>{item}</li>
                       ))}
                     </ul>
                   </Card.Content>
                 </Card>
               </div>
-              <div className="userContentContainer"
+              <div
+                className="userContentContainer"
                 style={{
                   flex: '2',
                   display: 'flex',
@@ -233,7 +236,13 @@ const MyProfile = ({history}) => {
                   maxWidth: '100%',
                 }}
               >
-                <h2 style={{textAlign: 'center',}}>Edit your information</h2>
+                <h2
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  Edit your information
+                </h2>
                 <div
                   className="avatarSelection"
                   style={{
@@ -241,9 +250,7 @@ const MyProfile = ({history}) => {
                     flexDirection: 'column',
                   }}
                 >
-                  <div className="rowImages"
-                    style={{ display: 'flex' }}
-                  >
+                  <div className="rowImages" style={{ display: 'flex' }}>
                     <img
                       src={avatar1}
                       alt=""
@@ -300,9 +307,16 @@ const MyProfile = ({history}) => {
                   </div>
                 </div>
 
-                <div className="categoriesSelection" style={{'margin-top': '25px', border: 'red 1px solid',}}>
+                <div
+                  className="categoriesSelection"
+                  style={{ 'margin-top': '25px', border: 'red 1px solid' }}
+                >
                   <h4>Select your categories</h4>
-                  <Grid columns={3} divided style={{ width: '30rem', 'justify': 'flex-end', margin: 'auto'}}>
+                  <Grid
+                    columns={3}
+                    divided
+                    style={{ width: '30rem', justify: 'flex-end', margin: 'auto' }}
+                  >
                     <Grid.Row>
                       <Grid.Column>
                         <Label

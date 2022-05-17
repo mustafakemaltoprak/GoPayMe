@@ -5,7 +5,7 @@ import { createFundraiser } from '../services/fundraisers-services';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { createFundraiserAction, editFundraiserAction } from '../redux/actions/fundraiserActions';
+import { createFundraiserAction } from '../redux/actions/fundraiserActions';
 import upload from '../utils/uploadToCloudinary';
 import { toast } from 'react-toastify';
 
@@ -50,9 +50,11 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
         return item;
       }
     });
+
+    setCategories(categories);
   }
 
-  // console.log('edit data', categoryOptions);
+  console.log('edit data', categoryOptions);
   const {
     register,
     handleSubmit,
@@ -88,7 +90,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     // setloading(true)
     let profilePicUrl;
     if (formObj.image.length > 0) {
-      // profilePicUrl = await upload(formObj.image[0]);
+      profilePicUrl = await upload(formObj.image[0]);
       // createFundraiser(formObj)
     }
     formObj = {
@@ -99,32 +101,18 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       writerId: loginSuccess._id,
       token: loginSuccess.token,
       targetAmount: Number(formObj.targetAmount),
-      deadlineDate: editData ? editData.deadlineDate : new Date(formObj.deadlineDate),
-      categories:
-        editData && categories.length === 0
-          ? loginSuccess.categories
-          : categories.map((category) => category.value),
+      deadlineDate: new Date(formObj.deadlineDate),
+      categories: categories.map((category) => category.value),
       // image: image: profilePicUrl
     };
     console.log('formObject', formObj);
-
-    if (editData) {
-      const data = await createFundraiser(formObj);
-      if (data) {
-        dispatch(editFundraiserAction(data));
-        toast.success('Fundraiser edited!');
-        setloading(false);
-        setOpen(false);
-      }
-    } else {
-      const data = await createFundraiser(formObj);
-      console.log('our data', data);
-      if (data) {
-        dispatch(createFundraiserAction(data));
-        toast.success('Fundraiser created');
-        setloading(false);
-        setOpen(false);
-      }
+    const data = await createFundraiser(formObj);
+    console.log('our data', data);
+    if (data) {
+      dispatch(createFundraiserAction(data));
+      toast.success('Fundraiser created');
+      setloading(false);
+      setOpen(false);
     }
 
     // setOpen(false);
@@ -160,7 +148,6 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                 {...register('title', {
                   required: 'Name is required.',
                 })}
-                disabled={editData && true}
               />
               <p style={{ color: '#9d0f0f' }}>{errors.title?.message}</p>
             </Form.Field>
@@ -178,7 +165,6 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                 {...register('targetAmount', {
                   required: 'Target is required.',
                 })}
-                disabled={editData && true}
               />
               <p style={{ color: '#9d0f0f' }}>{errors.targetAmount?.message}</p>
             </Form.Field>

@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -12,10 +12,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 // import './i18n';
-
-
-
-
+import ScrollToTop from './components/ScrollToTop';
+import { Loader } from 'semantic-ui-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -25,15 +23,14 @@ const loadingMarkup = (
   </div>
 );
 root.render(
-  
+  <Suspense fallback={<Loader/>}>
     <Provider store={store}>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </GoogleOAuthProvider>
+      {/* <ScrollToTop /> */}
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
-  ,
+  </Suspense>,
 );
 
 // If you want to start measuring performance in your app, pass a function

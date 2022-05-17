@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
+
 // import {
 //   Chart,
 //   ChartLegend,
@@ -13,8 +14,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
 
 import 'hammerjs';
+
 import parse from 'html-react-parser';
 import { motion }from 'framer-motion';
+
+import Loader from '../components/Loader';
 
 // import { xorBy } from 'lodash';
 
@@ -26,6 +30,7 @@ function Dashboard() {
   const [projectsCreated, setProjectsCreated] = useState(0);
   const [totalRaised, setTotalRaised] = useState(0);
   const [donators, setDonators] = useState(0);
+   const [loading, setLoading] = useState(false);
   const [views, setViews] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
@@ -175,6 +180,7 @@ function Dashboard() {
   // first load of dashboard
   if (!chartPickedByUser) {
     setProjectNames(data.map((item) => item.title));
+    
     setProjectRaised(data.map((item) => item.currentAmount));
     setChartPickedByUser(dataPieChart);
     console.log('first loading dashboard')
@@ -220,11 +226,13 @@ function Dashboard() {
 
 
   useEffect(() => {
+    setLoading(true)
     if (fundraisers.length > 0) {
       const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
       setData(filteredFundraisers);
     }
     setLoaded(true);
+    setLoading(false)
   }, [fundraisers, loginSuccess]);
 
 

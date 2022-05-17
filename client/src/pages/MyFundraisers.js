@@ -4,6 +4,7 @@ import CardItem from '../components/Card';
 import CreateModal from '../components/CreateModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import ProfilePosts from '../components/ProfilePosts';
 
 import { motion }from 'framer-motion';
 
@@ -45,15 +46,17 @@ const Myfundraisers = () => {
       <div
         attached="bottom"
         style={{ padding: '2rem',marginTop: '3rem', border: '1px red solid' }}
-        className="cardgrid"
+        // className="cardgrid"
       >
         {data.length > 0 ? (
-          data.map((dataItem) => <CardItem data={dataItem} />)
+           <ProfilePosts dataProp = {data}/>
+          // data.map((dataItem) => <CardItem data={dataItem} />)
         ) : (
           <p>You havent published any data yet</p>
         )}
 
         {/* // } */}
+       
       </div>
     </motion.div>
   );

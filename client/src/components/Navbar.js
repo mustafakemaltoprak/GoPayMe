@@ -37,12 +37,27 @@ const Navbar = () => {
 
   console.log('loginSuccess', loginSuccess);
   return (
-    <Menu fixed="top" style={{ zIndex: 10000 }} borderless>
+    <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={Link} to="/home" header style={{ border: 'none' }}>
-          <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
-          GoPayME
-          <Icon name="money" />
+        <Menu.Item
+          as={Link}
+          to="/home"
+          header
+          style={{
+            border: 'none',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={() => history.push('/home', { explore: true })}
+        >
+          <h2 style={{ height: '.5rem' }}>
+            <span class="enclosed">goPay</span>Me
+          </h2>
+          {/* <Icon name="money" /> */}
+          <div style={{ marginLeft: '.5rem' }}>
+            <img src="https://www.dropbox.com/s/fzc3fidyxqbqhnj/loader-coin.png?raw=1" alt="" />
+          </div>
         </Menu.Item>
         <Menu.Item header>
           {/* <Search
@@ -64,7 +79,7 @@ const Navbar = () => {
         {/* </Menu.Item> */}
         <Popup
           trigger={
-            <Menu.Item as="a">
+            <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
               <Icon name="mail" /> Messages
               {loginSuccess.notifications.filter((item) => item.typeof === 'message').length >
                 0 && <Label color="red">{loginSuccess.notifications.length}</Label>}
@@ -82,11 +97,14 @@ const Navbar = () => {
               <Segment vertical>
                 <p>New Message from {item.senderName}</p>
                 <p>Sent {moment(item.date).fromNow()}</p>
-                {item.typeof === 'donation' && (
+                {/* {
+                item.typeof === 'donation' && (
                   <p>
                     {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
                   </p>
-                )}
+                )
+                
+                } */}
                 <Label
                   // as={NavLink}
                   // to='/'
@@ -97,6 +115,7 @@ const Navbar = () => {
                 </Label>
                 <Label
                   style={{ cursor: 'pointer' }}
+                  color="red"
                   onClick={async () => {
                     const payload = {
                       senderId: item.senderId,
@@ -114,12 +133,13 @@ const Navbar = () => {
         </Popup>
 
         <Popup
+          basic
+          style={{ padding: '1rem', background: '#cff2dc' }}
           trigger={
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
-              {loginSuccess.notifications.filter((item) => item.typeof !== 'message') > 0 && (
-                <Label color="teal">{loginSuccess.notifications.length}</Label>
-              )}
+              {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length >
+                0 && <Label color="teal">{loginSuccess.notifications.length}</Label>}
             </Menu.Item>
           }
           flowing
@@ -146,7 +166,7 @@ const Navbar = () => {
                     })
                   }
                 >
-                  View
+                  view
                 </Label>
                 {item.typeof === 'donation' && (
                   <Label
@@ -160,6 +180,7 @@ const Navbar = () => {
                       const response = await notificationRespond(payload);
                       if (response) dispatch(updateUserDetails(response));
                     }}
+                    color={'red'}
                   >
                     dismiss
                   </Label>
@@ -175,11 +196,7 @@ const Navbar = () => {
           </Label>
         </Menu.Item> */}
         <Menu.Item>
-          <Image
-            avatar
-            spaced="right"
-            src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-          />
+          <Image avatar spaced="right" src={loginSuccess.image} />
           <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to={`/account`} text="Account" icon="user" />
