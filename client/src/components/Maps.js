@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Grid, Progress, Segment } from 'semantic-ui-react';
 import MapContainerDiv from './MapContainer';
-import L from 'leaflet'
+import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap, Popup } from 'react-leaflet';
 import CardItem from './Card';
 // import { MapContainer, TileLayer } from 'react-leaflet';
@@ -10,10 +10,12 @@ const Maps = ({ data }) => {
   data = data.filter((item) => !!item.location);
   console.log('ddddddd', data);
 
-  const dataCoords = data.map((place)=> place.location.coordinates)
+  const dataCoords = data.map(
+    (place) => [place.location.coordinates[1],
+    place.location.coordinates[0]],
+  );
 
-   console.log('ddegegegd', dataCoords);
-
+  console.log('ddegegegd', dataCoords);
 
   //  const onClickShowMarker = (params) => {
   //    const map = mapRef.current;
@@ -87,7 +89,12 @@ const Maps = ({ data }) => {
                     style={{ cursor: 'pointer' }}
                     className="map-card"
                     // onClick={() => onClickShowMarker(dataItem.location.coordinates)}
-                    onClick={() => handleClick(index, dataItem.location.coordinates)}
+                    onClick={() =>
+                      handleClick(index, [
+                        dataItem.location.coordinates[1],
+                        dataItem.location.coordinates[0],
+                      ])
+                    }
                   >
                     {dataItem.title}
                   </Segment>
@@ -121,7 +128,7 @@ const Maps = ({ data }) => {
                   console.log('inner', markerRefs);
                 }}
                 key={place.id}
-                position={place.location.coordinates}
+                position={[place.location.coordinates[1], place.location.coordinates[0]]}
                 // eventHandlers={{ click: () => showPreview
               >
                 <Popup>
@@ -147,8 +154,7 @@ const Maps = ({ data }) => {
                     </Progress>
                   </Segment>{' '} */}
                   {/* <div style={{ height: '5rem' }}> */}
-            
-                    <CardItem data={place} maps={true} />
+                  <CardItem data={place} maps={true} />
                   {/* </div> */}
                 </Popup>
               </Marker>
