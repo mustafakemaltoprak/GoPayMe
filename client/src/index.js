@@ -13,6 +13,7 @@ import { store, persistor } from './store';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 // import './i18n';
 import ScrollToTop from './components/ScrollToTop';
+import { Loader } from 'semantic-ui-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,12 +23,14 @@ const loadingMarkup = (
   </div>
 );
 root.render(
-  <Provider store={store}>
-    {/* <ScrollToTop /> */}
-    <PersistGate persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
+  <Suspense fallback={<Loader/>}>
+    <Provider store={store}>
+      {/* <ScrollToTop /> */}
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </Suspense>,
 );
 
 // If you want to start measuring performance in your app, pass a function

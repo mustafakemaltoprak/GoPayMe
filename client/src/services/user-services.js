@@ -118,7 +118,7 @@ export const postCategories = async (payload) => {
     config,
   );
 
-  if (data.success) {
+  if (data) {
     return data;
   } else {
     return false;

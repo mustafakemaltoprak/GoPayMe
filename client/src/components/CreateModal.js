@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
 import { createFundraiserAction } from '../redux/actions/fundraiserActions';
-import {toast} from 'react-toastify'
+import upload from '../utils/uploadToCloudinary';
+import { toast } from 'react-toastify';
 
 const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const [loading, setloading] = useState(false);
@@ -16,9 +17,9 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const dispatch = useDispatch();
 
   const images = [
-    'https://react.semantic-ui.com/images/avatar/large/daniel.jpg',
-    'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-    'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
+    'https://c0.wallpaperflare.com/preview/483/210/436/car-green-4x4-jeep.jpg',
+    // 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+    // 'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
   ];
 
   const defaultValues = editData ?? {
@@ -30,7 +31,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     image: '',
   };
 
-  const categoryOptions = [
+  let categoryOptions = [
     { value: 'charity', label: 'Charity', color: '#00B8D9' },
     { value: 'healthcare', label: 'Healthcare', color: '#0052CC' },
     { value: 'art', label: 'Art', color: '#5243AA' },
@@ -38,6 +39,20 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     { value: 'animals', label: 'Animals', color: '#FF8B00' },
   ];
 
+  // categoryOptions = editData.map(item =>  categories)
+const defaultCatArray = [];
+  if (editData) {
+    categoryOptions = categoryOptions.map((item, index) => {
+      if (editData.categories.includes(item.value)) {
+        defaultCatArray.push(item);
+        return { ...item, isFixed: true };
+      } else {
+        return item;
+      }
+    });
+  }
+
+  console.log('edit data', categoryOptions);
   const {
     register,
     handleSubmit,
@@ -70,38 +85,38 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     }
 
     // setloading(true)
-
+    const profilePicUrl = await upload(formObj.image[0]);
     // createFundraiser(formObj)
 
     formObj = {
       ...formObj,
-      image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 3)] : formObj.image[0],
+      // image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 1)] : formObj.image[0],
+      image: profilePicUrl,
       writer: loginSuccess.userId,
       writerId: loginSuccess._id,
       token: loginSuccess.token,
       targetAmount: Number(formObj.targetAmount),
       deadlineDate: new Date(formObj.deadlineDate),
       categories: categories.map((category) => category.value),
+      // image: image: profilePicUrl
     };
     console.log('formObject', formObj);
-    const  data  = await createFundraiser(formObj);
-    console.log('our data',data)
+    const data = await createFundraiser(formObj);
+    console.log('our data', data);
     if (data) {
-      
       dispatch(createFundraiserAction(data));
-      toast.success('Fundraiser created')
-       setloading(false);
+      toast.success('Fundraiser created');
+      setloading(false);
       setOpen(false);
     }
 
-
     // setOpen(false);
-   
+
     // setData(formObj);
     // reset();
   };
 
-  console.log('editmode', editData)
+  console.log('editmode', editData);
   const handleSelectChange = (valuesArr) => {
     setCategories(valuesArr);
 
@@ -136,7 +151,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
               <label>
                 Target Amount<span style={{ color: 'red' }}>*</span>
               </label>
-             
+
               <input
                 placeholder="Target Amount"
                 // value={email}
@@ -154,7 +169,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
                 Categories<span style={{ color: 'red' }}>*</span>
               </label>
               <Select
-                defaultValue={editData ? editData.categories : []}
+                defaultValue={editData ? defaultCatArray : []}
                 isMulti
                 name="colors"
                 options={categoryOptions}

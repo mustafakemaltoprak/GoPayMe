@@ -7,6 +7,7 @@ import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 const ProfilePosts = () => {
   const location = useLocation();
   const url = location.pathname.split('/').slice(-1)[0];
+  
   const [data, setData] = useState([]);
 
   useEffect(() => {

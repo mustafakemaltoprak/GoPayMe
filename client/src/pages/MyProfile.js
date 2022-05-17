@@ -37,16 +37,18 @@ const MyProfile = ({ history }) => {
   const avatar4 = 'https://react.semantic-ui.com/images/avatar/large/molly.png';
   const avatar5 = 'https://react.semantic-ui.com/images/avatar/large/jenny.jpg';
   const avatar6 = 'https://react.semantic-ui.com/images/avatar/large/matthew.png';
-  const [image, setImage] = useState('');
+
+  console.log('successs', loginSuccess.categories);
+  const [image, setImage] = useState(loginSuccess.image);
   const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [categories, setCategories] = useState({
-    charity: false,
-    healthcare: false,
-    art: false,
-    humanitarian: false,
-    animals: false,
-    sports: false,
+    charity: loginSuccess.categories.includes('charity') ?? false,
+    healthcare: loginSuccess.categories.includes('healthcare') ?? false,
+    art: loginSuccess.categories.includes('art') ?? false,
+    humanitarian: loginSuccess.categories.includes('humanitarian') ?? false,
+    animals: loginSuccess.categories.includes('animals') ?? false,
+    sports: loginSuccess.categories.includes('sports') ?? false,
   });
 
   const handleAvatarSelection = async (arg) => {
@@ -86,9 +88,11 @@ const MyProfile = ({ history }) => {
         userId: loginSuccess.userId,
       });
 
-      dispatch(updateUserDetails(response));
+      if (response) {
+        dispatch(updateUserDetails(response));
+        setSelectedCategories(categoriesArr);
+      }
       // dispatch(updateUserDetails(response))
-      setSelectedCategories(categoriesArr);
     } catch (e) {
       console.error(e);
     }
@@ -185,12 +189,14 @@ const MyProfile = ({ history }) => {
                 <Card style={{ width: '200px', height: 'auto' }}>
                   <Image src={image} wrapped ui={false} style={{ 'border-radius': '50%' }} />
                   <Card.Content>
-                    <Card.Header>Matthew</Card.Header>
+                    <Card.Header>{loginSuccess.name}</Card.Header>
                     <Card.Meta>
-                      <span className="date">{loginSuccess.createdAt ? loginSuccess.createdAt : 'Joined in 2015'}</span>
+                      <span className="date">
+                        {loginSuccess.createdAt ? loginSuccess.createdAt : 'Joined in 2015'}
+                      </span>
                     </Card.Meta>
                     <Card.Description>
-                      Matthew is a musician living in Nashville
+                      {loginSuccess.name}is a musician living in Nashville
                       <Icon name="edit" style={{ 'margin-left': '3px' }} />
                     </Card.Description>
                   </Card.Content>
@@ -232,7 +238,13 @@ const MyProfile = ({ history }) => {
                   flexDirection: 'column',
                 }}
               >
-                <h2>Edit your information</h2>
+                <h2
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  Edit your information
+                </h2>
                 <div
                   className="avatarSelection"
                   style={{
@@ -249,6 +261,8 @@ const MyProfile = ({ history }) => {
                         width: '130px',
                         height: '130px',
                         'border-radius': '50%',
+                        border: '3px solid green',
+                        cursor: 'pointer',
                         'margin-left': '50px',
                         'margin-top': '20px',
                       }}

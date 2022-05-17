@@ -94,6 +94,7 @@ const getAllFundraisers = async (req, res) => {
           },
         }
       : {};
+  console.log('body',req.body)
   Fundraiser.find(options)
     .populate('writerId')
     .skip(skip)

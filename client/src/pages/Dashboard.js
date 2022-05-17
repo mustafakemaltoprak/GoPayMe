@@ -26,6 +26,7 @@ function Dashboard() {
   const [projectsCreated, setProjectsCreated] = useState(0);
   const [totalRaised, setTotalRaised] = useState(0);
   const [donators, setDonators] = useState(0);
+   const [loading, setLoading] = useState(false);
   const [views, setViews] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
@@ -174,6 +175,7 @@ function Dashboard() {
   // first load of dashboard
   if (!chartPickedByUser) {
     setProjectNames(data.map((item) => item.title));
+    
     setProjectRaised(data.map((item) => item.currentAmount));
     setChartPickedByUser(dataPieChart);
     console.log('first loading dashboard')
@@ -204,11 +206,13 @@ function Dashboard() {
 
 
   useEffect(() => {
+    setLoading(true)
     if (fundraisers.length > 0) {
       const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
       setData(filteredFundraisers);
     }
     setLoaded(true);
+    setLoading(false)
   }, [fundraisers, loginSuccess]);
 
 
@@ -308,121 +312,128 @@ function Dashboard() {
   console.log('names', projectNames);
 
   return (
-    <div
-      className="profileContainer"
-      style={{ border: 'red 2px solid', padding: '1rem', backgroundColor: 'white' }}
-    >
-      <div
-        className="summaryHeaderContainer"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
+    // {loading ?  <Loader  /> :}
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
         <div
-          className="summaryCard"
-          style={{
-            flex: '1',
-            padding: '10px',
-            'border-radius': '5px',
-            border: 'black 1px solid',
-            gap: '5px',
-            margin: '5px 5px',
-          }}
+          className="profileContainer"
+          style={{ border: 'red 2px solid', padding: '1rem', backgroundColor: 'white' }}
         >
-          <div className="headerProjects">
-            <div className="titleField">
-              <span className="projectsText">Projects Created </span>
+          <div
+            className="summaryHeaderContainer"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <div
+              className="summaryCard"
+              style={{
+                flex: '1',
+                padding: '10px',
+                'border-radius': '5px',
+                border: 'black 1px solid',
+                gap: '5px',
+                margin: '5px 5px',
+              }}
+            >
+              <div className="headerProjects">
+                <div className="titleField">
+                  <span className="projectsText">Projects Created </span>
+                </div>
+                <div className="dataField">
+                  {/* <span className="projectsData">{projectsCreated}</span> */}
+                  <span className="projectsData">
+                    {projectsCreated} ss {lastTwentyFourHours}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="dataField">
-              {/* <span className="projectsData">{projectsCreated}</span> */}
-              <span className="projectsData">{projectsCreated} ss {lastTwentyFourHours}</span>
+            <div
+              className="summaryCard"
+              style={{
+                flex: '1',
+                padding: '10px',
+                'border-radius': '5px',
+                border: 'black 1px solid',
+                gap: '5px',
+                margin: '5px 5px',
+              }}
+            >
+              <div className="headerTotalRaised">
+                <div className="titleField">
+                  <span className="totalRaisedText">Total Raised</span>
+                </div>
+                <div className="dataField">
+                  <span className="moneyData">{totalRaised}$ </span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="summaryCard"
-          style={{
-            flex: '1',
-            padding: '10px',
-            'border-radius': '5px',
-            border: 'black 1px solid',
-            gap: '5px',
-            margin: '5px 5px',
-          }}
-        >
-          <div className="headerTotalRaised">
-            <div className="titleField">
-              <span className="totalRaisedText">Total Raised</span>
+            <div
+              className="summaryCard"
+              style={{
+                flex: '1',
+                padding: '10px',
+                'border-radius': '5px',
+                border: 'black 1px solid',
+                gap: '5px',
+                margin: '5px 5px',
+              }}
+            >
+              <div className="headerDonators">
+                <div className="titleField" style={{ textAlign: 'center' }}>
+                  <strong className="donatorsText">Donators</strong>
+                  <div className="dataField">
+                    <span className="donatorsData">{donators}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="dataField">
-              <span className="moneyData">{totalRaised}$ </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="summaryCard"
-          style={{
-            flex: '1',
-            padding: '10px',
-            'border-radius': '5px',
-            border: 'black 1px solid',
-            gap: '5px',
-            margin: '5px 5px',
-          }}
-        >
-          <div className="headerDonators">
-            <div className="titleField" style={{ textAlign: 'center' }}>
-              <strong className="donatorsText">Donators</strong>
-              <div className="dataField">
-                <span className="donatorsData">{donators}</span>
+            <div
+              className="summaryCard"
+              style={{
+                flex: '1',
+                padding: '10px',
+                'border-radius': '5px',
+                border: 'black 1px solid',
+                gap: '5px',
+                margin: '5px 5px',
+              }}
+            >
+              <div className="headerViews">
+                <div className="titleField" style={{ textAlign: 'center' }}>
+                  <strong className="viewsText">Views</strong>
+                  <div className="dataField">
+                    <span className="viewsData">{views}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="summaryCard"
-          style={{
-            flex: '1',
-            padding: '10px',
-            'border-radius': '5px',
-            border: 'black 1px solid',
-            gap: '5px',
-            margin: '5px 5px',
-          }}
-        >
-          <div className="headerViews">
-            <div className="titleField" style={{ textAlign: 'center' }}>
-              <strong className="viewsText">Views</strong>
-              <div className="dataField">
-                <span className="viewsData">{views}</span>
-              </div>
+          <div
+            className="projectContentContainer"
+            style={{
+              border: 'black 1px solid',
+              padding: '1rem',
+              'margin-top': '30px',
+              margin: '5px 5px',
+            }}
+          >
+            <div className="contentTitle">
+              <strong className="contentTitleField">Your Projects</strong>
             </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="projectContentContainer"
-        style={{
-          border: 'black 1px solid',
-          padding: '1rem',
-          'margin-top': '30px',
-          margin: '5px 5px',
-        }}
-      >
-        <div className="contentTitle">
-          <strong className="contentTitleField">Your Projects</strong>
-        </div>
-        <div
-          className="projectContentDetails"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            // border: 'blue 1px solid',
-          }}
-        >
-          {/* <div className="contentLeftDetails"
+            <div
+              className="projectContentDetails"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                // border: 'blue 1px solid',
+              }}
+            >
+              {/* <div className="contentLeftDetails"
             style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
           >
             <Grid.Row>
@@ -431,75 +442,76 @@ function Dashboard() {
               ) : (
                 <p>You havent published any data yet</p>
           </div>*/}
-          <div
-            className="contentRightCharts"
-            style={{
-              position: 'relative',
-              'margin-left': '0px',
-              width: '20%',
-              // border: 'orange 1px solid',
-              // margin: '5px 5px',
-              // width: '40%',
-              // height: '100vh',
-            }}
-          >
-            <Grid
-              columns={2}
-              divided
-              style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
-            >
-              <select className="chartInfo" name="chartSelected" onChange={handleOnChange}>
-                <option value=""> -- Chart Selection -- </option>
-                <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
-                <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
-                <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
-              </select>
-              <Grid.Row>
-                <Grid.Column>
-                  <Pie
-                    data={chartPickedByUser}
-                    options={{
-                      cutout: '90%',
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          display: false,
-                        },
-                        title: {
-                          display: false,
-                          text: 'Amount Raised By Project',
-                        },
-                      },
-                    }}
-                    style={{
-                      // height: '50%',
-                      // width: '100%',
-                      border: 'black 1px solid',
-                      // responsive: true,
-                      maintainAspectRatio: false,
-                    }}
-                  />
-                </Grid.Column>
-                <Grid.Column>
-                  <div style={{}}>75%</div>
-                  <Doughnut
-                    data={dataPieChart4}
-                    style={{
-                      // height: '50%',
-                      // width: '100%',
-                      border: 'black 1px solid',
-                      // responsive: true,
-                      maintainAspectRatio: false,
-                    }}
-                  />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+              <div
+                className="contentRightCharts"
+                style={{
+                  position: 'relative',
+                  'margin-left': '0px',
+                  width: '20%',
+                  // border: 'orange 1px solid',
+                  // margin: '5px 5px',
+                  // width: '40%',
+                  // height: '100vh',
+                }}
+              >
+                <Grid
+                  columns={2}
+                  divided
+                  style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
+                >
+                  <select className="chartInfo" name="chartSelected" onChange={handleOnChange}>
+                    <option value=""> -- Chart Selection -- </option>
+                    <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
+                    <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
+                    <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
+                  </select>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <Pie
+                        data={chartPickedByUser}
+                        options={{
+                          cutout: '90%',
+                          responsive: true,
+                          plugins: {
+                            legend: {
+                              display: false,
+                            },
+                            title: {
+                              display: false,
+                              text: 'Amount Raised By Project',
+                            },
+                          },
+                        }}
+                        style={{
+                          // height: '50%',
+                          // width: '100%',
+                          border: 'black 1px solid',
+                          // responsive: true,
+                          maintainAspectRatio: false,
+                        }}
+                      />
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div style={{}}>75%</div>
+                      <Doughnut
+                        data={dataPieChart4}
+                        style={{
+                          // height: '50%',
+                          // width: '100%',
+                          border: 'black 1px solid',
+                          // responsive: true,
+                          maintainAspectRatio: false,
+                        }}
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <Loader />
-    </div>
+      )}
+    </>
   );
 }
 

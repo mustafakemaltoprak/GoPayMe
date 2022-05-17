@@ -76,7 +76,7 @@ form p {
 .details {
   display: grid !important;
   /* color: #4e567d; */
-  grid-template-columns: 45% 55%;
+  grid-template-columns: 50% 50%;
 }
 
 .details-col1 > * {

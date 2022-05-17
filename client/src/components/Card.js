@@ -28,8 +28,8 @@ const CardItem = ({ data, handleClick, maps }) => {
             {/* <div style={{ position: 'absolute', bottom: '200rem' }}>Name : City</div> */}
             {!maps && <Image
               src={data.image}
-              wrapped
-              ui={false}
+              // wrapped
+              // ui={false}
               onClick={() => handleClick(data._id)}
               style={{ cursor: 'pointer' }}
             />}

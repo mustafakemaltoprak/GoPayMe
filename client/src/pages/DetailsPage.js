@@ -280,6 +280,7 @@ const DetailsPage = () => {
           }}
           className="details-col1"
         >
+          <h1 style={{ textAlign: 'center' }}>{fundraiser.title}</h1>
           <Image src={fundraiser.image} style={{ height: '20rem' }} />
           <div style={{ display: 'flex' }}>
             <h2>Description</h2>
@@ -288,7 +289,7 @@ const DetailsPage = () => {
             {' '}
             <Label
               // size="tiny"
-
+              style={{ cursor: 'pointer', color: 'black' }}
               onClick={async () => {
                 const response = await createBookMark({ _id: fundraiser._id });
                 if (response) {
@@ -303,7 +304,7 @@ const DetailsPage = () => {
                 : 'Bookmark'}
             </Label>
             <Label
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', color: 'black' }}
               onClick={async () => {
                 await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
                   method: 'PUT',
@@ -321,7 +322,10 @@ const DetailsPage = () => {
               {' '}
               <Icon name="handshake" /> Approve
             </Label>
-            <Label icon="eye"></Label>
+            <Label icon="eye">
+              <Icon name="eye" />
+              {fundraiser.views}
+            </Label>
           </div>
 
           <p>{fundraiser.description}</p>
@@ -376,7 +380,6 @@ const DetailsPage = () => {
             alignContent: 'center',
           }}
         >
-          <h1 style={{ textAlign: 'center' }}>{fundraiser.title}</h1>
           <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
           <div>
             {/* <div
@@ -468,10 +471,10 @@ const DetailsPage = () => {
                     </>
                   ) : (
                     <>
-                      <h3 style={{ fontSize: '2rem', fontWeight: 600, textAlign: 'center' }}>
+                      <div style={{ fontSize: '2.5rem', fontWeight: 600, textAlign: 'center' }}>
                         Expired
-                      </h3>
-
+                      </div>
+                      <br></br>
                       <p style={{ textAlign: 'center' }}>donation open</p>
                     </>
                   )}
@@ -590,7 +593,7 @@ const DetailsPage = () => {
                   textAlign: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden',
-                  maxHeight: '10rem',
+                  maxHeight: '15rem',
                   paddingBottom: '1rem',
                   maxWidth: '100%',
                   // border: '1px yellow solid',
@@ -608,8 +611,13 @@ const DetailsPage = () => {
                   >
                     {previousDonations.map(({ sender, amount, date }) => {
                       return (
-                        <div>
-                          {sender} {amount}$ -{moment(date).fromNow()}
+                        <div
+                          style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}
+                        >
+                          <strong style={{ fontWeight: 300 }}>{sender} </strong>
+                          <span>
+                            donated ${amount} - {moment(date).fromNow()}
+                          </span>
                         </div>
                       );
                     })}
