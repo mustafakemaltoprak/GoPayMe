@@ -21,7 +21,7 @@ const fundraiserReducer = (state = { fundraisers: [] }, action) => {
     case FUNDRAISER_FETCH:
       return { ...state, fundraisers: action.payload };
     case FUNDRAISER_CREATED:
-      return { ...state, fundraisers: [state.fundraisers, action.payload] };
+      return { ...state, fundraisers: [...state.fundraisers, action.payload] };
     case FUNDRAISER_EDITED:
       return {
         ...state,

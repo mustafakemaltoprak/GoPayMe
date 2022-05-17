@@ -15,7 +15,7 @@ const Myfundraisers = () => {
   console.log('data', loginSuccess);
   useEffect(() => {
     if (fundraisers.length > 0) {
-      console.log('fired');
+      console.log('useffect ran fired');
       const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
       setData(filteredFundraisers);
     }
@@ -26,7 +26,9 @@ const Myfundraisers = () => {
 
   return (
     <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
-      <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
+      <Grid.Row>
+        {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
+      </Grid.Row>
       <Grid.Row style={{ display: 'block' }}>
         <Button
           onClick={() => {
@@ -40,18 +42,17 @@ const Myfundraisers = () => {
 
       <div
         attached="bottom"
-        style={{ padding: '2rem',marginTop: '3rem', border: '1px red solid' }}
+        style={{ padding: '2rem', marginTop: '3rem', border: '1px red solid' }}
         // className="cardgrid"
       >
         {data.length > 0 ? (
-           <ProfilePosts dataProp = {data}/>
-          // data.map((dataItem) => <CardItem data={dataItem} />)
+          <ProfilePosts dataProp={data} />
         ) : (
+          // data.map((dataItem) => <CardItem data={dataItem} />)
           <p>You havent published any data yet</p>
         )}
 
         {/* // } */}
-       
       </div>
     </div>
   );

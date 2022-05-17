@@ -14,6 +14,7 @@ const {
   // getViews,
   addPrevDonation,
   getPrevDonations,
+  
 } = require('../controllers/fundraiser.controller');
 const { authMiddleware } = require('../middlewares/auth');
 
@@ -51,5 +52,7 @@ router.route('/create-tokens').post(async (req, res, next) => {
     next(error);
   }
 });
+
+router.route('/created').get(getAllFundraisers);
 
 module.exports = router;

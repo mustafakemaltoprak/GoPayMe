@@ -23,7 +23,7 @@ const getAllFundraisers = async (req, res) => {
       _id: {
         $in: req.body.following,
       },
-    })
+    });
     const writers = foundWriters.map((user) => user.userId);
 
     const options =
@@ -108,6 +108,12 @@ const getAllFundraisers = async (req, res) => {
   // } catch (error) {}
 };
 
+// const getAllFundraisers = async (req, res) => {
+//   const MyCreatedFundraisers = await Fundraiser.find({ writer: req.user.userId });
+
+//   res.status(200).send(MyCreatedFundraisers);
+// };
+
 const createFundraiser = async (req, res) => {
   //   const title = req.body.title;
   //   const targetAmount = req.body.targetAmount;
@@ -135,20 +141,15 @@ const createFundraiser = async (req, res) => {
 
     // if (req.body.)
     if (req.body._id) {
-     
       const body = req.body;
       delete body['_id'];
       delete body['__v'];
       delete body['location'];
-      delete body['writerId']
-      const n = await Fundraiser.findOneAndUpdate(
-        { title : req.body.title} ,
-        body,{new:true}
-      );
+      delete body['writerId'];
+      const n = await Fundraiser.findOneAndUpdate({ title: req.body.title }, body, { new: true });
       console.log('inner', n);
       res.status(201).send(n);
 
-      
       // console.log('bbbbb', body);
       // const editedFundraiser = await Fundraiser.findByIdAndUpdate({ _id: req.body._id }, body, {
       //   new: true,
@@ -317,5 +318,7 @@ module.exports = {
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,
+
   bookmarkFundraisers,
+  getAllFundraisers,
 };

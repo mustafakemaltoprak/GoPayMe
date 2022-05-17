@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState([]);
+ 
   const [categoriesError, setCategoriesError] = useState(false);
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -85,11 +86,14 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       return;
     }
 
+    // console.log('profile', profilePicUrl)
     // setloading(true)
     let profilePicUrl;
     if (formObj.image.length > 0) {
-      // profilePicUrl = await upload(formObj.image[0]);
-      // createFundraiser(formObj)
+      profilePicUrl = await upload(formObj.image[0]);
+
+      
+   
     }
     formObj = {
       ...formObj,
@@ -111,17 +115,19 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
     if (editData) {
       const data = await createFundraiser(formObj);
       if (data) {
-        dispatch(editFundraiserAction(data));
+        // dispatch(editFundraiserAction(data));
         toast.success('Fundraiser edited!');
         setloading(false);
+         setData((prev) => prev.map(item => item._id === data._id ? data : item));
         setOpen(false);
       }
     } else {
       const data = await createFundraiser(formObj);
       console.log('our data', data);
       if (data) {
-        dispatch(createFundraiserAction(data));
+        // dispatch(createFundraiserAction(data));
         toast.success('Fundraiser created');
+        setData(prev =>  [...prev, data])
         setloading(false);
         setOpen(false);
       }

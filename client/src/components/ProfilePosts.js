@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Icon, Progress, Table } from 'semantic-ui-react';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 import CreateModal from './CreateModal';
@@ -8,15 +9,27 @@ import CreateModal from './CreateModal';
 const ProfilePosts = ({ dataProp }) => {
   const location = useLocation();
   const url = location.pathname.split('/').slice(-1)[0];
+  const { loginSuccess } = useSelector((state) => state.user);
 
-  const [data, setData] = useState(dataProp ?? []);
-    const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  console.log('path', location.pathname);
 
   useEffect(() => {
     if (!dataProp) {
-      fetchUserCreatedFundraisers(url).then((response) => setData(response));
+      if (location.pathname === '/fundraisers') {
+        console.log('inner fired')
+        fetchUserCreatedFundraisers(loginSuccess.userId).then((response) => setData(response));
+      } else {
+        fetchUserCreatedFundraisers(url).then((response) => setData(response));
+      }
+    } else {
+      fetchUserCreatedFundraisers(loginSuccess.userId).then((response) => setData(response));
     }
   }, [url]);
+
   return (
     <>
       <Table celled fixed singleLine textAlign="center">
@@ -73,7 +86,8 @@ const ProfilePosts = ({ dataProp }) => {
                 <Table.Cell>{item.targetAmount}</Table.Cell>
                 {dataProp && (
                   <Table.Cell>
-                    <Icon name="edit" onClick={() => setOpen(true)} style={{cursor: 'pointer'}}/> Edit
+                    <Icon name="edit" onClick={() => setOpen(true)} style={{ cursor: 'pointer' }} />{' '}
+                    Edit
                   </Table.Cell>
                 )}
                 {open && <CreateModal open={open} setOpen={setOpen} editData={item} />}

@@ -38,3 +38,16 @@ export const fetchUserCreatedFundraisers = async (id) => {
   console.log('testing result', data);
   return data;
 };
+
+// export const fetchUserCreatedFundraisers = async (id) => {
+//   const token = JSON.parse(localStorage.getItem('userInfo')).token;
+
+//   const config = confighelper(token);
+//   // console.log('config', config);
+//   // delete formObj['token'];
+//   console.log('config', config);
+//   const { data } = await axios.get(`/users/fundraiser/${id}`, config);
+//   console.log('testing result', data);
+//   return data;
+// };
+
