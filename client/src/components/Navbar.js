@@ -37,12 +37,16 @@ const Navbar = () => {
 
   console.log('loginSuccess', loginSuccess);
   return (
-    <Menu fixed="top" style={{ zIndex: 10000 }} borderless>
+    <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={Link} to="/home" header style={{ border: 'none' }}>
-          <img src="/logo192.png" alt="logo" style={{ marginRight: 15 }} />
-          GoPayME
-          <Icon name="money" />
+        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex' }}>
+          <h1>
+            <span class="enclosed">goPay</span>Me
+          </h1>
+          {/* <Icon name="money" /> */}
+          <div style={{ marginLeft: '.5rem' }}>
+            <img src="https://www.dropbox.com/s/fzc3fidyxqbqhnj/loader-coin.png?raw=1" alt="" />
+          </div>
         </Menu.Item>
         <Menu.Item header>
           {/* <Search
@@ -117,9 +121,8 @@ const Navbar = () => {
           trigger={
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
-              {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length > 0 && (
-                <Label color="teal">{loginSuccess.notifications.length}</Label>
-              )}
+              {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length >
+                0 && <Label color="teal">{loginSuccess.notifications.length}</Label>}
             </Menu.Item>
           }
           flowing
@@ -175,11 +178,7 @@ const Navbar = () => {
           </Label>
         </Menu.Item> */}
         <Menu.Item>
-          <Image
-            avatar
-            spaced="right"
-            src={loginSuccess.image}
-          />
+          <Image avatar spaced="right" src={loginSuccess.image} />
           <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to={`/account`} text="Account" icon="user" />
