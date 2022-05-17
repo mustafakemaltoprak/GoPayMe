@@ -283,7 +283,6 @@ module.exports = {
   getAllLikes,
   searchbyTerm,
   addView,
-  getViews,
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,
