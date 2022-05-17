@@ -22,6 +22,8 @@ import Categories from './Categories';
 import GroupMessages from '../components/GroupMessages';
 import { io, Socket } from 'socket.io-client';
 
+import { motion }from 'framer-motion';
+
 const MyProfile = ({history}) => {
 
   console.log('history', history)
@@ -138,7 +140,8 @@ const MyProfile = ({history}) => {
   };
 
   return (
-    <>
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       {/* <Grid>
         <Grid.Row>
           <Grid.Column></Grid.Column>
@@ -449,7 +452,7 @@ const MyProfile = ({history}) => {
       )}
 
       {currentPage['Messages'] && <GroupMessages />}
-    </>
+    </motion.div>
   );
 };
 

@@ -18,6 +18,7 @@ import { fetchFundraisers } from '../redux/actions/fundraiserActions';
 import CardItem from '../components/Card';
 import Maps from '../components/Maps';
 import Following from '../components/Following';
+import { motion }from 'framer-motion';
 
 const Home = () => {
   const history = useHistory();
@@ -75,7 +76,7 @@ const Home = () => {
 
   console.log('Count', count);
   return (
-    <>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       {/* <Grid>
         <Grid.Row>
           <Grid.Column></Grid.Column>
@@ -176,7 +177,7 @@ const Home = () => {
       {currentPage['Following'] && <Following />}
 
       {currentPage['Favorites'] && <Following favorites={true}/>}
-    </>
+    </motion.div>
   );
 };
 

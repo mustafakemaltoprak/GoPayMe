@@ -5,6 +5,8 @@ import CreateModal from '../components/CreateModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
+import { motion }from 'framer-motion';
+
 const Myfundraisers = () => {
   const [openModal, setOpenModal] = useState(false);
   const { fundraisers } = useSelector((state) => state.fundraiser);
@@ -24,7 +26,10 @@ const Myfundraisers = () => {
   console.log('data', data);
 
   return (
-    <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div style={{ border: 'red solid 1px', minHeight: '80vh' }}
+      initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+      >
       <Grid.Row>{openModal && <CreateModal open={openModal} setOpen={setOpenModal} />}</Grid.Row>
       <Grid.Row style={{ display: 'block' }}>
         <Button
@@ -50,7 +55,7 @@ const Myfundraisers = () => {
 
         {/* // } */}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

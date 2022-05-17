@@ -14,6 +14,7 @@ import { Doughnut, Pie } from 'react-chartjs-2';
 
 import 'hammerjs';
 import parse from 'html-react-parser';
+import { motion }from 'framer-motion';
 
 // import { xorBy } from 'lodash';
 
@@ -281,19 +282,20 @@ function Dashboard() {
   };
 
   if (!data.length) {
-    return <div>loading...</div>;
+    return <div>...please add your first Fundraiser on menu: My fundraisers...</div>;
   }
 
   console.log('names', projectNames);
 
   return (
-    <div
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div
       className="profileContainer"
       style={{ border: 'red 2px solid', padding: '1rem',
       // backgroundColor: '#4e567d'
       backgroundColor: '#FBFBFF',
-      'border-radius': '40px',
-    }}
+      'border-radius': '40px',}}
+      initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
     >
       <div
         className="summaryHeaderContainer"
@@ -630,7 +632,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

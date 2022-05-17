@@ -19,6 +19,8 @@ import Timer from '../components/Timer';
 import { createBookMark } from '../services/user-services';
 import { updateUserDetails } from '../redux/actions/userActions';
 
+import { motion }from 'framer-motion';
+
 // let gapi = window.gapi;
 let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
@@ -221,7 +223,8 @@ const DetailsPage = () => {
 
   console.log('token', fundraiser);
   return (
-    <>
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       <h1 className="fundraiserTitle">{fundraiser.title}</h1>
       <div className="container">
         {/* <div
@@ -433,7 +436,7 @@ const DetailsPage = () => {
           </div>
         </form>
       </div>
-    </>
+    </motion.div>
   );
 };
 

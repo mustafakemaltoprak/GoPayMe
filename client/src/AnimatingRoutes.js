@@ -1,6 +1,6 @@
-import './App.css';
+import React from 'react'
 import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+
 import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -13,19 +13,16 @@ import { Container, Grid } from 'semantic-ui-react';
 import MyFundraisers from './pages/MyFundraisers';
 import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
-import AnimatingRoutes from './AnimatingRoutes';
-// import 'leaflet/dist/leaflet.css';
 
-function App() {
-  // const appLocation = useLocation();
+import {AnimatePresence} from 'framer-motion'
 
+function AnimatingRoutes() {
+  const location = useLocation();
   return (
-    <div>
-      <Router>
-        {/* <Switch> */}
-          <AnimatingRoutes />
-          {/* <Route path="/login" component={Login} />
-
+    <>
+      <AnimatePresence>
+        <Switch location={location} key={location.pathname}>
+          <Route path="/login" component={Login} />
           <Route path="/categories" component={Categories} />
           <Route path="/register" component={Register} />
           <Route
@@ -59,12 +56,11 @@ function App() {
                 </Container>
               </>
             )}
-          /> */}
-        {/* </Switch> */}
-        <ToastContainer position="bottom-right" autoClose={5000} />
-      </Router>
-    </div>
-  );
+          />
+        </Switch>
+        </AnimatePresence>
+    </>
+  )
 }
 
-export default App;
+export default AnimatingRoutes
