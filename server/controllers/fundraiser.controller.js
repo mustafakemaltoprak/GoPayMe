@@ -1,6 +1,7 @@
 const Fundraiser = require('../models/fundraiser.model');
 const { db } = require('../models/user.model');
 const User = require('../models/user.model');
+var mongoose = require('mongoose');
 
 const getAllFundraisers = async (req, res) => {
   console.log(req.body);
@@ -17,12 +18,12 @@ const getAllFundraisers = async (req, res) => {
 
   if (req.body.following) {
     // const foundUser = await User.findOne({ userId: req.user.userId });\
-    console.log('fired',req.body);
+    console.log('fired following', req.body);
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
       },
-    });
+    })
     const writers = foundWriters.map((user) => user.userId);
 
     const options =
@@ -42,6 +43,7 @@ const getAllFundraisers = async (req, res) => {
       // },
     })
       .find(options)
+      .populate('writerId')
 
       .skip(skip)
       .limit(limit)
@@ -75,6 +77,7 @@ const getAllFundraisers = async (req, res) => {
       },
     })
       .find(options)
+      .populate('writerId')
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -92,7 +95,9 @@ const getAllFundraisers = async (req, res) => {
           },
         }
       : {};
+  console.log('body', req.body);
   Fundraiser.find(options)
+    .populate('writerId')
     .skip(skip)
     .limit(limit)
     .exec((err, docs) => {
@@ -126,7 +131,32 @@ const createFundraiser = async (req, res) => {
   //   newFundraiser
   //     .save()
   try {
-    console.log('fired', req.body);
+    // console.log('fired', req.body);
+
+    // if (req.body.)
+    if (req.body._id) {
+     
+      const body = req.body;
+      delete body['_id'];
+      delete body['__v'];
+      delete body['location'];
+      delete body['writerId']
+      const n = await Fundraiser.findOneAndUpdate(
+        { title : req.body.title} ,
+        body,{new:true}
+      );
+      console.log('inner', n);
+      res.status(201).send(n);
+
+      
+      // console.log('bbbbb', body);
+      // const editedFundraiser = await Fundraiser.findByIdAndUpdate({ _id: req.body._id }, body, {
+      //   new: true,
+      // });
+      // console.log('new fired', editedFundraiser);
+      // res.status(201).send(editedFundraiser);
+      return;
+    }
     const createdFundraiser = await Fundraiser.create(req.body);
     console.log('created', createdFundraiser);
     res.status(201).send(createdFundraiser);
@@ -237,7 +267,7 @@ const searchbyTerm = async (req, res) => {
 function addView(req, res) {
   Fundraiser.findById(req.params.id)
     .then((fundraiser) => {
-      fundraiser.views = fundraiser.views + req.body.views.views
+      fundraiser.views = fundraiser.views + req.body.views.views;
 
       fundraiser
         .save()
@@ -283,7 +313,7 @@ module.exports = {
   getAllLikes,
   searchbyTerm,
   addView,
-  getViews,
+
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,

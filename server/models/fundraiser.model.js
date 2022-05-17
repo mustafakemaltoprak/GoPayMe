@@ -53,7 +53,7 @@ fundraiserSchema.pre('save', async function (next) {
     type: 'Point',
     coordinates: [location[0].longitude, location[0].latitude],
     country: location[0].countryCode,
-    city: location[0].city,
+    
   };
   next();
 });

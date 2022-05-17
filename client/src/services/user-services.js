@@ -118,8 +118,8 @@ export const postCategories = async (payload) => {
     config,
   );
 
-  if (data.success) {
-    return true;
+  if (data) {
+    return data;
   } else {
     return false;
   }
@@ -219,7 +219,7 @@ export const avatarUpdate = async (payload) => {
 
   console.log();
   if (data) {
-    console.log('that was updated!', data);
+    // console.log('that was updated!', data);
     return data;
   }
 };

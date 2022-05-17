@@ -16,14 +16,17 @@ const SearchComponent = () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {obj.title ? (
-          <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {obj.title} <p style={{ color: 'red' }}>User</p>
-          </p>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            onClick={() => history.push(`/fundraiser/${obj._id}`)}
+          >
+            {obj.title}
+          </div>
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>{obj.name}</div>
-            <Label style={{ color: 'green' }} onClick={() => history.push(`profile/${obj.userId}`)}>
-              view profile
+            <Label style={{ color: 'green' }} onClick={() => history.push(`/profile/${obj.userId}`)}>
+              view user
             </Label>
           </>
         )}

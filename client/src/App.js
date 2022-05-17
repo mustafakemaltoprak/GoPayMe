@@ -13,12 +13,17 @@ import { Container, Grid } from 'semantic-ui-react';
 import MyFundraisers from './pages/MyFundraisers';
 import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
+import ScrollToTop from './components/ScrollToTop';
+import { Suspense } from 'react';
+import Loader from './components/Loader';
+
 // import 'leaflet/dist/leaflet.css';
 
 function App() {
   return (
     <div>
       <Router>
+        <ScrollToTop/>
         <Switch>
           <Route path="/login" component={Login} />
 
@@ -30,12 +35,13 @@ function App() {
               <>
                 <Container
                   style={{
-                    border: 'orange 2px solid',
+                    // border: 'orange 2px solid',
                     marginTop: '5rem',
-                    minHeight: '80vh',
+                    minHeight: '100vh',
                   }}
                 >
                   <Navbar />
+                  <Suspense fallback={<Loader/>}/>
                   <Grid>
                     <Grid.Row>
                       <Grid.Column width={3}>

@@ -9,7 +9,7 @@ const createCategories = async (req, res) => {
   //     user.save().then(() => res.status(201).send({ success: true }));
   //   })
   //   .catch((err) => res.status(400).send({ error: err.message }));
-
+  // console.log('key',process.env.GEOCODER_API_KEY);
   try {
     const user = await User.findOneAndUpdate(
       { userId: req.params.id },
@@ -17,7 +17,7 @@ const createCategories = async (req, res) => {
       { new: true }
     );
 
-    if (user) res.status(201).send({ success: true });
+    if (user) res.status(201).send(user);
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -222,7 +222,7 @@ const updateAvatarPicture = async (req, res) => {
 
     const userFound = await User.findOneAndUpdate(
       { userId: req.user.userId },
-      { image: req.body.image },
+      { image: req.body.image, ca },
       { new: true }
     );
     console.log('avatar img', req.body.image);

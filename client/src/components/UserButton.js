@@ -20,7 +20,7 @@ const UserButton = ({ dataObj }) => {
       }
       header={dataObj.writerId?.name}
       content={
-        dataObj.writerId?.description ? dataObj.writerId?.description : 'Humanity is beautiful!'
+        dataObj.writerId?.description ? dataObj.writerId?.description : 'Humanity is beautiful! Check this profile out!'
       }
       on={['hover']}
     />

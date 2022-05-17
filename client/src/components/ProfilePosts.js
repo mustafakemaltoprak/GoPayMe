@@ -1,27 +1,33 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Table } from 'semantic-ui-react';
+import { Icon, Progress, Table } from 'semantic-ui-react';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
+import CreateModal from './CreateModal';
 
-const ProfilePosts = () => {
+const ProfilePosts = ({ dataProp }) => {
   const location = useLocation();
   const url = location.pathname.split('/').slice(-1)[0];
-  const [data, setData] = useState([]);
+
+  const [data, setData] = useState(dataProp ?? []);
+    const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetchUserCreatedFundraisers(url).then((response) => setData(response));
+    if (!dataProp) {
+      fetchUserCreatedFundraisers(url).then((response) => setData(response));
+    }
   }, [url]);
   return (
     <>
-      <Table celled fixed singleLine>
+      <Table celled fixed singleLine textAlign="center">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Title</Table.HeaderCell>
+            <Table.HeaderCell>Fundraiser</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
-            <Table.HeaderCell>Created</Table.HeaderCell>
-            <Table.HeaderCell>Target</Table.HeaderCell>
-            <Table.HeaderCell>Target</Table.HeaderCell>
+            <Table.HeaderCell>Progress</Table.HeaderCell>
+            <Table.HeaderCell>Current Amount</Table.HeaderCell>
+            <Table.HeaderCell>Target Amount</Table.HeaderCell>
+            {dataProp && <Table.HeaderCell>Edit</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
 
@@ -30,10 +36,47 @@ const ProfilePosts = () => {
             {data.map((item) => (
               <Table.Row>
                 <Table.Cell>{item.title}</Table.Cell>
-                <Table.Cell>Active</Table.Cell>
-                <Table.Cell>{moment(item?.createdAt).fromNow()}</Table.Cell>
+                <Table.Cell
+                  warning={
+                    Math.floor(
+                      (Date.parse(item.deadlineDate) - Date.parse(new Date())) / 86400000,
+                    ) < 1
+                  }
+                  positive={
+                    Math.floor(
+                      (Date.parse(item.deadlineDate) - Date.parse(new Date())) / 86400000,
+                    ) > 0
+                    // true
+                  }
+                >
+                  {Math.floor((Date.parse(item.deadlineDate) - Date.parse(new Date())) / 86400000) <
+                  1
+                    ? 'Expired'
+                    : 'Active'}
+                </Table.Cell>
+                {/* <Table.Cell>{moment(item?.createdAt).fromNow()}</Table.Cell> */}
+                <Table.Cell>
+                  {' '}
+                  <Progress
+                    indicating
+                    color="purple"
+                    percent={
+                      item.currentAmount
+                        ? Math.floor((item.currentAmount / item.targetAmount) * 100)
+                        : 0
+                    }
+                    progress
+                    // style={{ margin: '1rem 2rem 2rem 2rem', height: '2rem' }}
+                  />
+                </Table.Cell>
                 <Table.Cell>{item.currentAmount}</Table.Cell>
                 <Table.Cell>{item.targetAmount}</Table.Cell>
+                {dataProp && (
+                  <Table.Cell>
+                    <Icon name="edit" onClick={() => setOpen(true)} style={{cursor: 'pointer'}}/> Edit
+                  </Table.Cell>
+                )}
+                {open && <CreateModal open={open} setOpen={setOpen} editData={item} />}
               </Table.Row>
             ))}
           </Table.Body>
