@@ -9,7 +9,7 @@ import { createFundraiserAction, editFundraiserAction } from '../redux/actions/f
 import upload from '../utils/uploadToCloudinary';
 import { toast } from 'react-toastify';
 
-const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
+const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState([]);
  
@@ -86,15 +86,15 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
       return;
     }
 
-    // console.log('profile', profilePicUrl)
+    console.log('profile', formObj, editData)
     // setloading(true)
     let profilePicUrl;
-    if (formObj.image.length > 0) {
+    if ((Array.isArray(formObj.image) && formObj.image.length > 0) || !editData) {
       profilePicUrl = await upload(formObj.image[0]);
 
-      
-   
     }
+
+    
     formObj = {
       ...formObj,
       // image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 1)] : formObj.image[0],
@@ -118,7 +118,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData }) => {
         // dispatch(editFundraiserAction(data));
         toast.success('Fundraiser edited!');
         setloading(false);
-         setData((prev) => prev.map(item => item._id === data._id ? data : item));
+         setEdit((prev) => prev.map(item => item._id === data._id ? data : item));
         setOpen(false);
       }
     } else {

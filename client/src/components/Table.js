@@ -1,23 +1,10 @@
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { Icon, Progress, Table } from 'semantic-ui-react';
-import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 import CreateModal from './CreateModal';
 
-const ProfilePosts = ({ dataProp }) => {
-  const location = useLocation();
-  const url = location.pathname.split('/').slice(-1)[0];
-  const { loginSuccess } = useSelector((state) => state.user);
-
-  const [data, setData] = useState([]);
-
-
-  useEffect(() => {
-    fetchUserCreatedFundraisers(url).then((response) => setData(response));
-  }, [url]);
-
+const TableContainer = ({ data, dataProp, setEditData }) => {
+  console.log('dsataa', data)
+  const [open, setOpen] = useState(false);
   return (
     <>
       <Table celled fixed singleLine textAlign="center">
@@ -28,7 +15,7 @@ const ProfilePosts = ({ dataProp }) => {
             <Table.HeaderCell>Progress</Table.HeaderCell>
             <Table.HeaderCell>Current Amount</Table.HeaderCell>
             <Table.HeaderCell>Target Amount</Table.HeaderCell>
-            {/* {dataProp && <Table.HeaderCell>Edit</Table.HeaderCell>} */}
+            {dataProp && <Table.HeaderCell>Edit</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
 
@@ -72,13 +59,20 @@ const ProfilePosts = ({ dataProp }) => {
                 </Table.Cell>
                 <Table.Cell>{item.currentAmount}</Table.Cell>
                 <Table.Cell>{item.targetAmount}</Table.Cell>
-                {/* {dataProp && (
+                {dataProp && (
                   <Table.Cell>
                     <Icon name="edit" onClick={() => setOpen(true)} style={{ cursor: 'pointer' }} />{' '}
                     Edit
                   </Table.Cell>
                 )}
-                {open && <CreateModal open={open} setOpen={setOpen} editData={item} />} */}
+                {open && (
+                  <CreateModal
+                    open={open}
+                    setOpen={setOpen}
+                    editData={item}
+                    setEditData={setEditData}
+                  />
+                )}
               </Table.Row>
             ))}
           </Table.Body>
@@ -102,4 +96,4 @@ const ProfilePosts = ({ dataProp }) => {
   );
 };
 
-export default ProfilePosts;
+export default TableContainer;
