@@ -18,12 +18,12 @@ const getAllFundraisers = async (req, res) => {
 
   if (req.body.following) {
     // const foundUser = await User.findOne({ userId: req.user.userId });\
-    console.log('fired', req.body);
+    console.log('fired following', req.body);
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
       },
-    }).populate('writerId');
+    })
     const writers = foundWriters.map((user) => user.userId);
 
     const options =
