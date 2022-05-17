@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
-        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Menu.Item as={Link} to="/home" header style={{ border: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={()=> history.push('/home', {explore: true})}>
           <h2 style={{height: '.5rem'}}>
             <span class="enclosed">goPay</span>Me
           </h2>
