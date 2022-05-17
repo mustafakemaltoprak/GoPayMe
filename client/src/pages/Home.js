@@ -19,6 +19,7 @@ import { fetchFundraisers } from '../redux/actions/fundraiserActions';
 import CardItem from '../components/Card';
 import Maps from '../components/Maps';
 import Following from '../components/Following';
+import { motion }from 'framer-motion';
 
 const Home = (props) => {
   const history = useHistory();
@@ -177,7 +178,6 @@ const Home = (props) => {
           )}
 
           {currentPage['Following'] && <Following />}
-
           {currentPage['Favorites'] && <Following favorites={true} />}
         </>
       )}

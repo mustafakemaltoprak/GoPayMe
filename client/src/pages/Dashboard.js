@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Icon } from 'semantic-ui-react';
 import CardItem from '../components/Card';
 import { useSelector } from 'react-redux';
-// import { Doughnut } from 'react-chartjs-2';
+
 // import {
 //   Chart,
 //   ChartLegend,
@@ -14,6 +14,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
 
 import 'hammerjs';
+
+import parse from 'html-react-parser';
+import { motion }from 'framer-motion';
+
 import Loader from '../components/Loader';
 
 // import { xorBy } from 'lodash';
@@ -153,7 +157,8 @@ function Dashboard() {
         // data: [totalRaised],
         data: [12],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
+          // 'rgba(255, 99, 132, 0.8)',
+          'rgba(255, 127, 0, 0.8)',
           'rgba(54, 162, 235, 0.8)',
           'rgba(255, 206, 86, 0.8)',
           'rgba(75, 192, 192, 0.8)',
@@ -161,7 +166,7 @@ function Dashboard() {
           'rgba(255, 159, 64, 0.8)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
+          'rgba(220, 119, 25, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
@@ -181,10 +186,25 @@ function Dashboard() {
     console.log('first loading dashboard')
   }
 
+  let leftChartText = "";
   const handleOnChange = (arg) => {
+    console.log('leftChartText arg', arg.target.value);
     let testObj = JSON.parse(arg.target.value);
     setChartPickedByUser(testObj);
+    if (arg.target.value === JSON.stringify(dataPieChart)) {
+      leftChartText = "Fundraisers";
+    } else if (arg.target.value === JSON.stringify(dataPieChart2)) {
+      leftChartText = "Donators";
+    } else if (arg.target.value === JSON.stringify(dataPieChart3)) {
+      leftChartText = "Views";
+    } else {
+      leftChartText = "";
+    }
+    console.log('leftChartText', leftChartText);
+    return leftChartText
   };
+  const dynamicStringSpan = '<p>{leftChartText}</p>';
+
 
   const labelContent = (e) => e.category;
 
@@ -245,8 +265,9 @@ function Dashboard() {
         return new Date(donation.date ).getTime() > (new Date().getTime() - (24*60*60*1000));
       })
       const sumLast24h = last24hDonations.reduce((acc, curr) => acc+parseInt(curr.amount), 0);
-      console.log(sumLast24h);
+      console.log(sumLast24h); //TO BE DELETED
       setLastTwentyFourHours(sumLast24h)
+      console.log('fired last 24HS', lastTwentyFourHours); //TO BE DELETED
 
       for (let i = 0; i < data.length; i++) {
         setTotalRaised((prev) => prev + data[i].currentAmount);
@@ -264,254 +285,362 @@ function Dashboard() {
 
   console.log("test", totalTwentyFourHours)
 
-  // console.log(projectNames.length);
-  // if (projectNames.length === 0) {
-  //   console.log("I'm in the first if");
-  //   setProjectNames([{ name: data[i].title }]);
-  //   console.log('after', projectNames.length);
-  // } else {
-  //   console.log("I'm in the else");
-  //   setProjectNames((prevState) => [
-  //     ...prevState,
-  //     {
-  //       name: data[i].title,
-  //     },
-  //   ]);
-  // }
-
-  //**
-  //         address: "6 Caliban Mews, CV34 6FS"
-  // backers: 3
-  // categories: ['humanitarian']
-  // comments: []
-  // currentAmount: 9000
-  // deadlineDate: "2022-05-15T15:50:00.000Z"
-  // description: "give food for poor people"
-  // image: "https://react.semantic-ui.com/images/avatar/large/daniel.jpg"
-  // likes: 1
-  // location: {type: 'Point', coordinates: Array(2), country: 'US'}
-  // prevDonations: (3) [{…}, {…}, {…}]
-  // targetAmount: 25000
-  // title: "Get food"
-  // views: 5
-  // writer: "2WWjFhvSuyclY83dsnj3oZYsqHN2"
-  // __v: 3
-  // _id: "627e53774ce2f6c29ba972c0"
-  // [[Prototype]]: Object
-
-  //
-
   const onClick = (e) => {
     console.log(e);
   };
 
   if (!data.length) {
-    return <div>loading...</div>;
+    return <div>...please add your first Fundraiser on menu: My fundraisers...</div>;
   }
 
   console.log('names', projectNames);
 
   return (
-    // {loading ?  <Loader  /> :}
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div
+      className="profileContainer"
+      style={{ border: 'red 2px solid', padding: '1rem',
+      // backgroundColor: '#4e567d'
+      backgroundColor: '#FBFBFF',
+      'border-radius': '40px',}}
+      initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    >
+      <div
+        className="summaryHeaderContainer"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}
+      >
         <div
-          className="profileContainer"
-          style={{ border: 'red 2px solid', padding: '1rem', backgroundColor: 'white' }}
+          className="summaryCard"
+          style={{
+            // flex: '1',
+            // padding: '10px',
+            // 'border-radius': '5px',
+            // // border: 'black 1px solid',
+            // gap: '5px',
+            // margin: '5px 5px',
+            // backgroundColor: '#cbf4f1',
+          }}
         >
-          <div
-            className="summaryHeaderContainer"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
-            <div
-              className="summaryCard"
-              style={{
-                flex: '1',
-                padding: '10px',
-                'border-radius': '5px',
-                border: 'black 1px solid',
-                gap: '5px',
-                margin: '5px 5px',
-              }}
-            >
-              <div className="headerProjects">
-                <div className="titleField">
-                  <span className="projectsText">Projects Created </span>
-                </div>
-                <div className="dataField">
-                  {/* <span className="projectsData">{projectsCreated}</span> */}
-                  <span className="projectsData">
-                    {projectsCreated} ss {lastTwentyFourHours}
-                  </span>
-                </div>
-              </div>
+          <div className="headerProjects">
+            <div className="titleField">
+              <span className="projectsData" style={{
+                display: 'table',
+                margin: 'auto',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.8em',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                }}>
+                  <Icon name="small tasks" style={{'margin-left': '3px',
+                  // color: '#E0A030',
+                  }} />
+                  {projectsCreated}
+              </span>
             </div>
-            <div
-              className="summaryCard"
-              style={{
-                flex: '1',
-                padding: '10px',
-                'border-radius': '5px',
-                border: 'black 1px solid',
-                gap: '5px',
-                margin: '5px 5px',
-              }}
-            >
-              <div className="headerTotalRaised">
-                <div className="titleField">
-                  <span className="totalRaisedText">Total Raised</span>
-                </div>
-                <div className="dataField">
-                  <span className="moneyData">{totalRaised}$ </span>
-                </div>
-              </div>
-            </div>
-            <div
-              className="summaryCard"
-              style={{
-                flex: '1',
-                padding: '10px',
-                'border-radius': '5px',
-                border: 'black 1px solid',
-                gap: '5px',
-                margin: '5px 5px',
-              }}
-            >
-              <div className="headerDonators">
-                <div className="titleField" style={{ textAlign: 'center' }}>
-                  <strong className="donatorsText">Donators</strong>
-                  <div className="dataField">
-                    <span className="donatorsData">{donators}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="summaryCard"
-              style={{
-                flex: '1',
-                padding: '10px',
-                'border-radius': '5px',
-                border: 'black 1px solid',
-                gap: '5px',
-                margin: '5px 5px',
-              }}
-            >
-              <div className="headerViews">
-                <div className="titleField" style={{ textAlign: 'center' }}>
-                  <strong className="viewsText">Views</strong>
-                  <div className="dataField">
-                    <span className="viewsData">{views}</span>
-                  </div>
-                </div>
-              </div>
+            <div className="dataField">
+              {/* <span className="projectsData">{projectsCreated}</span> */}
+              <span className="projectsText" style={{
+                display: 'table',
+                margin: 'auto',
+                marginTop: '5px',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.0em',
+                textAlign: 'center',
+                }}>
+                  Projects Created
+              </span>
             </div>
           </div>
-          <div
-            className="projectContentContainer"
-            style={{
-              border: 'black 1px solid',
-              padding: '1rem',
-              'margin-top': '30px',
-              margin: '5px 5px',
-            }}
-          >
-            <div className="contentTitle">
-              <strong className="contentTitleField">Your Projects</strong>
+        </div>
+        <div
+          className="summaryCard"
+          style={{
+            // flex: '1',
+            // padding: '10px',
+            // 'border-radius': '5px',
+            // // border: 'black 1px solid',
+            // gap: '5px',
+            // margin: '5px 5px',
+            // backgroundColor: '#cbf4f1',
+          }}
+        >
+          <div className="headerTotalRaised">
+            <div className="titleField">
+              <span className="projectsData" style={{
+                display: 'table',
+                margin: 'auto',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.8em',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                }}>
+                  <Icon name="small money bill alternate outline" style={{'margin-left': '3px',
+                  // color: '#E0A030',
+                  }} />
+                  {totalRaised}$
+              </span>
             </div>
-            <div
-              className="projectContentDetails"
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                // border: 'blue 1px solid',
-              }}
-            >
-              {/* <div className="contentLeftDetails"
-            style={{ flex: '1', border: 'orange 1px solid', margin: '5px 5px' }}
-          >
-            <Grid.Row>
-              {/* {data.length  0 ? (
-                data.map((dataItem) => <CardItem data={dataItem} />)
-              ) : (
-                <p>You havent published any data yet</p>
-          </div>*/}
-              <div
-                className="contentRightCharts"
-                style={{
-                  position: 'relative',
-                  'margin-left': '0px',
-                  width: '20%',
-                  // border: 'orange 1px solid',
-                  // margin: '5px 5px',
-                  // width: '40%',
-                  // height: '100vh',
-                }}
-              >
-                <Grid
-                  columns={2}
-                  divided
-                  style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
-                >
-                  <select className="chartInfo" name="chartSelected" onChange={handleOnChange}>
-                    <option value=""> -- Chart Selection -- </option>
-                    <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
-                    <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
-                    <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
-                  </select>
-                  <Grid.Row>
-                    <Grid.Column>
-                      <Pie
-                        data={chartPickedByUser}
-                        options={{
-                          cutout: '90%',
-                          responsive: true,
-                          plugins: {
-                            legend: {
-                              display: false,
-                            },
-                            title: {
-                              display: false,
-                              text: 'Amount Raised By Project',
-                            },
-                          },
-                        }}
-                        style={{
-                          // height: '50%',
-                          // width: '100%',
-                          border: 'black 1px solid',
-                          // responsive: true,
-                          maintainAspectRatio: false,
-                        }}
-                      />
-                    </Grid.Column>
-                    <Grid.Column>
-                      <div style={{}}>75%</div>
-                      <Doughnut
-                        data={dataPieChart4}
-                        style={{
-                          // height: '50%',
-                          // width: '100%',
-                          border: 'black 1px solid',
-                          // responsive: true,
-                          maintainAspectRatio: false,
-                        }}
-                      />
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
+            <div className="dataField">
+              <span className="projectsText" style={{
+                display: 'table',
+                margin: 'auto',
+                marginTop: '5px',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.0em',
+                textAlign: 'center',
+                }}>
+                  Total Raised
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="summaryCard"
+          style={{
+            // flex: '1',
+            // padding: '10px',
+            // 'border-radius': '5px',
+            // // border: 'black 1px solid',
+            // gap: '5px',
+            // margin: '5px 5px',
+            // backgroundColor: '#cbf4f1',
+          }}
+        >
+          <div className="headerDonators">
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <span className="projectsData" style={{
+                display: 'table',
+                margin: 'auto',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.8em',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                }}>
+                  <Icon name="small users" style={{'margin-left': '3px',
+                  // color: '#E0A030',
+                  }} />
+                  {donators}
+              </span>
+              <div className="dataField">
+                <span className="projectsText" style={{
+                  display: 'table',
+                  margin: 'auto',
+                  marginTop: '5px',
+                  fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                  // color: '#E0A030',
+                  fontSize: '1.0em',
+                  textAlign: 'center',
+                  }}>
+                    Donators
+                </span>
               </div>
             </div>
           </div>
         </div>
-      )}
-    </>
+        <div
+          className="summaryCard"
+          style={{
+            // flex: '1',
+            // padding: '10px',
+            // 'border-radius': '5px',
+            // // border: 'black 1px solid',
+            // gap: '5px',
+            // margin: '5px 5px',
+            // backgroundColor: '#cbf4f1',
+          }}
+        >
+          <div className="headerViews">
+            <div className="titleField" style={{ textAlign: 'center' }}>
+              <span className="projectsData" style={{
+                display: 'table',
+                margin: 'auto',
+                fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                // color: '#E0A030',
+                fontSize: '1.8em',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                }}>
+                  <Icon name="small eye" style={{'margin-left': '3px',
+                  // color: '#E0A030',
+                  }} />
+                  {views}
+              </span>
+              <div className="dataField">
+                <span className="projectsText" style={{
+                  display: 'table',
+                  margin: 'auto',
+                  marginTop: '5px',
+                  fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                  // color: '#E0A030',
+                  fontSize: '1.0em',
+                  textAlign: 'center',
+                  }}>
+                    Views
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="projectContentContainer"
+        style={{
+          border: 'black 1px solid',
+          padding: '1rem',
+          'margin-top': '30px',
+          margin: '5px 5px',
+        }}
+      >
+        {/* <div className="contentTitle">
+          <strong className="contentTitleField">Your Projects</strong>
+        </div> */}
+        <div
+          className="projectContentDetails"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            // border: 'blue 1px solid',
+          }}
+        >
+          <div
+            className="contentRightCharts"
+            style={{
+              position: 'relative',
+              width: '100%',
+              border: 'orange 1px solid',
+              // margin: '5px 5px',
+              // width: '40%',
+              // height: '100vh',
+            }}
+          >
+            <Grid
+              columns={2}
+              divided
+              style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
+            >
+              <select className="chartInfo" name="chartSelected" onChange={handleOnChange}
+              style={{
+                marginLeft: '15px',
+                border: 'none',
+                outline: 'none',
+                fontSize: '1.2rem',
+                'border-radius':'36px',
+                'border-bottom': '2px solid rgb(84, 86, 81, 1)',
+                color: 'black',
+                // backgroundColor: '#0C6980',
+                backgroundColor: '#EAEAF2',
+                padding: '1px 10px',
+              }}>
+                <option value=""> -- Chart Selection -- </option>
+                <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
+                <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
+                <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
+              </select>
+              <Grid.Row>
+                <Grid.Column>
+                  <div style={{position: 'absolute',
+                    marginTop: '46%',
+                    marginLeft: '46%',
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -50%)'
+                    }}>
+                    {/* <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
+                      fontSize: '1.2em',
+                      fontVariantNumeric: 'slashed-zero',
+                      color: '#ff9933',
+                      }}>
+                      {parse(dynamicStringSpan)}<br></br>statistics
+                    </span> */}
+                  </div>
+                  <Pie
+                    data={chartPickedByUser}
+                    options={{
+                      cutout: '60%',
+                      borderRadius: '30',
+                      responsive: true,
+                      animation: {
+                        animationRotate: true,
+                        duration: 2000
+                      },
+                      plugins: {
+                        legend: {
+                          display: false,
+                        },
+                        title: {
+                          display: false,
+                          text: 'Amount Raised By Project',
+                        },
+                      },
+                    }}
+                    style={{
+                      // height: '50%',
+                      // width: '100%',
+                      // border: 'black 1px solid',
+                      // responsive: true,
+                      maintainAspectRatio: false,
+                    }}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <div style={{position: 'absolute',
+                    marginTop: '46%',
+                    marginLeft: '46%',
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -50%)'}}>
+                      <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
+                        fontSize: '1.2em',
+                        fontVariantNumeric: 'slashed-zero',
+                        color: '#ff9933',
+                        }}>
+                        {lastTwentyFourHours}$ raised<br></br>last 24 hours
+                      </span>
+                    </div>
+                  <Doughnut
+                    data={dataPieChart4}
+                    options={{
+                      cutout: '60%',
+                      borderRadius: '30',
+                      animation: {
+                        animationRotate: true,
+                        duration: 3000
+                      },
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          display: false,
+                        },
+                      },
+                      elements: {
+                        arc: {
+                          spacing: 1,
+                        }
+                      }
+                    }}
+                    style={{
+                      // height: '50%',
+                      // width: '100%',
+                      // border: 'black 1px solid',
+                      padding: '5px',
+                      // responsive: true,
+                      maintainAspectRatio: false,
+                    }}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 

@@ -313,7 +313,6 @@ module.exports = {
   getAllLikes,
   searchbyTerm,
   addView,
-
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,

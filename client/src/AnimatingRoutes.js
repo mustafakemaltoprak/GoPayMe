@@ -1,6 +1,6 @@
-import './App.css';
+import React from 'react'
 import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+
 import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -13,23 +13,16 @@ import { Container, Grid } from 'semantic-ui-react';
 import MyFundraisers from './pages/MyFundraisers';
 import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
-import AnimatingRoutes from './AnimatingRoutes';
-import ScrollToTop from './components/ScrollToTop';
-import { Suspense } from 'react';
-import Loader from './components/Loader';
 
-// import 'leaflet/dist/leaflet.css';
+import {AnimatePresence} from 'framer-motion'
 
-function App() {
-  // const appLocation = useLocation();
-
+function AnimatingRoutes() {
+  const location = useLocation();
   return (
-    <div>
-      <Router>
-        <ScrollToTop/>
-          <AnimatingRoutes />
-        {/* <Switch> */}
-          {/* <Route path="/login" component={Login} />
+    <>
+      <AnimatePresence>
+        <Switch location={location} key={location.pathname}>
+          <Route path="/login" component={Login} />
           <Route path="/categories" component={Categories} />
           <Route path="/register" component={Register} />
           <Route
@@ -38,13 +31,12 @@ function App() {
               <>
                 <Container
                   style={{
-                    // border: 'orange 2px solid',
+                    border: 'orange 2px solid',
                     marginTop: '5rem',
-                    minHeight: '100vh',
+                    minHeight: '80vh',
                   }}
                 >
                   <Navbar />
-                  <Suspense fallback={<Loader/>}/>
                   <Grid>
                     <Grid.Row>
                       <Grid.Column width={3}>
@@ -64,12 +56,11 @@ function App() {
                 </Container>
               </>
             )}
-          /> */}
-        {/* </Switch> */}
-        <ToastContainer position="bottom-right" autoClose={5000} />
-      </Router>
-    </div>
-  );
+          />
+        </Switch>
+        </AnimatePresence>
+    </>
+  )
 }
 
-export default App;
+export default AnimatingRoutes
