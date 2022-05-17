@@ -22,7 +22,7 @@ const getAllFundraisers = async (req, res) => {
       _id: {
         $in: req.body.following,
       },
-    });
+    }).populate('writerId')
     const writers = foundWriters.map((user) => user.userId);
 
     const options =
@@ -42,6 +42,7 @@ const getAllFundraisers = async (req, res) => {
       // },
     })
       .find(options)
+      .populate('writerId')
 
       .skip(skip)
       .limit(limit)
@@ -75,6 +76,7 @@ const getAllFundraisers = async (req, res) => {
       },
     })
       .find(options)
+      .populate('writerId')
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -93,6 +95,7 @@ const getAllFundraisers = async (req, res) => {
         }
       : {};
   Fundraiser.find(options)
+    .populate('writerId')
     .skip(skip)
     .limit(limit)
     .exec((err, docs) => {

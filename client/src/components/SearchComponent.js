@@ -16,9 +16,9 @@ const SearchComponent = () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {obj.title ? (
-          <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             {obj.title} <p style={{ color: 'red' }}>User</p>
-          </p>
+          </div>
         ) : (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>{obj.name}</div>

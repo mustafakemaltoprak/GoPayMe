@@ -3,6 +3,7 @@ import { Grid, Progress, Segment } from 'semantic-ui-react';
 import MapContainerDiv from './MapContainer';
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Tooltip, useMap, Popup } from 'react-leaflet';
+import CardItem from './Card';
 // import { MapContainer, TileLayer } from 'react-leaflet';
 
 const Maps = ({ data }) => {
@@ -123,10 +124,9 @@ const Maps = ({ data }) => {
                 position={place.location.coordinates}
                 // eventHandlers={{ click: () => showPreview
               >
-                
                 <Popup>
                   {' '}
-                  <Segment
+                  {/* <Segment
                     // color={colors[Math.floor(Math.random() * colors.length)]}
                     style={{ cursor: 'pointer' }}
                     className="map-card"
@@ -145,7 +145,11 @@ const Maps = ({ data }) => {
                     >
                       <p style={{ color: 'gray' }}>{`$${place.currentAmount} Raised`}</p>
                     </Progress>
-                  </Segment>{' '}
+                  </Segment>{' '} */}
+                  {/* <div style={{ height: '5rem' }}> */}
+            
+                    <CardItem data={place} maps={true} />
+                  {/* </div> */}
                 </Popup>
               </Marker>
             ))}

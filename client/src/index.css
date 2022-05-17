@@ -3,23 +3,50 @@
 body {
   margin: 0;
   font-family: Abel, Arial, Verdana, sans-serif !important;
-  background: #4e567d !important;
+  background:   #cff2dc !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas,'Courier New', monospace;
 }
 
+input[type='text']:focus,
+input[type='email']:focus {
+  background: #ddd !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.metrics-text, p {
+  /* margin: 0 0 30px; */
+  color: #444 !important;
+  /* width: 100%; */
+}
+
+
+form p {
+  color: rgb(184, 109, 109);
+  margin-top: 8px;
+  margin-bottom: 20px;
+  padding-left: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
 .ui.fixed.menu {
-  background: #4e567d !important;
+   background: #cff2dc !important;
 }
 
 .ui .vertical {
-  background: #4e567d !important;
+   background: #cff2dc !important;
 }
 
 .ui a {
-  background: #4e567d !important;
+  background: #cff2dc;
   justify-content: s;
 }
 
@@ -37,11 +64,12 @@ code {
   display: grid !important;
   /* color: #4e567d; */
   grid-template-columns: 45% 55%;
+ 
 }
 
-.details > * {
+/* .details > * {
   border: 2px solid green;
-}
+} */
 .metics {
   display: grid;
   grid-template-columns: 30% 35% 35%;

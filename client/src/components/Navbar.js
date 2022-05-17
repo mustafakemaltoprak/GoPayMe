@@ -178,7 +178,7 @@ const Navbar = () => {
           <Image
             avatar
             spaced="right"
-            src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+            src={loginSuccess.image}
           />
           <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
             <Dropdown.Menu>

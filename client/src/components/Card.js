@@ -3,18 +3,18 @@ import { Card, Icon, Image, Label, Progress } from 'semantic-ui-react';
 import CreateModal from './CreateModal';
 import { useLocation } from 'react-router-dom';
 
-const CardItem = ({ data, handleClick }) => {
+const CardItem = ({ data, handleClick, maps }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   // <Label color="red" floating>
   //   22
   // </Label>;
-  console.log('locat', data._id);
+  console.log('locat', data);
   return (
     <div>
       {data !== {} && (
         <div className="hover">
-          <Card style={{ height: '26rem', width: '15rem' }}>
+          <Card style={{ height: `${maps ? '10rem' : '26rem'}`, width: '15rem' }}>
             {location.pathname === '/fundraisers' ? (
               <Label color="green" floating onClick={() => setOpen(true)}>
                 Edit
@@ -26,13 +26,13 @@ const CardItem = ({ data, handleClick }) => {
             )}
             {open && <CreateModal open={open} setOpen={setOpen} editData={data} />}
             {/* <div style={{ position: 'absolute', bottom: '200rem' }}>Name : City</div> */}
-            <Image
+            {!maps && <Image
               src={data.image}
               wrapped
               ui={false}
               onClick={() => handleClick(data._id)}
               style={{ cursor: 'pointer' }}
-            />
+            />}
 
             <Card.Content>
               <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -41,7 +41,7 @@ const CardItem = ({ data, handleClick }) => {
                   <Icon name="thumbs up" /> <p style={{ color: 'gainsboro' }}>{data.likes - 1}</p>
                 </div>
               </Card.Header>
-              <Card.Meta>created by: 'data writer'</Card.Meta>
+              <Card.Meta>created by: {data.writerId?.name}</Card.Meta>
               <Card.Description>{data.description?.substring(1, 20) + '...'}</Card.Description>
             </Card.Content>
             {/* <Card.Content extra style={{height: '20rem'}}> */}

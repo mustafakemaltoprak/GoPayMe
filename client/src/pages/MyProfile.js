@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Grid,
-  Label,
-  Menu,
-  Segment,
-  Card,
-  Image,
-  Icon,
-} from 'semantic-ui-react';
+import { Button, Grid, Label, Menu, Segment, Card, Image, Icon } from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -22,23 +13,20 @@ import Categories from './Categories';
 import GroupMessages from '../components/GroupMessages';
 import { io, Socket } from 'socket.io-client';
 
-const MyProfile = ({history}) => {
-
-  console.log('history', history)
-  const messageProp = history.location?.state?.messageProp
+const MyProfile = ({ history }) => {
+  console.log('history', history);
+  const messageProp = history.location?.state?.messageProp;
 
   const requestsProp = history.location?.state?.requestsProp;
 
-   const socket = useRef();
+  const socket = useRef();
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState({
-    Account: messageProp || requestsProp ? false: true,
+    Account: messageProp || requestsProp ? false : true,
     Requests: requestsProp ?? false,
     Messages: messageProp ?? false,
   });
-
-
 
   const [currentNote, setCurrentNote] = useState('');
 
@@ -64,7 +52,9 @@ const MyProfile = ({history}) => {
   const handleAvatarSelection = async (arg) => {
     const payload = { image: arg };
     try {
-      await avatarUpdate(payload);
+      const response = await avatarUpdate(payload);
+      console.log('response', response);
+      dispatch(updateUserDetails(response));
       setImage(arg);
     } catch (e) {
       console.error(e);
@@ -74,6 +64,7 @@ const MyProfile = ({history}) => {
 
   const handleClick = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
+
     setCategories((prev) => {
       return { ...prev, [arg]: !categories[arg] };
     });
@@ -90,7 +81,13 @@ const MyProfile = ({history}) => {
     console.log('ARRAYY', categoriesArr);
 
     try {
-      await postCategories({ categories: categoriesArr, userId: loginSuccess.userId });
+      const response = await postCategories({
+        categories: categoriesArr,
+        userId: loginSuccess.userId,
+      });
+
+      dispatch(updateUserDetails(response));
+      // dispatch(updateUserDetails(response))
       setSelectedCategories(categoriesArr);
     } catch (e) {
       console.error(e);
@@ -106,20 +103,19 @@ const MyProfile = ({history}) => {
     });
   }, []);
 
-     useEffect(() => {
-       socket.current = io('ws://localhost:8900');
-     }, [])
+  useEffect(() => {
+    socket.current = io('ws://localhost:8900');
+  }, []);
 
-    useEffect(() => {
-
-      if(socket.current){
-        console.log('yesssss')
-        socket.current.emit('addUser', loginSuccess.userId);
-        socket.current.on('getUsers', (users) => {
-          console.log('socket users', users);
-        });
-      }
-    }, [loginSuccess]);
+  useEffect(() => {
+    if (socket.current) {
+      console.log('yesssss');
+      socket.current.emit('addUser', loginSuccess.userId);
+      socket.current.on('getUsers', (users) => {
+        console.log('socket users', users);
+      });
+    }
+  }, [loginSuccess]);
 
   const handleCurrentPage = (arg) => {
     // setCategories(prev => {...prev, egef: !categories[arg]})
@@ -176,7 +172,8 @@ const MyProfile = ({history}) => {
             style={{ paddingTop: '2rem', border: '1px red solid' }}
             className="cardgrid"
           >
-            <div className="userAvatarContainer"
+            <div
+              className="userAvatarContainer"
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -185,23 +182,29 @@ const MyProfile = ({history}) => {
               }}
             >
               <div className="currentCardContainer" style={{ flex: '1' }}>
-                <Card style={{width: '200px', height: 'auto'}}>
-                  <Image src={image} wrapped ui={false} style={{'border-radius': '50%'}} />
+                <Card style={{ width: '200px', height: 'auto' }}>
+                  <Image src={image} wrapped ui={false} style={{ 'border-radius': '50%' }} />
                   <Card.Content>
                     <Card.Header>Matthew</Card.Header>
                     <Card.Meta>
-                      <span className="date">Joined in 2015</span>
+                      <span className="date">{loginSuccess.createdAt ? loginSuccess.createdAt : 'Joined in 2015'}</span>
                     </Card.Meta>
                     <Card.Description>
                       Matthew is a musician living in Nashville
-                      <Icon name="edit" style={{'margin-left': '3px'}} />
+                      <Icon name="edit" style={{ 'margin-left': '3px' }} />
                     </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     <Icon name="user" />
                     Your Categories List:
-                    <ul style={{'text-align': 'center', 'list-style-type': 'none', 'text-transform': 'capitalize'}}>
-                      {selectedCategories.map(item => (
+                    <ul
+                      style={{
+                        'text-align': 'center',
+                        'list-style-type': 'none',
+                        'text-transform': 'capitalize',
+                      }}
+                    >
+                      {selectedCategories.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
                     </ul>
@@ -220,7 +223,8 @@ const MyProfile = ({history}) => {
                   </a>
                 </div>
               </div>
-              <div className="userContentContainer"
+              <div
+                className="userContentContainer"
                 style={{
                   flex: '2',
                   display: 'flex',
@@ -236,9 +240,7 @@ const MyProfile = ({history}) => {
                     flexDirection: 'column',
                   }}
                 >
-                  <div className="rowImages"
-                    style={{ display: 'flex' }}
-                  >
+                  <div className="rowImages" style={{ display: 'flex' }}>
                     <img
                       src={avatar1}
                       alt=""
@@ -276,9 +278,7 @@ const MyProfile = ({history}) => {
                       }}
                     />
                   </div>
-                  <div className="rowImages"
-                    style={{ display: 'flex' }}
-                  >
+                  <div className="rowImages" style={{ display: 'flex' }}>
                     <img
                       src={avatar4}
                       alt=""
@@ -318,9 +318,16 @@ const MyProfile = ({history}) => {
                   </div>
                 </div>
 
-                <div className="categoriesSelection" style={{'margin-top': '25px', border: 'red 1px solid',}}>
+                <div
+                  className="categoriesSelection"
+                  style={{ 'margin-top': '25px', border: 'red 1px solid' }}
+                >
                   <h4>Select your categories</h4>
-                  <Grid columns={3} divided style={{ width: '30rem', 'justify': 'flex-end', margin: 'auto'}}>
+                  <Grid
+                    columns={3}
+                    divided
+                    style={{ width: '30rem', justify: 'flex-end', margin: 'auto' }}
+                  >
                     <Grid.Row>
                       <Grid.Column>
                         <Label

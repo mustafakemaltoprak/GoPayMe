@@ -258,47 +258,58 @@ const DetailsPage = () => {
   return (
     <>
       <div className="details">
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignContent: 'center',
+            padding: '0 2rem'
+          }}
+        >
           <Image src={fundraiser.image} style={{ height: '20rem' }} />
           <div style={{ display: 'flex' }}>
             <h2>Description</h2>
           </div>
-          <Label
-            // size="tiny"
-
-            onClick={async () => {
-              const response = await createBookMark({ _id: fundraiser._id });
-              if (response) {
-                setBookMarked(true);
-                dispatch(updateUserDetails(response));
-              }
-            }}
-          >
-            <Icon name="bookmark" />
-            {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
-              ? 'Bookmarked'
-              : 'Bookmark'}
-          </Label>
-          <Label
-            style={{ cursor: 'pointer' }}
-            onClick={async () => {
-              await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  likes: likes + 1,
-                }),
-              }).then((response) => response.json());
-              fetch(`http://localhost:5200/fundraiser/like/amount/${id}`)
-                .then((response) => response.json())
-                .then((actualResponse) => setLikes(actualResponse));
-              console.log(likes);
-            }}
-          >
+          <div>
             {' '}
-            <Icon name="handshake" /> Approve
-          </Label>
-          <Label icon="eye"></Label>
+            <Label
+              // size="tiny"
+
+              onClick={async () => {
+                const response = await createBookMark({ _id: fundraiser._id });
+                if (response) {
+                  setBookMarked(true);
+                  dispatch(updateUserDetails(response));
+                }
+              }}
+            >
+              <Icon name="bookmark" />
+              {bookMarked || loginSuccess.bookmarked.find((item) => item._id === fundraiser._id)
+                ? 'Bookmarked'
+                : 'Bookmark'}
+            </Label>
+            <Label
+              style={{ cursor: 'pointer' }}
+              onClick={async () => {
+                await fetch(`http://localhost:5200/fundraiser/like/${id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    likes: likes + 1,
+                  }),
+                }).then((response) => response.json());
+                fetch(`http://localhost:5200/fundraiser/like/amount/${id}`)
+                  .then((response) => response.json())
+                  .then((actualResponse) => setLikes(actualResponse));
+                console.log(likes);
+              }}
+            >
+              {' '}
+              <Icon name="handshake" /> Approve
+            </Label>
+            <Label icon="eye"></Label>
+          </div>
 
           <p>{fundraiser.description}</p>
           <div>
@@ -348,6 +359,7 @@ const DetailsPage = () => {
             display: 'flex',
             flexDirection: 'column',
             // justifyContent: 'center',
+            
             alignContent: 'center',
           }}
         >
@@ -390,24 +402,27 @@ const DetailsPage = () => {
                 background: '#eee',
                 borderRadius: 15,
                 padding: '2rem',
+                marginTop: '1rem'
               }}
             >
               <div className="metics">
-                <div width={5} style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}>
-                  <div
-                    style={{ fontFamily: 'Muli sans-serif', fontSize: '2.5rem', fontWeight: 600 }}
-                  >
-                    {fundraiser.currentAmount}$
+                <div
+                  width={5}
+                  style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}
+                  className="metrics-text"
+                >
+                  <div style={{ fontSize: '2.5rem', fontWeight: 600 }}>
+                    ${fundraiser.currentAmount}
                   </div>
                   <br></br>
-                  <p>{fundraiser.targetAmount}$ raised</p>
+                  <p>${fundraiser.targetAmount} raised</p>
                 </div>
-                <div width={5} style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}>
-                  <div
-                    style={{ fontFamily: 'Muli sans-serif', fontSize: '2.5rem', fontWeight: 600 }}
-                  >
-                    {fundraiser.backers}
-                  </div>
+                <div
+                  width={5}
+                  style={{ borderRight: '1px solid gainsboro', textAlign: 'center' }}
+                  className="metrics-text"
+                >
+                  <div style={{ fontSize: '2.5rem', fontWeight: 600 }}>{fundraiser.backers}</div>
                   <br></br>
                   <p>donators so far</p>
                 </div>
@@ -418,35 +433,26 @@ const DetailsPage = () => {
                     <>
                       <div
                         style={{
-                          fontFamily: 'Muli sans-serif',
                           fontSize: '2.5rem',
                           fontWeight: 600,
                           textAlign: 'center',
                         }}
+                        className="metrics-text"
                       >
                         {Math.floor(
                           (Date.parse(fundraiser.deadlineDate) - Date.parse(today)) / 86400000,
                         )}
                       </div>
                       <br></br>
-                      <p
-                        style={{
-                          
-                          textAlign: 'center',
-                        }}
-                      >
-                        Days Left
-                      </p>
+                      <p style={{}}>Days Left</p>
                     </>
                   ) : (
                     <>
-                      <div
-                        style={{ fontFamily: 'Muli sans-serif', fontSize: '2rem', fontWeight: 600 }}
-                      >
+                      <h3 style={{ fontSize: '2rem', fontWeight: 600, textAlign: 'center' }}>
                         Expired
-                      </div>
-                      <br></br>
-                      <p>donation open</p>
+                      </h3>
+
+                      <p style={{ textAlign: 'center' }}>donation open</p>
                     </>
                   )}
                 </div>
@@ -511,7 +517,7 @@ const DetailsPage = () => {
                   // border: '1px yellow solid',
                 }}
               >
-                <Input ref={dollarDonationAmount} placeholder="Enter $ for Donation" type="text" />
+                <input type='number' ref={dollarDonationAmount} placeholder="Enter $ for Donation"  style={{padding: '0.5rem', border:  'none'}}/>
 
                 <Button className="payButton" onClick={toggle}>
                   Submit Payment
