@@ -9,6 +9,8 @@ const CardItem = ({ data, handleClick, maps }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
+
+  console.log('mapssss', maps)
   function isInTheFuture(date) {
     const today = new Date();
     
@@ -29,7 +31,7 @@ const CardItem = ({ data, handleClick, maps }) => {
   return (
     <>
       <div class="containerTest">
-        <div class="card" style={{ cursor: 'pointer', height: `${maps && 150}` }} onClick={() => handleClick(data._id)}>
+        <div class="card" style={{ cursor: 'pointer', height: `${maps && '170px'}` }} onClick={() => handleClick(data._id)}>
           {!maps && <div class="card-header">
             <img src={data.image} alt="rover" />
           </div>}
