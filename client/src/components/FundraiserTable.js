@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon, Progress, Table } from 'semantic-ui-react';
-import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
+import { deleteFundraiser, fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 import { useHistory } from 'react-router-dom';
 import CreateModal from './CreateModal';
 
@@ -19,6 +19,13 @@ const history = useHistory();
   //   fetchUserCreatedFundraisers(loginSuccess.userId).then((response) => setData(response));
   // }, []);
 
+  const handleDelete = async(id) => {
+    const response = await deleteFundraiser(id)
+    if (response.success) {
+      setData(prev => prev.filter(item => item._id !== id))
+    }
+  }
+
   return (
     <>
       <Table celled fixed singleLine textAlign="center">
@@ -29,7 +36,7 @@ const history = useHistory();
             <Table.HeaderCell>Progress</Table.HeaderCell>
             <Table.HeaderCell>Current Amount</Table.HeaderCell>
             <Table.HeaderCell>Target Amount</Table.HeaderCell>
-            <Table.HeaderCell>Edit</Table.HeaderCell>
+            <Table.HeaderCell>Edit / Delete</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -40,11 +47,10 @@ const history = useHistory();
                 {/* <Table.Cell>{item.title}</Table.Cell> */}
                 <Table.Cell>
                   <div
-                    
                     style={{ cursor: 'pointer' }}
                     onClick={() => history.push(`/fundraiser/${item._id}`)}
                   >
-                    {item.title} 
+                    {item.title}
                   </div>
                 </Table.Cell>
                 <Table.Cell
@@ -84,7 +90,11 @@ const history = useHistory();
                 <Table.Cell>{item.targetAmount}</Table.Cell>
                 <Table.Cell>
                   <Icon name="edit" onClick={() => setOpen(true)} style={{ cursor: 'pointer' }} />{' '}
-                  Edit
+                  <Icon
+                    name="trash"
+                    onClick={() => handleDelete(item._id)}
+                    style={{ cursor: 'pointer' }}
+                  />{' '}
                 </Table.Cell>
                 {open && (
                   <CreateModal open={open} setOpen={setOpen} editData={item} setEdit={setData} />

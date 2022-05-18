@@ -11,6 +11,17 @@ export const createFundraiser = async (formObj) => {
   return data;
 };
 
+
+export const deleteFundraiser = async (id) => {
+  const token = JSON.parse(localStorage.getItem('userInfo')).token;
+  const config = confighelper(token);
+
+  const { data } = await axios.delete(`/fundraiser/${id}`, config);
+  console.log('testing result', data);
+  return data;
+};
+
+
 export const editFundraiser = async () => {};
 
 

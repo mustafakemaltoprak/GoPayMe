@@ -168,8 +168,8 @@ const createFundraiser = async (req, res) => {
 
 function deleteFundraiser(req, res) {
   Fundraiser.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Fundraiser deleted'))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .then(() => res.status(200).send({ success: true }))
+    .catch((err) => res.status(400).send({ error: err.message }));
 }
 
 function findSpecificFundraiser(req, res) {

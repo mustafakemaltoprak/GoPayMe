@@ -49,7 +49,7 @@ const CardItem = ({ data, handleClick, maps }) => {
 
           <div className="card-body">
             <p>
-              {data.description.substring(0, 50) + '...'}{' '}
+              {data.description.substring(0, 30) + '...'}{' '}
               <a style={{ background: 'white' }}>read more</a>
             </p>
 

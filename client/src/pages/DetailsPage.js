@@ -335,7 +335,7 @@ const DetailsPage = () => {
             This Fundraiser was created by <UserButton dataObj={fundraiser} />
           </i>
           <h2>Comments</h2>
-          <form style={{ display: 'flex' }}>
+          <form style={{ display: 'flex' }} autoComplete='off'>
             <textarea ref={commentTextArea} />
             <Button type="submit" icon="edit" onClick={(e) => handleClick(e)}>
               Submit

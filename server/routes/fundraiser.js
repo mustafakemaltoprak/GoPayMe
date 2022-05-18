@@ -21,7 +21,7 @@ const { authMiddleware } = require('../middlewares/auth');
 router.post('/', authMiddleware, getAllFundraisers);
 
 router.post('/create', authMiddleware, createFundraiser);
-
+router.delete('/:id', authMiddleware, deleteFundraiser);
 router.route('/find/:id').get(findSpecificFundraiser);
 router.get('/search', authMiddleware, searchbyTerm);
 // router.route("/create").post(createFundraiser);
