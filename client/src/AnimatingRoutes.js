@@ -23,7 +23,7 @@ function AnimatingRoutes() {
   return (
     <>
       <AnimatePresence>
-        <Switch location={location} key={location.pathname}>
+        <Switch location={location}>
           <Route path="/login" component={Login} />
 
           <Route path="/categories" component={Categories} />
