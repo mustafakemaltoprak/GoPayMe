@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState([]);
- 
+
   const [categoriesError, setCategoriesError] = useState(false);
   const { loginSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -22,6 +22,10 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
     // 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
     // 'https://react.semantic-ui.com/images/avatar/large/chris.jpg',
   ];
+
+  if (editData) {
+    editData['deadlineDate'] = editData.deadlineDate.slice(0, -1);
+  }
 
   const defaultValues = editData ?? {
     title: '',
@@ -65,6 +69,8 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
     mode: 'onChange',
   });
 
+  console.log('edit data', editData);
+
   const onSubmit = async (formObj) => {
     console.log('form', new Date());
     setloading(true);
@@ -86,15 +92,13 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
       return;
     }
 
-    console.log('profile', formObj, editData)
+    console.log('profile', formObj, editData);
     // setloading(true)
     let profilePicUrl;
     if ((Array.isArray(formObj.image) && formObj.image.length > 0) || !editData) {
       profilePicUrl = await upload(formObj.image[0]);
-
     }
 
-    
     formObj = {
       ...formObj,
       // image: formObj.image.length === 0 ? images[Math.floor(Math.random() * 1)] : formObj.image[0],
@@ -103,7 +107,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
       writerId: loginSuccess._id,
       token: loginSuccess.token,
       targetAmount: Number(formObj.targetAmount),
-      deadlineDate: editData ? editData.deadlineDate : new Date(formObj.deadlineDate),
+      deadlineDate: editData ? formObj.deadlineDate : new Date(formObj.deadlineDate).toISOString(),
       categories:
         editData && categories.length === 0
           ? loginSuccess.categories
@@ -118,7 +122,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
         // dispatch(editFundraiserAction(data));
         toast.success('Fundraiser edited!');
         setloading(false);
-         setEdit((prev) => prev.map(item => item._id === data._id ? data : item));
+        setEdit((prev) => prev.map((item) => (item._id === data._id ? data : item)));
         setOpen(false);
       }
     } else {
@@ -127,7 +131,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
       if (data) {
         // dispatch(createFundraiserAction(data));
         toast.success('Fundraiser created');
-        setData(prev =>  [...prev, data])
+        setData((prev) => [...prev, data]);
         setloading(false);
         setOpen(false);
       }

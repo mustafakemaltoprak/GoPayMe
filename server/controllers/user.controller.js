@@ -222,7 +222,7 @@ const updateAvatarPicture = async (req, res) => {
 
     const userFound = await User.findOneAndUpdate(
       { userId: req.user.userId },
-      { image: req.body.image, ca },
+      { image: req.body.image },
       { new: true }
     );
     console.log('avatar img', req.body.image);

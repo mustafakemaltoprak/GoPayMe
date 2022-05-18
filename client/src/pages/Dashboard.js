@@ -16,7 +16,8 @@ import { Doughnut, Pie } from 'react-chartjs-2';
 import 'hammerjs';
 import Loader from '../components/Loader';
 
-import { motion }from 'framer-motion';
+import { motion } from 'framer-motion';
+import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 
 // import { xorBy } from 'lodash';
 
@@ -28,7 +29,8 @@ function Dashboard() {
   const [projectsCreated, setProjectsCreated] = useState(0);
   const [totalRaised, setTotalRaised] = useState(0);
   const [donators, setDonators] = useState(0);
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [chartText, setChartText] = useState('Select the dropdown to view statistics')
   const [views, setViews] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
@@ -37,13 +39,13 @@ function Dashboard() {
   const [projectNames, setProjectNames] = useState(['']); // ['Street Artists', 'GoUkraine', 'ForFood']
   const [projectRaised, setProjectRaised] = useState([0]); // [3000, 1000, 2000]
 
-  const [lastTwentyFourHours, setLastTwentyFourHours] = useState(0)
+  const [lastTwentyFourHours, setLastTwentyFourHours] = useState(0);
 
   // money per donators
   const [donatorNames, setDonatorNames] = useState([]); // ['Mustafa', 'Daniel', 'Busayo']
   const [donatorPaid, setDonatorPaid] = useState([]); // [150, 100, 200]
 
-   // views per project
+  // views per project
   const [projectViewsNames, setProjectViewsNames] = useState([]); // ['Street Artists', 'GoUkraine', 'ForFood']
   const [projectViews, setProjectViews] = useState([]); // [15, 1, 200]
 
@@ -145,7 +147,7 @@ function Dashboard() {
   };
 
   const dataPieChart4 = {
-    labels: ["John"],
+    labels: ['John'],
     // labels: [donators],
     datasets: [
       {
@@ -178,25 +180,31 @@ function Dashboard() {
 
     setProjectRaised(data.map((item) => item.currentAmount));
     setChartPickedByUser(dataPieChart);
-    console.log('first loading dashboard')
+    console.log('first loading dashboard');
   }
 
-  let leftChartText = "";
+  let leftChartText = '';
   const handleOnChange = (arg) => {
+
+    console.log('ARGU', arg.target.value)
     console.log('leftChartText arg', arg.target.value);
     let testObj = JSON.parse(arg.target.value);
     setChartPickedByUser(testObj);
     if (arg.target.value === JSON.stringify(dataPieChart)) {
-      leftChartText = "Fundraisers";
+      console.log('fireddd fundraisers')
+      leftChartText = 'Fundraisers';
+      setChartText('Fundraisers Statistics');
     } else if (arg.target.value === JSON.stringify(dataPieChart2)) {
-      leftChartText = "Donators";
+      leftChartText = 'Donators';
+      setChartText('Donators Statistics');
     } else if (arg.target.value === JSON.stringify(dataPieChart3)) {
-      leftChartText = "Views";
+      leftChartText = 'Views';
+      setChartText('Views Statistics');
     } else {
-      leftChartText = "";
+      leftChartText = '';
     }
     console.log('leftChartText', leftChartText);
-    return leftChartText
+    return leftChartText;
   };
   const dynamicStringSpan = '<p>{leftChartText}</p>';
 
@@ -218,15 +226,20 @@ function Dashboard() {
   // };
 
   useEffect(() => {
-    setLoading(true)
-    if (fundraisers.length > 0) {
-      const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
-      setData(filteredFundraisers);
-    }
-    setLoaded(true);
-    setLoading(false)
-  }, [fundraisers, loginSuccess]);
+    setLoading(true);
+    // if (fundraisers.length > 0) {
+    //   const filteredFundraisers = fundraisers.filter((item) => item.writer === loginSuccess.userId);
+    //   setData(filteredFundraisers);
+    // }
 
+    fetchUserCreatedFundraisers(loginSuccess.userId).then((response) => {
+      setData(response);
+      setLoaded(true);
+    });
+
+    // setLoaded(true);
+    setLoading(false);
+  }, [fundraisers, loginSuccess]);
 
   function getFormattedDate(date) {
     var year = date.getFullYear();
@@ -242,7 +255,7 @@ function Dashboard() {
 
   let todayFormatted = getFormattedDate(new Date());
 
-  const [totalTwentyFourHours, setTotalTwentyFourHours] = useState([])
+  const [totalTwentyFourHours, setTotalTwentyFourHours] = useState([]);
 
   useEffect(() => {
     if (loaded) {
@@ -252,21 +265,27 @@ function Dashboard() {
       setProjectViewsNames(data.map((item) => item.title));
       setProjectViews(data.map((item) => item.views));
 
-      const lastDonations = data.flatMap(item => item.prevDonations);
-      const last24hDonations = lastDonations.filter(donation => {
-        return new Date(donation.date ).getTime() > (new Date().getTime() - (24*60*60*1000));
-      })
-      const sumLast24h = last24hDonations.reduce((acc, curr) => acc+parseInt(curr.amount), 0);
+      const lastDonations = data.flatMap((item) => item.prevDonations);
+      const last24hDonations = lastDonations.filter((donation) => {
+        return new Date(donation.date).getTime() > new Date().getTime() - 24 * 60 * 60 * 1000;
+      });
+      const sumLast24h = last24hDonations.reduce((acc, curr) => acc + parseInt(curr.amount), 0);
       console.log(sumLast24h);
-      setLastTwentyFourHours(sumLast24h)
+      setLastTwentyFourHours(sumLast24h);
 
       for (let i = 0; i < data.length; i++) {
         setTotalRaised((prev) => prev + data[i].currentAmount);
         setDonators((prev) => prev + data[i].backers);
         setViews((prev) => prev + data[i].views);
         setProjectsCreated(projectsCreated + data.length);
-        setDonatorNames((prevState) => [...prevState, data[i].prevDonations.map((item) => item.sender)]);
-        setDonatorPaid((prevState) => [...prevState, data[i].prevDonations.map((item) => item.amount)]);
+        setDonatorNames((prevState) => [
+          ...prevState,
+          data[i].prevDonations.map((item) => item.sender),
+        ]);
+        setDonatorPaid((prevState) => [
+          ...prevState,
+          data[i].prevDonations.map((item) => item.amount),
+        ]);
       }
     }
   }, [loaded]);
@@ -288,16 +307,20 @@ function Dashboard() {
 
   return (
     // {loading ?  <Loader  /> :}
-    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {loading ? (
         <Loader />
       ) : (
+
         <div
           className="profileContainer"
-          style={{ border: 'red 2px solid', padding: '1rem',
-          // backgroundColor: '#4e567d'
-          backgroundColor: '#FBFBFF',
-          'border-radius': '40px',}}
+          style={{
+            border: 'red 2px solid',
+            padding: '1rem',
+            // backgroundColor: '#4e567d'
+            backgroundColor: '#FBFBFF',
+            'border-radius': '40px',
+          }}
         >
           <div
             className="summaryHeaderContainer"
@@ -309,123 +332,47 @@ function Dashboard() {
           >
             <div
               className="summaryCard"
-              style={{
-                // flex: '1',
-                // padding: '10px',
-                // 'border-radius': '5px',
-                // // border: 'black 1px solid',
-                // gap: '5px',
-                // margin: '5px 5px',
-                // backgroundColor: '#cbf4f1',
-              }}
+              style={
+                {
+                  // flex: '1',
+                  // padding: '10px',
+                  // 'border-radius': '5px',
+                  // // border: 'black 1px solid',
+                  // gap: '5px',
+                  // margin: '5px 5px',
+                  // backgroundColor: '#cbf4f1',
+                }
+              }
             >
               <div className="headerProjects">
                 <div className="titleField">
-                  <span className="projectsData" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.8em',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    }}>
-                      <Icon name="small tasks" style={{'margin-left': '3px',
+                  <span
+                    className="projectsData"
+                    style={{
+                      display: 'table',
+                      margin: 'auto',
+                      fontFamily: '"Trebuchet MS", Verdana, sans-serif',
                       // color: '#E0A030',
-                      }} />
-                      {projectsCreated}
+                      fontSize: '1.8em',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Icon
+                      name="small tasks"
+                      style={{
+                        'margin-left': '3px',
+                        // color: '#E0A030',
+                      }}
+                    />
+                    {projectsCreated}
                   </span>
                 </div>
                 <div className="dataField">
                   {/* <span className="projectsData">{projectsCreated}</span> */}
-                  <span className="projectsText" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    marginTop: '5px',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.0em',
-                    textAlign: 'center',
-                    }}>
-                      Projects Created
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              className="summaryCard"
-              style={{
-                // flex: '1',
-                // padding: '10px',
-                // 'border-radius': '5px',
-                // // border: 'black 1px solid',
-                // gap: '5px',
-                // margin: '5px 5px',
-                // backgroundColor: '#cbf4f1',
-              }}
-            >
-              <div className="headerTotalRaised">
-                <div className="titleField">
-                  <span className="projectsData" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.8em',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    }}>
-                      <Icon name="small money bill alternate outline" style={{'margin-left': '3px',
-                      // color: '#E0A030',
-                      }} />
-                      {totalRaised}$
-                  </span>
-                </div>
-                <div className="dataField">
-                  <span className="projectsText" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    marginTop: '5px',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.0em',
-                    textAlign: 'center',
-                    }}>
-                      Total Raised
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              className="summaryCard"
-              style={{
-                // flex: '1',
-                // padding: '10px',
-                // 'border-radius': '5px',
-                // // border: 'black 1px solid',
-                // gap: '5px',
-                // margin: '5px 5px',
-                // backgroundColor: '#cbf4f1',
-              }}
-            >
-              <div className="headerDonators">
-                <div className="titleField" style={{ textAlign: 'center' }}>
-                  <span className="projectsData" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.8em',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    }}>
-                      <Icon name="small users" style={{'margin-left': '3px',
-                      // color: '#E0A030',
-                      }} />
-                      {donators}
-                  </span>
-                  <div className="dataField">
-                    <span className="projectsText" style={{
+                  <span
+                    className="projectsText"
+                    style={{
                       display: 'table',
                       margin: 'auto',
                       marginTop: '5px',
@@ -433,8 +380,120 @@ function Dashboard() {
                       // color: '#E0A030',
                       fontSize: '1.0em',
                       textAlign: 'center',
-                      }}>
-                        Donators
+                    }}
+                  >
+                    Projects Created
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className="summaryCard"
+              style={
+                {
+                  // flex: '1',
+                  // padding: '10px',
+                  // 'border-radius': '5px',
+                  // // border: 'black 1px solid',
+                  // gap: '5px',
+                  // margin: '5px 5px',
+                  // backgroundColor: '#cbf4f1',
+                }
+              }
+            >
+              <div className="headerTotalRaised">
+                <div className="titleField">
+                  <span
+                    className="projectsData"
+                    style={{
+                      display: 'table',
+                      margin: 'auto',
+                      fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                      // color: '#E0A030',
+                      fontSize: '1.8em',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Icon
+                      name="small money bill alternate outline"
+                      style={{
+                        'margin-left': '3px',
+                        // color: '#E0A030',
+                      }}
+                    />
+                    {totalRaised}$
+                  </span>
+                </div>
+                <div className="dataField">
+                  <span
+                    className="projectsText"
+                    style={{
+                      display: 'table',
+                      margin: 'auto',
+                      marginTop: '5px',
+                      fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                      // color: '#E0A030',
+                      fontSize: '1.0em',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Total Raised
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className="summaryCard"
+              style={
+                {
+                  // flex: '1',
+                  // padding: '10px',
+                  // 'border-radius': '5px',
+                  // // border: 'black 1px solid',
+                  // gap: '5px',
+                  // margin: '5px 5px',
+                  // backgroundColor: '#cbf4f1',
+                }
+              }
+            >
+              <div className="headerDonators">
+                <div className="titleField" style={{ textAlign: 'center' }}>
+                  <span
+                    className="projectsData"
+                    style={{
+                      display: 'table',
+                      margin: 'auto',
+                      fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                      // color: '#E0A030',
+                      fontSize: '1.8em',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Icon
+                      name="small users"
+                      style={{
+                        'margin-left': '3px',
+                        // color: '#E0A030',
+                      }}
+                    />
+                    {donators}
+                  </span>
+                  <div className="dataField">
+                    <span
+                      className="projectsText"
+                      style={{
+                        display: 'table',
+                        margin: 'auto',
+                        marginTop: '5px',
+                        fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                        // color: '#E0A030',
+                        fontSize: '1.0em',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Donators
                     </span>
                   </div>
                 </div>
@@ -442,43 +501,55 @@ function Dashboard() {
             </div>
             <div
               className="summaryCard"
-              style={{
-                // flex: '1',
-                // padding: '10px',
-                // 'border-radius': '5px',
-                // // border: 'black 1px solid',
-                // gap: '5px',
-                // margin: '5px 5px',
-                // backgroundColor: '#cbf4f1',
-              }}
+              style={
+                {
+                  // flex: '1',
+                  // padding: '10px',
+                  // 'border-radius': '5px',
+                  // // border: 'black 1px solid',
+                  // gap: '5px',
+                  // margin: '5px 5px',
+                  // backgroundColor: '#cbf4f1',
+                }
+              }
             >
               <div className="headerViews">
                 <div className="titleField" style={{ textAlign: 'center' }}>
-                  <span className="projectsData" style={{
-                    display: 'table',
-                    margin: 'auto',
-                    fontFamily: '"Trebuchet MS", Verdana, sans-serif',
-                    // color: '#E0A030',
-                    fontSize: '1.8em',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    }}>
-                      <Icon name="small eye" style={{'margin-left': '3px',
-                      // color: '#E0A030',
-                      }} />
-                      {views}
-                  </span>
-                  <div className="dataField">
-                    <span className="projectsText" style={{
+                  <span
+                    className="projectsData"
+                    style={{
                       display: 'table',
                       margin: 'auto',
-                      marginTop: '5px',
                       fontFamily: '"Trebuchet MS", Verdana, sans-serif',
                       // color: '#E0A030',
-                      fontSize: '1.0em',
+                      fontSize: '1.8em',
+                      fontWeight: 'bold',
                       textAlign: 'center',
-                      }}>
-                        Views
+                    }}
+                  >
+                    <Icon
+                      name="small eye"
+                      style={{
+                        'margin-left': '3px',
+                        // color: '#E0A030',
+                      }}
+                    />
+                    {views}
+                  </span>
+                  <div className="dataField">
+                    <span
+                      className="projectsText"
+                      style={{
+                        display: 'table',
+                        margin: 'auto',
+                        marginTop: '5px',
+                        fontFamily: '"Trebuchet MS", Verdana, sans-serif',
+                        // color: '#E0A030',
+                        fontSize: '1.0em',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Views
                     </span>
                   </div>
                 </div>
@@ -521,39 +592,48 @@ function Dashboard() {
                   divided
                   style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
                 >
-                  <select className="chartInfo" name="chartSelected" onChange={handleOnChange}
-                  style={{
-                    marginLeft: '15px',
-                    border: 'none',
-                    outline: 'none',
-                    fontSize: '1.2rem',
-                    'border-radius':'36px',
-                    'border-bottom': '2px solid rgb(84, 86, 81, 1)',
-                    color: 'black',
-                    // backgroundColor: '#0C6980',
-                    backgroundColor: '#EAEAF2',
-                    padding: '1px 10px',
-                  }}>
+                  <select
+                    className="chartInfo"
+                    name="chartSelected"
+                    onChange={handleOnChange}
+                    style={{
+                      marginLeft: '15px',
+                      border: 'none',
+                      outline: 'none',
+                      fontSize: '1.2rem',
+                      'border-radius': '36px',
+                      'border-bottom': '2px solid rgb(84, 86, 81, 1)',
+                      color: 'black',
+                      // backgroundColor: '#0C6980',
+                      backgroundColor: '#EAEAF2',
+                      padding: '1px 10px',
+                    }}
+                  >
                     <option value=""> -- Chart Selection -- </option>
                     <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
                     <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
                     <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
                   </select>
+
+                
                   <Grid.Row>
                     <Grid.Column>
-                      <div style={{position: 'absolute',
-                        marginTop: '46%',
-                        marginLeft: '46%',
-                        textAlign: 'center',
-                        transform: 'translate(-50%, -50%)'
-                        }}>
-                        {/* <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
+                      <div
+                        style={{
+                          position: 'absolute',
+                          marginTop: '46%',
+                          marginLeft: '46%',
+                          textAlign: 'center',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                      >
+                        <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
                           fontSize: '1.2em',
                           fontVariantNumeric: 'slashed-zero',
                           color: '#ff9933',
                           }}>
-                          {parse(dynamicStringSpan)}<br></br>statistics
-                        </span> */}
+                          {chartText}<br></br>
+                        </span>
                       </div>
                       <Pie
                         data={chartPickedByUser}
@@ -563,7 +643,7 @@ function Dashboard() {
                           responsive: true,
                           animation: {
                             animationRotate: true,
-                            duration: 2000
+                            duration: 2000,
                           },
                           plugins: {
                             legend: {
@@ -585,19 +665,26 @@ function Dashboard() {
                       />
                     </Grid.Column>
                     <Grid.Column>
-                      <div style={{position: 'absolute',
-                        marginTop: '46%',
-                        marginLeft: '46%',
-                        textAlign: 'center',
-                        transform: 'translate(-50%, -50%)'}}>
-                          <span style={{fontFamily:'"Trebuchet MS", Verdana, sans-serif',
+                      <div
+                        style={{
+                          position: 'absolute',
+                          marginTop: '46%',
+                          marginLeft: '46%',
+                          textAlign: 'center',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: '"Trebuchet MS", Verdana, sans-serif',
                             fontSize: '1.2em',
                             fontVariantNumeric: 'slashed-zero',
                             color: '#ff9933',
-                            }}>
-                            {lastTwentyFourHours}$ raised<br></br>last 24 hours
-                          </span>
-                        </div>
+                          }}
+                        >
+                          {lastTwentyFourHours}$ raised<br></br>last 24 hours
+                        </span>
+                      </div>
                       <Doughnut
                         data={dataPieChart4}
                         options={{
@@ -605,7 +692,7 @@ function Dashboard() {
                           borderRadius: '30',
                           animation: {
                             animationRotate: true,
-                            duration: 3000
+                            duration: 3000,
                           },
                           responsive: true,
                           plugins: {
@@ -616,8 +703,8 @@ function Dashboard() {
                           elements: {
                             arc: {
                               spacing: 1,
-                            }
-                          }
+                            },
+                          },
                         }}
                         style={{
                           // height: '50%',

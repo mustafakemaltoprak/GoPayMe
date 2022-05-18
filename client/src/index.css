@@ -68,6 +68,18 @@ form p {
   background: #753bbd !important;
 }
 
+.card-label {
+  color: white !important;
+  background:  #66ee98 !important;
+  padding: .3rem;
+}
+
+.card-label2 {
+  color: white !important;
+  background:  #ee66b8 !important;
+  padding: .3rem;
+}
+
 .comment-message {
   display: grid;
   grid-template-columns: 10% auto;
@@ -171,9 +183,8 @@ body {
 }
 
 .cardgrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 6rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .fundraiserTitle {
@@ -412,16 +423,9 @@ button:active {
   width: 2ch;
 }
 
-/* .container {
-    height: 50px;
-    border: 2px solid black;
-
-    font-family: "Oswald";
-    font-size: 16px;
-
-    /* display: flex;
-    justify-content: center; */
-/* }  */
+.containerTest {
+  flex-basis: 33.333333%;
+}
 
 /* // Animation */
 @keyframes flip {

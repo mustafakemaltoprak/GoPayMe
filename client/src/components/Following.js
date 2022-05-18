@@ -65,33 +65,35 @@ const Following = ({ favorites }) => {
       {loading ? (
         <Loader />
       ) : (
-        <div
-          attached="bottom"
-          style={{ padding: '2rem', border: '1px red solid' }}
-          className="cardgrid"
-        >
-          {
-            <>
-              {data.length > 0 ? (
-                <>
-                  {data.map((dataItem) => (
-                    <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
-                  ))}
-                  {count >= limit ? (
-                    <Label onClick={onLoadMore} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                      load more
-                    </Label>
-                  ) : (
-                    <p style={{ textAlign: 'center' }}>
-                      Your following hasnt created anymore followers{' '}
-                    </p>
-                  )}
-                </>
-              ) : (
-                <p>People you follow have not created any fundraisers</p>
-              )}
-            </>
-          }
+        <div>
+          <div
+            attached="bottom"
+            style={{ padding: '2rem', border: '1px red solid' }}
+            className="cardgrid"
+          >
+            {
+              <>
+                {data.length > 0 ? (
+                  <>
+                    {data.map((dataItem) => (
+                      <CardItem data={dataItem} key={dataItem._id} handleClick={handleClick} />
+                    ))}
+                    {count >= limit && (
+                      <Label
+                        onClick={onLoadMore}
+                        style={{ cursor: 'pointer', textAlign: 'center' }}
+                      >
+                        load more
+                      </Label>
+                    )}
+                  </>
+                ) : (
+                  <p>People you follow have not created any fundraisers</p>
+                )}
+              </>
+            }
+          </div>
+          {<p style={{ textAlign: 'center' }}>No more fundraisers </p>}
         </div>
       )}
     </>

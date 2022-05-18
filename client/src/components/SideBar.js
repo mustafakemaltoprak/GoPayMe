@@ -1,7 +1,17 @@
 import React from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 // import firebase from 'firebase'
-import { Grid, Header, Icon, Image, List, Menu, Segment, Sidebar, Sticky } from 'semantic-ui-react';
+import {
+  Grid,
+  Header,
+  Icon,
+  Image,
+  List,
+  Menu,
+  Segment,
+  Sidebar,
+  Sticky,
+} from 'semantic-ui-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/actions/userActions';
 const SideBar = () => {
@@ -13,7 +23,7 @@ const SideBar = () => {
   // console.log('userrrid', uid)
 
   return (
-    <Sticky>
+    <div style={{ marginTop: '50px' }}>
       {/* <List style={{ paddingTop: '1rem' }} size="big" verticalAlign="middle" selection>
             <Link href="/notifications">
               <List.Item>
@@ -36,7 +46,6 @@ const SideBar = () => {
         className="cool"
         style={{
           border: 'solid 1px gainsboro',
-          paddingTop: '10rem',
           overflow: 'hidden',
           width: '100%',
         }}
@@ -49,47 +58,66 @@ const SideBar = () => {
             // onClick={() => {
             //   history.push('/home');
             // }}
+            style={{
+              marginTop: '10px',
+            }}
           >
             <Icon name="home" />
             Home
           </Menu.Item>
+          <Menu.Item
+            as={Link}
+            to="/fundraisers"
+            active={location.pathname === '/fundraisers'}
+            style={{
+              marginTop: '10px',
+            }}
+          >
+            <Icon name="tags" />
+            My fundraisers
+          </Menu.Item>
+
+          <Menu.Item
+            as={Link}
+            active={location.pathname === '/dashboard'}
+            to="/dashboard"
+            style={{
+              marginTop: '10px',
+            }}
+            // onClick={() => {
+            //   history.push('/fundraisers');
+            // }}
+          >
+            <Icon name="dashboard" />
+            Dashboard
+          </Menu.Item>
+
+          <Menu.Item
+            as="a"
+            // active={location.pathname === '/l'}
+            to="/login"
+            onClick={() => {
+              dispatch(logoutUser());
+              history.push('/login');
+            }}
+            style={{
+              marginTop: '10px',
+              marginBottom: '10px',
+            }}
+          >
+            <Icon name="sign-out" />
+            Logout
+          </Menu.Item>
         </Grid>
-
-        <Menu.Item as={Link} to="/fundraisers" active={location.pathname === '/fundraisers'}>
-          <Icon name="tags" />
-          My fundraisers
-        </Menu.Item>
-
-        <Menu.Item
-          as={Link}
-          active={location.pathname === '/dashboard'}
-          to="/dashboard"
-          // onClick={() => {
-          //   history.push('/fundraisers');
-          // }}
-        >
-          <Icon name="dashboard" />
-          Dashboard
-        </Menu.Item>
-
-        <Menu.Item
-          as="a"
-          // active={location.pathname === '/l'}
-          to="/login"
-          onClick={() => {
-            dispatch(logoutUser());
-            history.push('/login');
-          }}
-        >
-          <Icon name="sign-out" />
-          Logout
-        </Menu.Item>
       </Menu>
 
       <Grid.Column style={{ marginTop: '3rem', textAlign: 'center' }}>
         <h3>Your following</h3>
-        {loginSuccess.following?.length > 0 ?
-          (loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)) : (<p>Not following anyone yet</p>) }
+        {loginSuccess.following?.length > 0 ? (
+          loginSuccess.following.map((user) => <Segment>{user.name}</Segment>)
+        ) : (
+          <p>Not following anyone yet</p>
+        )}
       </Grid.Column>
       {/* <Sidebar.Pusher>
               <Segment basic>
@@ -116,7 +144,7 @@ const SideBar = () => {
               <List.Content>{pc && <List.Header content="Logout" />}</List.Content>
             </List.Item> */}
       {/* </List> */}
-    </Sticky>
+    </div>
   );
 };
 

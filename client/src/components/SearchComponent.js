@@ -29,7 +29,7 @@ const SearchComponent = () => {
               view user
             </Label>
           </>
-        )}
+        )} 
         {/* <Label content="follow" color="green" /> */}
       </div>
     </>

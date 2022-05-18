@@ -36,7 +36,7 @@ const Myfundraisers = () => {
 
   return (
    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} >
-      <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
+      <div style={{ minHeight: '80vh' }}>
         <Grid.Row>
           {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
         </Grid.Row>
@@ -46,6 +46,7 @@ const Myfundraisers = () => {
               setOpenModal(true);
             }}
             floated="right"
+            style={{marginBottom: '1rem'}}
           >
             Create a fundraiser
           </Button>
@@ -53,7 +54,7 @@ const Myfundraisers = () => {
 
         <div
           attached="bottom"
-          style={{ padding: '2rem', marginTop: '3rem', border: '1px red solid' }}
+          style={{ padding: '2rem', marginTop: '3rem' }}
           // className="cardgrid"
         >
           {data.length > 0 ? (

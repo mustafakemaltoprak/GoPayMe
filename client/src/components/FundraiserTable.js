@@ -4,11 +4,12 @@ import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon, Progress, Table } from 'semantic-ui-react';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
+import { useHistory } from 'react-router-dom';
 import CreateModal from './CreateModal';
 
 const FundraiserTable = ({ data, setData }) => {
   // const location = useLocation();
-
+const history = useHistory();
   const { loginSuccess } = useSelector((state) => state.user);
 
   // const [data, setData] = useState([]);
@@ -36,7 +37,16 @@ const FundraiserTable = ({ data, setData }) => {
           <Table.Body>
             {data.map((item) => (
               <Table.Row>
-                <Table.Cell>{item.title}</Table.Cell>
+                {/* <Table.Cell>{item.title}</Table.Cell> */}
+                <Table.Cell>
+                  <div
+                    
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => history.push(`/fundraiser/${item._id}`)}
+                  >
+                    {item.title} 
+                  </div>
+                </Table.Cell>
                 <Table.Cell
                   warning={
                     Math.floor(
@@ -76,7 +86,9 @@ const FundraiserTable = ({ data, setData }) => {
                   <Icon name="edit" onClick={() => setOpen(true)} style={{ cursor: 'pointer' }} />{' '}
                   Edit
                 </Table.Cell>
-                {open && <CreateModal open={open} setOpen={setOpen} editData={item} setEdit={setData}/>}
+                {open && (
+                  <CreateModal open={open} setOpen={setOpen} editData={item} setEdit={setData} />
+                )}
               </Table.Row>
             ))}
           </Table.Body>

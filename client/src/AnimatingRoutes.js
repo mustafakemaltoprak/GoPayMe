@@ -34,7 +34,6 @@ function AnimatingRoutes() {
               <>
                 <Container
                   style={{
-                    // border: 'orange 2px solid',
                     marginTop: '5rem',
                     minHeight: '100vh',
                   }}

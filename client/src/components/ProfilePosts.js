@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Icon, Progress, Table } from 'semantic-ui-react';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 import CreateModal from './CreateModal';
+import { useHistory } from 'react-router-dom';
 
 const ProfilePosts = ({ dataProp }) => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const ProfilePosts = ({ dataProp }) => {
   const { loginSuccess } = useSelector((state) => state.user);
 
   const [data, setData] = useState([]);
-
+ const history = useHistory();
 
   useEffect(() => {
     fetchUserCreatedFundraisers(url).then((response) => setData(response));
@@ -23,11 +24,21 @@ const ProfilePosts = ({ dataProp }) => {
       <Table celled fixed singleLine textAlign="center">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Fundraiser</Table.HeaderCell>
-            <Table.HeaderCell>Status</Table.HeaderCell>
-            <Table.HeaderCell>Progress</Table.HeaderCell>
-            <Table.HeaderCell>Current Amount</Table.HeaderCell>
-            <Table.HeaderCell>Target Amount</Table.HeaderCell>
+            <Table.HeaderCell>
+              <h4>Fundraiser</h4>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h4>Status</h4>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h4>Progress</h4>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h4>Current Amount</h4>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h4>Target Amount</h4>
+            </Table.HeaderCell>
             {/* {dataProp && <Table.HeaderCell>Edit</Table.HeaderCell>} */}
           </Table.Row>
         </Table.Header>
@@ -36,7 +47,15 @@ const ProfilePosts = ({ dataProp }) => {
           <Table.Body>
             {data.map((item) => (
               <Table.Row>
-                <Table.Cell>{item.title}</Table.Cell>
+                {/* <Table.Cell>{item.title}</Table.Cell> */}
+                <Table.Cell>
+                  <div
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => history.push(`/fundraiser/${item._id}`)}
+                  >
+                    {item.title}
+                  </div>
+                </Table.Cell>
                 <Table.Cell
                   warning={
                     Math.floor(
@@ -92,10 +111,12 @@ const ProfilePosts = ({ dataProp }) => {
             padding: '2rem',
             justifyContent: 'center',
             alignItems: 'center',
-            border: 'solid 2px red',
+            // border: 'solid 2px red',
           }}
         >
-          <p>This user hasnt created any fundraisers yet</p>
+          <div style={{ color: 'gray', fontSize: 20 }}>
+            This user hasnt created any fundraisers yet
+          </div>
         </div>
       )}
     </>

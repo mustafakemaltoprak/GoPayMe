@@ -36,6 +36,7 @@ function Profile() {
 
   console.log('IDDDD', detailsData);
   useEffect(() => {
+    
     if (detailsData)
       fetchMessages(detailsData._id).then((response) => {
         console.log('fresh data', response);
@@ -147,7 +148,7 @@ function Profile() {
   };
 
   return (
-    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Menu attached="top" tabular>
         <Menu.Item
           name=" Profile"
@@ -248,19 +249,19 @@ function Profile() {
                     position="top right"
                   />
                 )}
-                <Button secondary>
+                {/* <Button secondary>
                   <Icon name="rocketchat"></Icon>
                   Message
-                </Button>
+                </Button> */}
               </div>
             </div>
             <div
               className="userContentContainer"
               style={{
                 flex: '4',
-                border: 'black 1px solid',
-                // margin: '1em',
-                borderRadius: '15px',
+                border: 'gray 1px solid',
+                marginLeft: '3rem',
+                borderRadius: '45px',
                 height: '40rem',
                 padding: '2rem',
               }}
@@ -278,14 +279,17 @@ function Profile() {
               <div
                 style={{
                   height: '85%',
-                  border: '2px solid red',
+                  border: '2px solid gainsboro',
                   display: 'flex',
                   // alignItems: 'flex-start',
+                  // background: '#fff',
+                  opacity: '0.9',
                   justifyContent: 'flex-end',
                   flexDirection: 'column',
                   padding: '1rem',
                   overflow: 'hidden',
                 }}
+                className="testingChatBox"
               >
                 <div
                   style={{
@@ -331,20 +335,20 @@ function Profile() {
                   onChange={(e) => setMessage(e.target.value)}
                   style={{
                     height: '10%',
-                    border: '2px solid red',
+                    // border: '2px solid red',
                     width: '100%',
                     // display: 'flex',
                     // flexDirection: 'row-reverse',
                     marginRight: 'auto',
                   }}
                 />
-                <Button content="Send" type="submit" />
+                <Button className="payments-button" content="Send" type="submit" />
               </form>
             </div>
           </div>
         </>
       )}
-      {currentPage['ProfilePosts'] &&  <ProfilePosts/>}
+      {currentPage['ProfilePosts'] && <ProfilePosts />}
     </motion.div>
   );
 }
