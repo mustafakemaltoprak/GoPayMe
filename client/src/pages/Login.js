@@ -76,6 +76,11 @@ const Login = () => {
       toast.success('login successful!');
     }
   };
+
+  const handlegoogleLogin = async() => {
+    const data = await googleLogin()
+     dispatch(loginUser(data));
+  }
   return (
     // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -99,7 +104,7 @@ const Login = () => {
               // justifyContent: 'center',
               alignItems: 'center',
               'flex-direction': 'column',
-              marginTop: '30%',
+              marginTop: '10%',
               // color: 'white',
 
             }}
@@ -150,7 +155,7 @@ const Login = () => {
                 size="large"
                 color="teal"
                 content="Login with Google?"
-                onClick={googleLogin}
+                onClick={handlegoogleLogin}
                 style={{ marginTop: '1.2rem' }}
                 icon="google"
               />

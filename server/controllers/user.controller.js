@@ -27,8 +27,8 @@ const loginUser = async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const userExists = await User.findOne({ userId }).populate('following').populate('bookmarked')
-
+    const userExists = await User.findOne({ userId }).populate('following')
+    console.log('user exists', userExists)
     if (!userExists) {
       //has not signed in before
       //uses google sign-in

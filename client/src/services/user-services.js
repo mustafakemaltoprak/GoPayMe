@@ -59,6 +59,8 @@ export const googleLogin = async () => {
         config,
       );
 
+       console.log(' login data', response, 'data', data);
+
       if (!data) throw new Error('Server Email signin error');
       toast.success('Signed in');
       return data;
