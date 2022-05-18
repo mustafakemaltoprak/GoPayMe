@@ -78,6 +78,8 @@ const Navbar = () => {
         {/* <Label color="red"></Label> */}
         {/* </Menu.Item> */}
         <Popup
+        basic
+        style={{ padding: '1rem', background: '#cff2dc' }}
           trigger={
             <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
               <Icon name="mail" /> Messages
@@ -202,7 +204,7 @@ const Navbar = () => {
               <Dropdown.Item as={Link} to={`/account`} text="Account" icon="user" />
               <Dropdown.Item
                 as={Link}
-                to={`/account`}
+                to={`/login`}
                 text="Logout"
                 icon="user"
                 onClick={() => {

@@ -42,7 +42,7 @@ const Categories = () => {
 
   return (
     // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
-    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Grid style={{ height: '100vh' }}>
         <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid style={{ width: '20rem' }}>
@@ -54,8 +54,8 @@ const Categories = () => {
                 style={{ width: '100%', textAlign: 'center' }}
                 onClick={() => handleClick('charity')}
               >
-                <Icon name="mail" />
-                Charity
+                
+                Charity <Icon name="delete" />
               </Label>
             </Grid.Row>
             <Grid.Row style={{ padding: '0' }}>

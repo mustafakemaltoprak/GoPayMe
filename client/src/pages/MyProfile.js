@@ -179,7 +179,10 @@ const MyProfile = ({ history }) => {
         <>
           <div
             attached="bottom"
-            style={{ paddingTop: '2rem', border: '1px red solid' }}
+            style={{ 
+              paddingTop: '2rem',
+              // border: '1px red solid' 
+            }}
             className="cardgrid"
           >
             <div
@@ -187,19 +190,19 @@ const MyProfile = ({ history }) => {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                border: 'black 2px solid',
+                // border: 'black 2px solid',
                 width: '900px',
               }}
             >
 
-              <div className="currentCardContainer" style={{ flex: '1', margin: '0 !important', justifyContent: 'center', alignItems: 'center'}}>
+              <div className="currentCardContainer" style={{ flex: '1', margin: '0 !important', display: 'flex', flexDirection: 'flex-end', justifyContent: 'center', alignItems: 'center'}}>
                 <Card style={{width: '200px', height: 'auto', }}>
                   <Image src={image}
                     wrapped ui={false}
                     size='small circular'
                     // style={{'border-radius': '50%'}}
                     />
-                  <Card.Content>
+                  <Card.Content style={{textAlign: 'center'}}>
                     <Card.Header>{loginSuccess.name}</Card.Header>
                     <Card.Meta>
                       <span className="userCardEmail" style={{ color: 'black' }}>{loginSuccess.email}</span>
@@ -209,20 +212,13 @@ const MyProfile = ({ history }) => {
                       <Icon name="edit" style={{'margin-left': '3px'}} />
                     </Card.Description> */}
                   </Card.Content>
-                  <Card.Content extra style={{ 'text-align': 'center', color: 'black' }}>
+                  <Card.Content style={{ 'text-align': 'center', color: 'black' }}>
                     <Icon name="user" />
                     Your Categories List:
-                    <ul
-                      style={{
-                        'text-align': 'center',
-                        'list-style-type': 'none',
-                        'text-transform': 'capitalize',
-                      }}
-                    >
-                      {selectedCategories.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
+                    
+                    <br></br>
+
+                    {selectedCategories.join(', ')}
                   </Card.Content>
                 </Card>
               </div>
@@ -231,7 +227,7 @@ const MyProfile = ({ history }) => {
                 style={{
                   flex: '2',
                   display: 'flex',
-                  border: 'green 1px solid',
+                  // border: 'green 1px solid',
                   flexDirection: 'column',
                   maxWidth: '100%',
                 }}
@@ -248,6 +244,8 @@ const MyProfile = ({ history }) => {
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <div className="rowImages" style={{ display: 'flex' }}>
@@ -309,9 +307,9 @@ const MyProfile = ({ history }) => {
 
                 <div
                   className="categoriesSelection"
-                  style={{ 'margin-top': '25px', border: 'red 1px solid' }}
+                  style={{ 'margin-top': '25px' }}
                 >
-                  <h4>Select your categories</h4>
+                  <h4 style={{textAlign: 'center'}}>Select your categories</h4>
                   <Grid
                     columns={3}
                     divided
@@ -404,7 +402,10 @@ const MyProfile = ({ history }) => {
             columns={2}
             divided
             attached="bottom"
-            style={{ padding: '2rem', border: '4px red solid' }}
+            style={{ 
+              padding: '2rem',
+              // border: '4px red solid' 
+            }}
             className="cardgrid"
           >
             <Grid.Row>

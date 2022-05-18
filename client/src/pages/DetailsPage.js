@@ -602,7 +602,7 @@ const DetailsPage = () => {
                 }}
               >
                 {' '}
-                <h3>Latest Donations:</h3>
+                <h3 style={{marginTop: "10px"}}>Latest Donations:</h3>
                 {previousDonations.length > 0 ? (
                   <div
                     style={{
@@ -616,9 +616,9 @@ const DetailsPage = () => {
                         <div
                           style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}
                         >
-                          <strong style={{ fontWeight: 300 }}>{sender} </strong>
+                  
                           <span>
-                            donated ${amount} - {moment(date).fromNow()}
+                            {sender} donated ${amount} - {moment(date).fromNow()}
                           </span>
                         </div>
                       );

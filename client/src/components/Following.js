@@ -68,7 +68,7 @@ const Following = ({ favorites }) => {
         <div>
           <div
             attached="bottom"
-            style={{ padding: '2rem', border: '1px red solid' }}
+            style={{ padding: '2rem' }}
             className="cardgrid"
           >
             {
@@ -88,12 +88,12 @@ const Following = ({ favorites }) => {
                     )}
                   </>
                 ) : (
-                  <p>People you follow have not created any fundraisers</p>
+                  <p></p>
                 )}
               </>
             }
           </div>
-          {<p style={{ textAlign: 'center' }}>No more fundraisers </p>}
+          {<p style={{ textAlign: 'center' }}>No fundraisers </p>}
         </div>
       )}
     </>

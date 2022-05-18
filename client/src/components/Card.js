@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import '../component.css';
 import moment from 'moment';
 
-const CardItem = ({ data, handleClick }) => {
+const CardItem = ({ data, handleClick, maps }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
@@ -29,10 +29,10 @@ const CardItem = ({ data, handleClick }) => {
   return (
     <>
       <div class="containerTest">
-        <div class="card" style={{ cursor: 'pointer' }} onClick={() => handleClick(data._id)}>
-          <div class="card-header">
+        <div class="card" style={{ cursor: 'pointer', height: `${maps && 150}` }} onClick={() => handleClick(data._id)}>
+          {!maps && <div class="card-header">
             <img src={data.image} alt="rover" />
-          </div>
+          </div>}
 
           <div className="card-body3">
             <h3>{data.title}</h3>

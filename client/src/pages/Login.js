@@ -79,46 +79,41 @@ const Login = () => {
   return (
     // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <Grid columns={2} divided style={{ height: '100vh' }}>
+      <Grid columns={2} divided style={{ height: '100vh' }} >
         <Grid.Column
           className="loginTexting"
           style={{
             // border: 'red 1px solid',
-            'place-self': 'center',
+            height: '100%',
+            color: 'white',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize:"cover",
+            objectFit: 'cover',
+            // 'place-self': 'center',
+            backgroundImage: `url("https://c4.wallpaperflare.com/wallpaper/300/850/333/help-for-a-stormtrooper-wallpaper-preview.jpg")`,
           }}
         >
           <Container
             style={{
               display: 'flex',
-              justifyContent: 'center',
+              // justifyContent: 'center',
               alignItems: 'center',
               'flex-direction': 'column',
-              marginTop: '2%',
+              marginTop: '30%',
+              // color: 'white',
+
             }}
+            className='logintext'
           >
-            <img
-              src='https://c4.wallpaperflare.com/wallpaper/300/850/333/help-for-a-stormtrooper-wallpaper-preview.jpg'
-              alt=''
-              style={{
-                width: '200px',
-                height: '200px',
-                'border-radius': '50%',
-                'margin-left': '50px',
-                'margin-top': '0px',
-                cursor: 'pointer',
-                '-webkit-box-shadow': '0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0)',
-                'box-shadow': '0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0)',
-              }}
-            ></img>
-            <Header size="huge">Make Friends and Raise Funds</Header>
-            <Header size="medium">Support good causes</Header>
-            <Header size="medium" style={{ marginTop: '0' }}>
+            <Header size="huge" style={{color: 'white'}}>Make Friends and Raise Funds</Header>
+            <Header size="medium" style={{color: 'white'}}>Support good causes</Header>
+            <Header size="medium" style={{ marginTop: '0', color: 'white' }}>
               Make friends
             </Header>
-            <Header size="medium" style={{ marginTop: '0' }}>
+            <Header size="medium" style={{ marginTop: '0', color: 'white' }}>
               Achieve your goals
             </Header>
-            <Header size="medium" style={{ marginTop: '0' }}>
+            <Header size="medium" style={{ marginTop: '0', color: 'white' }}>
               Contribute with the community!
             </Header>
           </Container>

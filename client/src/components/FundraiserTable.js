@@ -102,7 +102,7 @@ const history = useHistory();
             padding: '2rem',
             justifyContent: 'center',
             alignItems: 'center',
-            border: 'solid 2px red',
+            // border: 'solid 2px red',
           }}
         >
           <p>This user hasnt created any fundraisers yet</p>

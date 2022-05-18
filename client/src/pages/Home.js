@@ -172,7 +172,7 @@ const Home = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  border: '1px green solid',
+                  // border: '1px green solid',
                 }}
               >
                 {' '}

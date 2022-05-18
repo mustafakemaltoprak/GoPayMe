@@ -253,7 +253,7 @@ function Profile() {
                   <Icon name="rocketchat"></Icon>
                   Message
                 </Button> */}
-              </div>
+            </div>
             </div>
             <div
               className="userContentContainer"

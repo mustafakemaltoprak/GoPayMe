@@ -81,7 +81,7 @@ const GroupMessages = () => {
   return (
     <Grid columns={2} divided style={{marginTop: '1.5rem'}}>
       <Grid.Row>
-        <Grid.Column width={5} style={{ border: '10px solid gray', overflow: 'hidden' }}>
+        <Grid.Column width={5} style={{ border: '5px solid gainsboro', overflow: 'hidden', borderRadius: '15px' }}>
           {contactNames.length > 0 && (
             <div
               style={{
@@ -141,24 +141,24 @@ const GroupMessages = () => {
               <div
                 style={{
                   height: '85%',
-                  border: '2px solid red',
+                  // border: '2px solid red',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'column',
-                  color: 'gainsboro',
+                  color: 'gray',
                   padding: '1rem',
                   overflow: 'hidden',
                 }}
               >
 
-              <h2>Click a contact to continue a conversation</h2>
+              <div style={{fontSize: '2rem'}}>Click a contact to continue a conversation</div>
               </div>
             ) : (
               <div
                 style={{
                   height: '85%',
-                  border: '2px solid red',
+                  // border: '2px solid red',
                   display: 'flex',
                   // alignItems: 'flex-start',
                   justifyContent: 'flex-end',
@@ -217,7 +217,7 @@ const GroupMessages = () => {
                 onChange={(e) => setMessage(e.target.value)}
                 style={{
                   height: '10%',
-                  border: '2px solid red',
+                  // border: '2px solid red',
                   width: '100%',
                   // display: 'flex',
                   // flexDirection: 'row-reverse',

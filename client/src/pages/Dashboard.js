@@ -299,15 +299,16 @@ function Dashboard() {
     console.log(e);
   };
 
-  if (!data.length) {
-    return <div>...please add your first Fundraiser on menu: My fundraisers...</div>;
-  }
+  // if (!data.length) {
+  //   return <div>...please add your first Fundraiser on menu: My fundraisers...</div>;
+  // }
 
   // console.log('names', projectNames);
 
   return (
     // {loading ?  <Loader  /> :}
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    // <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <>
       {loading ? (
         <Loader />
       ) : (
@@ -315,10 +316,11 @@ function Dashboard() {
         <div
           className="profileContainer"
           style={{
-            border: 'red 2px solid',
+            // border: 'red 2px solid',
             padding: '1rem',
             // backgroundColor: '#4e567d'
             backgroundColor: '#FBFBFF',
+            marginTop: '3rem',
             'border-radius': '40px',
           }}
         >
@@ -559,7 +561,7 @@ function Dashboard() {
           <div
             className="projectContentContainer"
             style={{
-              border: 'black 1px solid',
+              // border: 'black 1px solid',
               padding: '1rem',
               'margin-top': '30px',
               margin: '5px 5px',
@@ -582,6 +584,7 @@ function Dashboard() {
                   position: 'relative',
                   width: '100%',
                   border: 'orange 1px solid',
+                  borderRadius: 15
                   // margin: '5px 5px',
                   // width: '40%',
                   // height: '100vh',
@@ -590,8 +593,9 @@ function Dashboard() {
                 <Grid
                   columns={2}
                   divided
-                  style={{ width: '50rem', justify: 'flex-end', margin: 'auto' }}
+                  style={{ width: '50rem',display: 'flex',  margin: 'auto', paddingTop: '1rem' }}
                 >
+                
                   <select
                     className="chartInfo"
                     name="chartSelected"
@@ -664,12 +668,12 @@ function Dashboard() {
                         }}
                       />
                     </Grid.Column>
-                    <Grid.Column>
+                    <Grid.Column >
                       <div
                         style={{
                           position: 'absolute',
                           marginTop: '46%',
-                          marginLeft: '46%',
+                          marginLeft: '55%',
                           textAlign: 'center',
                           transform: 'translate(-50%, -50%)',
                         }}
@@ -711,6 +715,7 @@ function Dashboard() {
                           // width: '100%',
                           // border: 'black 1px solid',
                           padding: '5px',
+                          marginLeft: '3rem',
                           // responsive: true,
                           maintainAspectRatio: false,
                         }}
@@ -723,7 +728,7 @@ function Dashboard() {
           </div>
         </div>
       )}
-    </motion.div>
+    </>
   );
 }
 
