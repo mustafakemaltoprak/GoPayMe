@@ -10,6 +10,8 @@ import { loginUser } from '../redux/actions/userActions';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 
+import { motion }from 'framer-motion';
+
 const Login = () => {
   const history = useHistory();
   const socket = useRef(io('ws://localhost:8900'));
@@ -89,52 +91,55 @@ console.log('id',socket);
   };
 
   return (
-    <Grid style={{ height: '100vh' }}>
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
-          <h1>Login</h1>
-          <Form.Field>
-            <label>Email</label>
-            <input
-              placeholder="Email"
-              // value={email}
-              type="text"
-              {...register('email', { required: 'Email is required.' })}
+    // motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+      <Grid style={{ height: '100vh' }}>
+        <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Form size="big" onSubmit={handleSubmit(onSubmit)} style={{ minWidth: '30vw' }}>
+            <h1>Login</h1>
+            <Form.Field>
+              <label>Email</label>
+              <input
+                placeholder="Email"
+                // value={email}
+                type="text"
+                {...register('email', { required: 'Email is required.' })}
+              />
+              <p style={{ color: 'red' }}>{errors.email?.message}</p>
+            </Form.Field>
+            <Form.Field>
+              <label>Password</label>
+              <input
+                placeholder="password"
+                // value={password}
+                type="password"
+                // onChange={(e) => setPassword(e.target.value)}
+                {...register('password', { required: 'Password is required.' })}
+              />
+              <p style={{ color: 'red' }}>{errors.password?.message}</p>
+            </Form.Field>
+            <Button type="submit" fluid size="large" color="teal" content="Login" />
+            <Button
+              fluid
+              size="large"
+              color="teal"
+              content="Login with Google?"
+              onClick={googleLogin}
+              style={{ marginTop: '1.2rem' }}
+              icon="google"
             />
-            <p style={{ color: 'red' }}>{errors.email?.message}</p>
-          </Form.Field>
-          <Form.Field>
-            <label>Password</label>
-            <input
-              placeholder="password"
-              // value={password}
-              type="password"
-              // onChange={(e) => setPassword(e.target.value)}
-              {...register('password', { required: 'Password is required.' })}
+            <Button
+              fluid
+              size="large"
+              color="blue"
+              content="Register?"
+              onClick={() => history.push('/register')}
+              style={{ marginTop: '1.2rem' }}
             />
-            <p style={{ color: 'red' }}>{errors.password?.message}</p>
-          </Form.Field>
-          <Button type="submit" fluid size="large" color="teal" content="Login" />
-          <Button
-            fluid
-            size="large"
-            color="teal"
-            content="Login with Google?"
-            onClick={googleLogin}
-            style={{ marginTop: '1.2rem' }}
-            icon="google"
-          />
-          <Button
-            fluid
-            size="large"
-            color="blue"
-            content="Register?"
-            onClick={() => history.push('/register')}
-            style={{ marginTop: '1.2rem' }}
-          />
-        </Form>
-      </Container>
-    </Grid>
+          </Form>
+        </Container>
+      </Grid>
+    </motion.div>
   );
 };
 

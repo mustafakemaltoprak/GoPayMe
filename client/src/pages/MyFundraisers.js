@@ -8,6 +8,8 @@ import ProfilePosts from '../components/ProfilePosts';
 import { fetchUserCreatedFundraisers } from '../services/fundraisers-services';
 import FundraiserTable from '../components/FundraiserTable';
 
+import { motion }from 'framer-motion';
+
 const Myfundraisers = () => {
   const [openModal, setOpenModal] = useState(false);
   const { fundraisers } = useSelector((state) => state.fundraiser);
@@ -33,37 +35,39 @@ const Myfundraisers = () => {
   console.log('dataefewfe', data);
 
   return (
-    <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
-      <Grid.Row>
-        {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
-      </Grid.Row>
-      <Grid.Row style={{ display: 'block' }}>
-        <Button
-          onClick={() => {
-            setOpenModal(true);
-          }}
-          floated="right"
+   <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} >
+      <div style={{ border: 'red solid 1px', minHeight: '80vh' }}>
+        <Grid.Row>
+          {openModal && <CreateModal open={openModal} setOpen={setOpenModal} setData={setData} />}
+        </Grid.Row>
+        <Grid.Row style={{ display: 'block' }}>
+          <Button
+            onClick={() => {
+              setOpenModal(true);
+            }}
+            floated="right"
+          >
+            Create a fundraiser
+          </Button>
+        </Grid.Row>
+
+        <div
+          attached="bottom"
+          style={{ padding: '2rem', marginTop: '3rem', border: '1px red solid' }}
+          // className="cardgrid"
         >
-          Create a fundraiser
-        </Button>
-      </Grid.Row>
+          {data.length > 0 ? (
+            // <ProfilePosts dataProp={data} setDataProp={setData} setEditData={setEditData} />
+            <FundraiserTable setData={setData} data={data}/>
+          ) : (
+            // data.map((dataItem) => <CardItem data={dataItem} />)
+            <p>You havent published any data yet</p>
+          )}
 
-      <div
-        attached="bottom"
-        style={{ padding: '2rem', marginTop: '3rem', border: '1px red solid' }}
-        // className="cardgrid"
-      >
-        {data.length > 0 ? (
-          // <ProfilePosts dataProp={data} setDataProp={setData} setEditData={setEditData} />
-          <FundraiserTable setData={setData} data={data}/>
-        ) : (
-          // data.map((dataItem) => <CardItem data={dataItem} />)
-          <p>You havent published any data yet</p>
-        )}
-
-        {/* // } */}
+          {/* // } */}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

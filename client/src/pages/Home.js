@@ -20,6 +20,8 @@ import CardItem from '../components/Card';
 import Maps from '../components/Maps';
 import Following from '../components/Following';
 
+import { motion }from 'framer-motion';
+
 const Home = (props) => {
   const history = useHistory();
   const location = useLocation()
@@ -83,7 +85,7 @@ const Home = (props) => {
 
   console.log('Count', data);
   return (
-    <>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       {loading ? (
         <Loader />
       ) : (
@@ -181,7 +183,7 @@ const Home = (props) => {
           {currentPage['Favorites'] && <Following favorites={true} />}
         </>
       )}
-    </>
+    </motion.div>
   );
 };
 

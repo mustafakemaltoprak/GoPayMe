@@ -16,6 +16,8 @@ import { Doughnut, Pie } from 'react-chartjs-2';
 import 'hammerjs';
 import Loader from '../components/Loader';
 
+import { motion }from 'framer-motion';
+
 // import { xorBy } from 'lodash';
 
 function Dashboard() {
@@ -175,7 +177,7 @@ function Dashboard() {
   // first load of dashboard
   if (!chartPickedByUser) {
     setProjectNames(data.map((item) => item.title));
-    
+
     setProjectRaised(data.map((item) => item.currentAmount));
     setChartPickedByUser(dataPieChart);
     console.log('first loading dashboard')
@@ -313,7 +315,7 @@ function Dashboard() {
 
   return (
     // {loading ?  <Loader  /> :}
-    <>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       {loading ? (
         <Loader />
       ) : (
@@ -511,7 +513,7 @@ function Dashboard() {
           </div>
         </div>
       )}
-    </>
+    </motion.div>
   );
 }
 

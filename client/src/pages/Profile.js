@@ -8,6 +8,8 @@ import { createMessage, fetchMessages } from '../services/messages';
 import { createNotification, fetchUserDetails } from '../services/user-services';
 // import UserChat from '../components/UserChat';
 // import UserDetails from '../components/UserDetails';
+import { motion }from 'framer-motion';
+
 function Profile() {
   const location = useLocation();
   const scrollRef = useRef();
@@ -145,7 +147,7 @@ function Profile() {
   };
 
   return (
-    <>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       <Menu attached="top" tabular>
         <Menu.Item
           name=" Profile"
@@ -219,7 +221,7 @@ function Profile() {
                     }
                     content={
                       <>
-                        <i>Say something nice ;)</i>
+                        <i>Say something nice</i>
                         <TextArea
                           value={textValue}
                           onChange={(e) => setTextValue(e.target.value)}
@@ -343,7 +345,7 @@ function Profile() {
         </>
       )}
       {currentPage['ProfilePosts'] &&  <ProfilePosts/>}
-    </>
+    </motion.div>
   );
 }
 export default Profile;
