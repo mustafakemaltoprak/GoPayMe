@@ -78,13 +78,17 @@ const Navbar = () => {
         {/* <Label color="red"></Label> */}
         {/* </Menu.Item> */}
         <Popup
-        basic
-        style={{ padding: '1rem', background: '#cff2dc' }}
+          basic
+          style={{ padding: '1rem', background: '#cff2dc' }}
           trigger={
             <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
               <Icon name="mail" /> Messages
               {loginSuccess.notifications.filter((item) => item.typeof === 'message').length >
-                0 && <Label color="red">{loginSuccess.notifications.length}</Label>}
+                0 && (
+                <Label color="red">
+                  {loginSuccess.notifications.filter((item) => item.typeof === 'message').length}
+                </Label>
+              )}
             </Menu.Item>
           }
           flowing
@@ -111,7 +115,16 @@ const Navbar = () => {
                   // as={NavLink}
                   // to='/'
                   style={{ cursor: 'pointer' }}
-                  onClick={() => history.push('/account', { messageProp: true })}
+                  onClick={async () => {
+                    const payload = {
+                      senderId: item.senderId,
+                      response: 'dismiss',
+                      typeof: 'message',
+                    };
+                    const response = await notificationRespond(payload);
+                    if (response) dispatch(updateUserDetails(response));
+                    history.push('/account', { messageProp: true });
+                  }}
                 >
                   view
                 </Label>
@@ -141,7 +154,11 @@ const Navbar = () => {
             <Menu.Item as="a">
               <Icon name="alarm" /> Notifications
               {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length >
-                0 && <Label color="teal">{loginSuccess.notifications.length}</Label>}
+                0 && (
+                <Label color="teal">
+                  {loginSuccess.notifications.filter((item) => item.typeof !== 'message').length}
+                </Label>
+              )}
             </Menu.Item>
           }
           flowing
@@ -162,10 +179,19 @@ const Navbar = () => {
                   // as={NavLink}
                   // to='/'
                   style={{ cursor: 'pointer' }}
-                  onClick={() =>
+                  onClick={async() =>{
+
+                    const payload = {
+                        senderId: item.senderId,
+                        response: 'dismiss',
+                        typeof: 'donation',
+                      };
+                      const response = await notificationRespond(payload);
+                      if (response) dispatch(updateUserDetails(response));
                     history.push(`${item.typeof === 'follow' ? '/account' : '/dashboard'}`, {
                       requestsProp: item.typeof === 'follow',
                     })
+                  }
                   }
                 >
                   view

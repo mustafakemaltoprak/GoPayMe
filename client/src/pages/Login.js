@@ -94,6 +94,7 @@ const Login = () => {
             backgroundRepeat: 'no-repeat',
             backgroundSize:"cover",
             objectFit: 'cover',
+            opacity: '0.9',
             // 'place-self': 'center',
             backgroundImage: `url("https://c4.wallpaperflare.com/wallpaper/300/850/333/help-for-a-stormtrooper-wallpaper-preview.jpg")`,
           }}
@@ -104,13 +105,13 @@ const Login = () => {
               // justifyContent: 'center',
               alignItems: 'center',
               'flex-direction': 'column',
-              marginTop: '10%',
+              marginTop: '30%',
               // color: 'white',
 
             }}
             className='logintext'
           >
-            <Header size="huge" style={{color: 'white'}}>Make Friends and Raise Funds</Header>
+            <Header size="huge" style={{color: 'white', fontSize: '4rem', textAlign: 'center'}}>Make Friends and Raise Funds</Header>
             <Header size="medium" style={{color: 'white'}}>Support good causes</Header>
             <Header size="medium" style={{ marginTop: '0', color: 'white' }}>
               Make friends

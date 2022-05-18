@@ -153,7 +153,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Modal.Header style={{ display: 'flex', justifyContent: 'center' }}>
-        Create a Fundraiser
+        {editData ? 'Edit your fundraiser' : 'Create a Fundraiser'}
       </Modal.Header>
       <Modal.Content image scrolling>
         <Modal.Description>
@@ -188,7 +188,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
                 {...register('targetAmount', {
                   required: 'Target is required.',
                 })}
-                disabled={editData && true}
+                // disabled={editData && true}
               />
               <p style={{ color: '#9d0f0f' }}>{errors.targetAmount?.message}</p>
             </Form.Field>

@@ -62,7 +62,7 @@ export const googleLogin = async () => {
        console.log(' login data', response, 'data', data);
 
       if (!data) throw new Error('Server Email signin error');
-      toast.success('Signed in');
+      // toast.success('Signed in');
       return data;
     }
   } catch (error) {
