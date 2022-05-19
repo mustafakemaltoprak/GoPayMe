@@ -31,13 +31,14 @@ const CardItem = ({ data, handleClick, maps }) => {
   return (
     <>
       <div class="containerTest">
-        <div class="card" style={{ cursor: 'pointer', height: `${maps && '170px'}` }} onClick={() => handleClick(data._id)}>
+        <div class="card" style={{ cursor: 'pointer', height: `${maps && '200px'}` }} onClick={() => handleClick(data._id)}>
           {!maps && <div class="card-header">
             <img src={data.image} alt="rover" />
           </div>}
-
+          
           <div className="card-body3">
             <h3>{data.title}</h3>
+
             {isInTheFuture(tomorrow) ? (
               <div size="tiny" className="card-label" style={{ marginLeft: 'auto' }}>
                 active
@@ -54,7 +55,7 @@ const CardItem = ({ data, handleClick, maps }) => {
               {data.description.substring(0, 30) + '...'}{' '}
               <a style={{ background: 'white' }}>read more</a>
             </p>
-
+            {maps && <div><Icon name='map pin'/>{data.location.country}</div>}
             {/* <div class="user">
               <img src={getProfilePicture.image} alt="user" />
               <div class="user-info">

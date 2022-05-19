@@ -55,8 +55,11 @@ const SearchComponent = () => {
 
     console.log('fffff', [...data.users, ...data.fundraisers]);
     if (data.users.length + data.fundraisers.length > 4) {
-      setResults([...data.users, ...data.fundraisers]);
+      setResults([...data.users, ...data.fundraisers].slice(0,5));
+      // setResults([...data.users, ...data.fundraisers]);
     } else {
+
+
       setResults([...data.users, ...data.fundraisers]);
     }
   };
