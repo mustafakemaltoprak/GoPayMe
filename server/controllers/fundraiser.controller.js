@@ -317,7 +317,6 @@ module.exports = {
   addPrevDonation,
   getPrevDonations,
   fetchUserCreatedFundraisers,
-
   bookmarkFundraisers,
   getAllFundraisers,
 };
