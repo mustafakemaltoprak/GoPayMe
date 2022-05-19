@@ -4,7 +4,6 @@ import { Icon } from 'semantic-ui-react';
 
 const ClapBtn = () => {
   const onCountChange = ({ count, countTotal }) => {};
-  // All Props are Optional
   return (
     <ClapButton
       count={0}

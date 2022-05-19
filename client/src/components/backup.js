@@ -4,19 +4,6 @@ import MapContainerDiv from './MapContainer';
 // import { MapContainer, TileLayer } from 'react-leaflet';
 
 const Maps = ({ data }) => {
-  //  const onClickShowMarker = (params) => {
-  //    const map = mapRef.current;
-  //    if (!map) {
-  //      return;
-  //    }
-  //    map.flyTo(MARKER_POSITION, 13);
-  //    const marker = markerRef.current;
-  //    if (marker) {
-  //      marker.openPopup();
-  //    }
-  //  }
-  // const [, set] = useState(second);
-
   let mapRef = useRef(null);
   let markerRef = useRef(null);
 
