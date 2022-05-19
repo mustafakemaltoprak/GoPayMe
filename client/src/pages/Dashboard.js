@@ -195,8 +195,8 @@ function Dashboard() {
       leftChartText = 'Fundraisers';
       setChartText('Fundraisers Statistics');
     } else if (arg.target.value === JSON.stringify(dataPieChart2)) {
-      leftChartText = 'Donators';
-      setChartText('Donators Statistics');
+      leftChartText = 'Donors';
+      setChartText('Donors Statistics');
     } else if (arg.target.value === JSON.stringify(dataPieChart3)) {
       leftChartText = 'Views';
       setChartText('Views Statistics');
@@ -495,7 +495,7 @@ function Dashboard() {
                         textAlign: 'center',
                       }}
                     >
-                      Donators
+                      Donors
                     </span>
                   </div>
                 </div>
@@ -614,9 +614,9 @@ function Dashboard() {
                     }}
                   >
                     <option value=""> -- Chart Selection -- </option>
-                    <option value={JSON.stringify(dataPieChart)}>Amount Raised by Project</option>
-                    <option value={JSON.stringify(dataPieChart2)}>Amount Raised by Donators</option>
-                    <option value={JSON.stringify(dataPieChart3)}>Views by Project</option>
+                    <option value={JSON.stringify(dataPieChart)}>Fundraiser statistics</option>
+                    <option value={JSON.stringify(dataPieChart2)}>Donors statistics</option>
+                    <option value={JSON.stringify(dataPieChart3)}>Views statistics</option>
                   </select>
 
                 

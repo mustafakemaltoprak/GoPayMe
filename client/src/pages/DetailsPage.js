@@ -443,7 +443,7 @@ const DetailsPage = () => {
                 >
                   <div style={{ fontSize: '2.5rem', fontWeight: 600 }}>{fundraiser.backers}</div>
                   <br></br>
-                  <p>donators so far</p>
+                  <p>donors so far</p>
                 </div>
                 <div>
                   {Math.floor(
