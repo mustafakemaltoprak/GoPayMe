@@ -1,5 +1,10 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useLocation,
+} from 'react-router-dom';
 import Login from './pages/Login.js';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -16,7 +21,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { Suspense } from 'react';
 import Loader from './components/Loader';
 
-import {AnimatePresence} from 'framer-motion'
+import { AnimatePresence } from 'framer-motion';
 
 function AnimatingRoutes() {
   const location = useLocation();
@@ -39,7 +44,7 @@ function AnimatingRoutes() {
                   }}
                 >
                   <Navbar />
-                  <Suspense fallback={<Loader/>}/>
+                  <Suspense fallback={<Loader />} />
                   <Grid>
                     <Grid.Row>
                       <Grid.Column width={3}>
@@ -63,7 +68,7 @@ function AnimatingRoutes() {
         </Switch>
       </AnimatePresence>
     </>
-  )
+  );
 }
 
-export default AnimatingRoutes
+export default AnimatingRoutes;
