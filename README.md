@@ -17,3 +17,8 @@ This website is built for testing and educational purposes and is not intended t
 ## Test it yourself
 
 To run this simply click [here](https://gopayme.herokuapp.com/login)
+
+## Contributors
+
+- [Busayo](https://github.com/damayor12) LinkedIn: https://www.linkedin.com/in/obembe-busayo/
+- [Daniel](https://github.com/d4-1601) LinkedIn: https://www.linkedin.com/in/daniel-sousa-31b34421/
