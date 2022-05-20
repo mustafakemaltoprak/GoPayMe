@@ -26,45 +26,6 @@ function App() {
       <Router>
         <ScrollToTop/>
         <AnimatingRoutes/>
-        {/* <Switch>
-          <Route path="/login" component={Login} />
-
-          <Route path="/categories" component={Categories} />
-          <Route path="/register" component={Register} />
-          <Route
-            path={'/(.+)'}
-            render={() => (
-              <>
-                <Container
-                  style={{
-                    // border: 'orange 2px solid',
-                    marginTop: '5rem',
-                    minHeight: '100vh',
-                  }}
-                >
-                  <Navbar />
-                  <Suspense fallback={<Loader/>}/>
-                  <Grid>
-                    <Grid.Row>
-                      <Grid.Column width={3}>
-                        <SideBar />
-                      </Grid.Column>
-                      <Grid.Column width={13}>
-                        <Route path="/home" component={Home} exact />
-                        <Route path="/dashboard" component={Dashboard} />
-
-                        <Route path="/fundraisers" component={MyFundraisers} />
-                        <Route path="/profile/:id" component={Profile} />
-                        <Route path="/fundraiser/:id" component={DetailsPage} />
-                        <Route path="/account" component={MyProfile} />
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </Container>
-              </>
-            )}
-          />
-        </Switch> */}
         <ToastContainer position="bottom-right" autoClose={5000} />
       </Router>
     </div>
