@@ -40,9 +40,6 @@ let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 const DetailsPage = () => {
   const dispatch = useDispatch();
   const { loginSuccess } = useSelector((state) => state.user);
-  // function handleClick(lang) {
-  //   i18next.changeLanguage(lang);
-  // }
 
   let momentToday = new Date();
   const [toggled, setToggled] = useState(false);
@@ -68,16 +65,6 @@ const DetailsPage = () => {
        return { ...prev, [arg]: !categories[arg] };
      });
    };
-  //  const responseGoogle = (response) => {
-  //    console.log('fired', response);
-
-  //    let codee;
-  //    window.addEventListener('message', ({ data }) => {
-  //      //  console.log('the data', data);
-  //      const { authResult } = data;
-  //      console.log('the data', authResult.authResult);
-  //    });
-  //  };
 
   const { id } = useParams();
 
@@ -139,14 +126,7 @@ const DetailsPage = () => {
     sameElse: 'L',
   };
 
-  //  useEffect(() => {
-  //    window.gapi.load('client:auth2', () => {
-  //      window.gapi.client.init({
-  //        clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  //        scope: 'email',
-  //      });
-  //    });
-  //  }, []);
+
 
   if (!likes) {
     return <>Loading fundraiser details...</>;
@@ -174,95 +154,6 @@ const DetailsPage = () => {
       .then((response) => response.json())
       .then((actualResponse) => setFundraiserComments(actualResponse));
   };
-
-  // const addCalendarEvent = () => {
-  //   gapi.load('client:auth2', () => {
-  //     gapi.client.init({
-  //       apiKey: process.env.REACT_APP_API_KEY,
-  //       clientId: process.env.REACT_APP_CLIENT_ID,
-  //       discoveryDocs: DISCOVERY_DOCS,
-  //       scope: SCOPES,
-  //     });
-
-  //     gapi.client.load('calendar', 'v3');
-  //     //time zone list:
-  //     // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  //     let timeZone = 'Europe/Berlin';
-  //     let duration = '00:30:00'; //duration of each event, here 30 minuts
-
-  //     //event start time - im passing datepicker time, and making it match      //with the duration time, you can just put iso strings:
-  //     //2020-06-28T09:00:00-07:00'
-
-  //     let startDate = new Date(momentToday);
-  //     let msDuration =
-  //       (Number(duration.split(':')[0]) * 60 * 60 +
-  //         Number(duration.split(':')[1]) * 60 +
-  //         Number(duration.split(':')[2])) *
-  //       1000;
-  //     let endDate = new Date(startDate.getTime() + msDuration);
-  //     let isoStartDate = new Date(
-  //       startDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
-  //     )
-  //       .toISOString()
-  //       .split('.')[0];
-  //     let isoEndDate = new Date(
-  //       endDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
-  //     )
-  //       .toISOString()
-  //       .split('.')[0];
-
-  //     //sign in with pop up window
-  //     gapi.auth2
-  //       .getAuthInstance()
-  //       .signIn()
-  //       .then(() => {
-  //         let event = {
-  //           summary: fundraiser.title, // or event name
-  //           location: 'Testing for now', //where it would happen
-  //           start: {
-  //             dateTime: isoStartDate,
-  //             timeZone: timeZone,
-  //           },
-  //           end: {
-  //             dateTime: isoEndDate,
-  //             timeZone: timeZone,
-  //           },
-  //           recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
-  //           reminders: {
-  //             useDefault: false,
-  //             overrides: [{ method: 'popup', minutes: 20 }],
-  //           },
-  //         };
-
-  //         //if you need to list your events than keep it
-  //         gapi.client.calendar.events
-  //           .list({
-  //             calendarId: 'primary',
-  //             timeMin: new Date().toISOString(),
-  //             showDeleted: false,
-  //             singleEvents: true,
-  //             maxResults: 10,
-  //             orderBy: 'startTime',
-  //           })
-  //           .then((response) => {
-  //             const events = response.result.items;
-  //             console.log('EVENTS: ', events);
-  //           });
-
-  //         //end of event listing
-
-  //         let request = gapi.client.calendar.events.insert({
-  //           calendarId: 'primary',
-  //           resource: event,
-  //         });
-
-  //         request.execute((event) => {
-  //           console.log(event);
-  //           window.open(event.htmlLink);
-  //         });
-  //       });
-  //   });
-  // };
 
   const responseError = (error) => {
     console.log('error', error);
@@ -372,48 +263,15 @@ const DetailsPage = () => {
           {/* <TextArea />
           <Button>Submit</Button> */}
         </div>
-
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            // justifyContent: 'center',
-
             alignContent: 'center',
           }}
         >
           <Timer countdownTimestampMs={new Date(fundraiser.deadlineDate).getTime()} />
           <div>
-            {/* <div
-          className="fundraiserImage"
-          style={{ backgroundImage: fundraiserBackgroundImage }}
-        ></div> */}
-
-            {/* <button onClick={() => handleClick('en')}>English</button>
-          <button onClick={() => handleClick('chi')}>Chinese</button>
-          <p>
-            <h3>{t('Thanks.1')}</h3> <h3>{t('Why.1')}</h3>
-          </p> */}
-            {/* <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            buttonText="Sign in and authorize calendar"
-            onSuccess={responseGoogle}
-            onFailure={responseError}
-            cookiePolicy={'single_host_origin'}
-            responseType="code"
-            accessType="offline"
-            scope="openid email profile https://www.googleapis.com/auth/calendar"
-          /> */}
-            {/* <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log('resp',credentialResponse);
-            }}
-            buttonText='google'
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          /> */}
-
             <div
               className="payments-dashboard"
               style={{
@@ -482,7 +340,6 @@ const DetailsPage = () => {
                   )}
                 </div>
               </div>
-
               <Progress
                 indicating
                 color="purple"
@@ -495,8 +352,6 @@ const DetailsPage = () => {
                 style={{ margin: '1rem 2rem 2rem 2rem', height: '2rem' }}
                 content="Raised"
               />
-
-              {/* <Button.Group size="tiny"> */}
               <div
                 style={{
                   display: 'flex',
@@ -505,7 +360,6 @@ const DetailsPage = () => {
                   justifyContent: 'center',
                   maxWidth: '100%',
                   gap: '1rem',
-                  // border: '1px yellow solid',
                 }}
               >
                 <Button
@@ -543,12 +397,10 @@ const DetailsPage = () => {
                   textAlign: 'center',
                   justifyContent: 'center',
                   maxWidth: '100%',
-                  // border: '1px yellow solid',
                 }}
               >
                 <p>or</p>
               </div>
-
               <div
                 style={{
                   display: 'flex',
@@ -557,7 +409,6 @@ const DetailsPage = () => {
                   justifyContent: 'center',
                   paddingBottom: '1rem',
                   maxWidth: '100%',
-                  // border: '1px yellow solid',
                 }}
               >
                 <input
@@ -571,7 +422,6 @@ const DetailsPage = () => {
                   Submit Payment
                 </Button>
               </div>
-
               {toggled === true && (
                 <Elements stripe={stripeTestPromise}>
                   <PaymentForm
@@ -587,7 +437,6 @@ const DetailsPage = () => {
                   />
                 </Elements>
               )}
-
               <div
                 style={{
                   display: 'flex',
@@ -598,7 +447,6 @@ const DetailsPage = () => {
                   maxHeight: '15rem',
                   paddingBottom: '1rem',
                   maxWidth: '100%',
-                  // border: '1px yellow solid',
                 }}
               >
                 {' '}
@@ -607,8 +455,6 @@ const DetailsPage = () => {
                   <div
                     style={{
                       overflowY: 'scroll',
-
-                      // border: '1px yellow solid',
                     }}
                   >
                     {previousDonations.map(({ sender, amount, date }) => {
@@ -616,7 +462,6 @@ const DetailsPage = () => {
                         <div
                           style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}
                         >
-                  
                           <span>
                             {sender} donated ${amount} - {moment(date).fromNow()}
                           </span>

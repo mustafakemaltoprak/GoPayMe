@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 
 const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
   const [loading, setloading] = useState(false);
+  const [image, setImage] = useState('');
   const [categories, setCategories] = useState([]);
 
   const [categoriesError, setCategoriesError] = useState(false);
@@ -72,17 +73,9 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
   console.log('edit data', editData);
 
   const onSubmit = async (formObj) => {
-    console.log('form', new Date());
+    console.log('form OUTER', formObj);
     setloading(true);
-    // console.log(
-    //   'first',
-    //   categories
-    // );
-    // console.log(
-    //   'looooa',
-    //   categories.map((category) => category.value),
-    // );
-    // return
+
     if (categories.length < 1 && !editData) {
       console.log('yes');
       setCategoriesError(true);
@@ -92,11 +85,22 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
       return;
     }
 
-    console.log('profile', formObj, editData);
-    // setloading(true)
+    const  convert2base64 = file=> {
+      const reader = new FileReader()
+
+      reader.onloadend = ()=> {
+        setImage(reader.result.toString())
+      }
+
+      reader.readAsDataURL(file)
+    }
+
     let profilePicUrl;
     if ((Array.isArray(formObj.image) && formObj.image.length > 0) || !editData) {
-      profilePicUrl = await upload(formObj.image[0]);
+      console.log('form INNER', formObj.image)
+
+      convert2base64(formObj.image[0])
+      profilePicUrl = await upload(formObj.image);
     }
 
     formObj = {
@@ -136,11 +140,6 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
         setOpen(false);
       }
     }
-
-    // setOpen(false);
-
-    // setData(formObj);
-    // reset();
   };
 
   console.log('editmode', editData);
@@ -157,6 +156,7 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
       </Modal.Header>
       <Modal.Content image scrolling>
         <Modal.Description>
+          {image ? <img src={image} alt=''/> : <h1>Cool</h1>}
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Form.Field>
               <label>
@@ -268,16 +268,6 @@ const CreateModal = ({ open, setOpen, isEdit, editData, setData, setEdit }) => {
               />
               <p style={{ color: '#9d0f0f' }}>{errors.description?.message}</p>
             </Form.Field>
-
-            {/* <Form.Field>
-              <h3>Images</h3>
-              <input type="file" name="image" placeholder="Enter csv file" ref={register({})} />
-              <p style={{ color: 'red' }}>{errors.image && 'Images'}</p>
-            </Form.Field> */}
-
-            {/* <Button primary type="submit" loading={loading} style={{ display: 'block' }}>
-              Submit <Icon name="chevron right" />
-            </Button> */}
             <Modal.Actions>
               <Button
                 type="submit"
