@@ -37,6 +37,8 @@ import { motion }from 'framer-motion';
 let DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 let SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
+// test
+
 const DetailsPage = () => {
   const dispatch = useDispatch();
   const { loginSuccess } = useSelector((state) => state.user);
