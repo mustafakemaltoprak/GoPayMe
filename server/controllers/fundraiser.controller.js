@@ -7,18 +7,9 @@ const getAllFundraisers = async (req, res) => {
   console.log(req.body);
   const skip = req.body.skip && parseInt(req.body.skip);
   const limit = req.body.limit && parseInt(req.body.limit);
-  //   Fundraiser.find()
-  //     .then((fundraisers) => res.json(fundraisers))
-  //     .catch((err) => res.status(400).json('Error: ' + err));
-
-  // try {
-  // console.log('fired', req.body, 'user', req.user.userId);
-  // const foundUser = await User.findOne({ userId: req.user.userId })
-  // console.log('user', req.body);
+  
 
   if (req.body.following) {
-    // const foundUser = await User.findOne({ userId: req.user.userId });\
-    console.log('fired following', req.body);
     const foundWriters = await User.find({
       _id: {
         $in: req.body.following,
@@ -38,13 +29,9 @@ const getAllFundraisers = async (req, res) => {
       writer: {
         $in: writers,
       },
-      // categories: {
-      //   $in: req.body.categories,
-      // },
     })
       .find(options)
       .populate('writerId')
-
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -55,14 +42,7 @@ const getAllFundraisers = async (req, res) => {
   }
 
   if (req.body.bookmarked) {
-    // // const foundUser = await User.findOne({ userId: req.user.userId });
-    // console.log('fired');
-    // // const foundWriters = await User.find({
-    // //   _id: {
-    // //     $in: req.body.bookmarked,
-    // //   },
-    // // });
-    // const writers = foundWriters.map((user) => user.userId);
+
     const options =
       req.body.categories.length > 0
         ? {
@@ -104,42 +84,14 @@ const getAllFundraisers = async (req, res) => {
       if (err) res.status(400).send({ error: error.message });
       res.status(201).send({ docs, count: docs.length });
     });
-  // console.log('created', allFundraisers);
-  // } catch (error) {}
+  
 };
 
-// const getAllFundraisers = async (req, res) => {
-//   const MyCreatedFundraisers = await Fundraiser.find({ writer: req.user.userId });
 
-//   res.status(200).send(MyCreatedFundraisers);
-// };
 
 const createFundraiser = async (req, res) => {
-  //   const title = req.body.title;
-  //   const targetAmount = req.body.targetAmount;
-  //   const currentAmount = req.body.currentAmount;
-  //   const deadlineDate = req.body.deadlineDate;
-  //   const description = req.body.description;
-  //   const categories = req.body.categories;
-  //   // const backers = req.body.backers;
-  //   const image = req.body.image;
-
-  //   const newFundraiser = new Fundraiser({
-  //     title,
-  //     targetAmount,
-  //     currentAmount,
-  //     deadlineDate,
-  //     description,
-  //     categories,
-  //     image,
-  //   });
-
-  //   newFundraiser
-  //     .save()
   try {
-    // console.log('fired', req.body);
-
-    // if (req.body.)
+    
     if (req.body._id) {
       const body = req.body;
       delete body['_id'];
@@ -147,15 +99,10 @@ const createFundraiser = async (req, res) => {
       delete body['location'];
       delete body['writerId'];
       const n = await Fundraiser.findOneAndUpdate({ title: req.body.title }, body, { new: true });
-      console.log('inner', n);
+      
       res.status(201).send(n);
 
-      // console.log('bbbbb', body);
-      // const editedFundraiser = await Fundraiser.findByIdAndUpdate({ _id: req.body._id }, body, {
-      //   new: true,
-      // });
-      // console.log('new fired', editedFundraiser);
-      // res.status(201).send(editedFundraiser);
+     
       return;
     }
     const createdFundraiser = await Fundraiser.create(req.body);
@@ -166,11 +113,13 @@ const createFundraiser = async (req, res) => {
   }
 };
 
+
 function deleteFundraiser(req, res) {
   Fundraiser.findByIdAndDelete(req.params.id)
     .then(() => res.status(200).send({ success: true }))
     .catch((err) => res.status(400).send({ error: err.message }));
 }
+
 
 function findSpecificFundraiser(req, res) {
   Fundraiser.findById(req.params.id)
