@@ -39,7 +39,7 @@ const Home = () => {
   };
 
   const handleCurrentPage = (arg) => {
-    // setCategories(prev => {...prev, egef: !categories[arg]})
+    
 
     const currentPageCopy = { ...currentPage };
     for (let i in currentPageCopy) {
@@ -50,7 +50,7 @@ const Home = () => {
       }
     }
     setCurrentPage(currentPageCopy);
-    // return { ...prev, [arg]: true };
+    
   };
   useEffect(() => {
     const variables = {
@@ -59,12 +59,12 @@ const Home = () => {
       categories: loginSuccess.categories,
     };
     fetchData(variables).then((response) => {
-      // console.log('ressss',response)
+      
       setCount(response.count);
 
       dispatch(fetchFundraisers([...data, ...response.docs]));
       setData([...data, ...response.docs]);
-      // console.log('fetched data', response)
+     
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, limit, skip]);
@@ -76,18 +76,7 @@ const Home = () => {
   console.log('Count', count);
   return (
     <>
-      {/* <Grid>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <div><</div>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <div style={{ display: 'grid', gridTemplateAreas: '1fr 1fr 1fr' }}>
-        {data.length > 0 && data.map((dataItem) => <CardItem data={dataItem} key={dataItem._id} />)}
-      </div> */}
+      
       <Menu attached="top" tabular>
         <Menu.Item
           name="Explore"
@@ -105,19 +94,10 @@ const Home = () => {
           name="Favorites"
           active={currentPage['Favorites']}
           onClick={() => handleCurrentPage('Favorites')}
-          // onClick={this.handleItemClick}
+         
         />
 
-        {/* <Menu.Menu>
-          <Menu.Item>
-            <Dropdown pointing="top left" text={'Sort'}>
-              <Dropdown.Menu style={{ zIndex: 12000 }}>
-                <Dropdown.Item as={Link} to="/createEvent" text="Create Event" icon="plus" />
-                <Dropdown.Item as={Link} to={`/account`} text="My profile" icon="user" />
-              </Dropdown.Menu>
-            </Dropdown>
-          </Menu.Item>
-        </Menu.Menu> */}
+        
         <Menu.Menu position="right">
           <Menu.Item>
             <Dropdown
