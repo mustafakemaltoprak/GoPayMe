@@ -31,11 +31,9 @@ const Navbar = () => {
       dispatch(updateUserDetails(response));
     });
 
-    // const response = await notificationRespond(payload);
-    //                         if (response) dispatch(updateUserDetails(response));
   }, []);
 
-  console.log('loginSuccess', loginSuccess);
+ 
   return (
     <Menu fixed="top" style={{ zIndex: 10000 }}>
       <Container>
@@ -54,29 +52,14 @@ const Navbar = () => {
           <h2 style={{ height: '.5rem' }}>
             <span class="enclosed">goPay</span>Me
           </h2>
-          {/* <Icon name="money" /> */}
           <div style={{ marginLeft: '.5rem' }}>
             <img src="https://www.dropbox.com/s/fzc3fidyxqbqhnj/loader-coin.png?raw=1" alt="" />
           </div>
         </Menu.Item>
         <Menu.Item header>
-          {/* <Search
-            // loading={loading}
-            placeholder="Search..."
-            // onResultSelect={(e, data) =>
-            //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
-            // }
-            // onSearchChange={handleSearchChange}
-            // results={results}
-            // value={value}
-         /> */}
           <SearchComponent />
         </Menu.Item>
 
-        {/* <Menu.Item as="a" style={{ marginLeft: 'auto' }}>
-          <Icon name="mail" /> Messages */}
-        {/* <Label color="red"></Label> */}
-        {/* </Menu.Item> */}
         <Popup
           basic
           style={{ padding: '1rem', background: '#cff2dc' }}
@@ -103,17 +86,9 @@ const Navbar = () => {
               <Segment vertical>
                 <p>New Message from {item.senderName}</p>
                 <p>Sent {moment(item.date).fromNow()}</p>
-                {/* {
-                item.typeof === 'donation' && (
-                  <p>
-                    {item.senderName} donated {item.amount} {moment(item.date).fromNow()}
-                  </p>
-                )
                 
-                } */}
                 <Label
-                  // as={NavLink}
-                  // to='/'
+                  
                   style={{ cursor: 'pointer' }}
                   onClick={async () => {
                     const payload = {
@@ -217,12 +192,7 @@ const Navbar = () => {
             ))}
         </Popup>
 
-        {/* <Menu.Item as="a">
-          <Icon name="users" /> Notifications
-          <Label color="teal">
-            {loginSuccess.notifications.length > 0 && loginSuccess.notifications.length}
-          </Label>
-        </Menu.Item> */}
+       
         <Menu.Item>
           <Image avatar spaced="right" src={loginSuccess.image} />
           <Dropdown pointing="top left" text={loginSuccess.name ? loginSuccess.name : 'Cool User'}>
