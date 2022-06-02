@@ -128,7 +128,7 @@ const respondToNotification = async (req, res) => {
         { new: true }
       );
 
-      console.log('myprofile', myProfileUpdated);
+
       if (myProfileUpdated) res.status(201).send(myProfileUpdated);
     }
 
