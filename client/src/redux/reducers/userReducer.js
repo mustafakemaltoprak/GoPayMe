@@ -4,17 +4,6 @@ import {
   LOGOUT_USER,
   UPDATE_ACCOUNT_DETAILS,
 } from '../constants/userConstants';
-// {
-//     type: 'LOGIN_USER',
-//     payload: payload,
-//   };
-// export const loginUser = (payload) => {
-//   localStorage.setItem('userInfo', JSON.stringify(payload));
-//   return {
-//     type: LOGIN_USER,
-//     payload: payload,
-//   };
-// };
 
 const userReducer = (state = {}, action) => {
   switch (action.type) {
