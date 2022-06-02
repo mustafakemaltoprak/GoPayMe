@@ -4,17 +4,7 @@ import {
   FUNDRAISER_EDITED,
   FUNDRAISER_FETCH
 } from '../constants/fundraiserConstants';
-// {
-//     type: 'LOGIN_USER',
-//     payload: payload,
-//   };
-// export const loginUser = (payload) => {
-//   localStorage.setItem('userInfo', JSON.stringify(payload));
-//   return {
-//     type: LOGIN_USER,
-//     payload: payload,
-//   };
-// };
+
 
 const fundraiserReducer = (state = { fundraisers: [] }, action) => {
   switch (action.type) {
