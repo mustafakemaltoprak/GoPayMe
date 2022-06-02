@@ -116,7 +116,6 @@ function Profile() {
       }
     }
     setCurrentPage(currentPageCopy);
-    // return { ...prev, [arg]: true };
   };
 
   return (
@@ -177,10 +176,7 @@ function Profile() {
                 </List.Item>
               </List>
               <div>
-                {/* <Button primary>
-            <Icon name="user"></Icon>
-            Follow
-          </Button> */}
+                
                 {loginSuccess.following.find((followerId) => followerId._id === detailsData._id) ? (
                   <Button color="red" icon="user" content="Following" />
                 ) : (
