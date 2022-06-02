@@ -15,8 +15,6 @@ const userSchema = new Schema({
         enum: ['follow', 'reject', 'message', 'accept', 'donation'],
       },
       targetUser: {
-        // ref: 'User',
-        // type: mongoose.Schema.ObjectId,
         type: String,
       },
       amount: Number,
