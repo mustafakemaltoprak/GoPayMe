@@ -6,8 +6,7 @@ import Message from '../components/Message';
 import ProfilePosts from '../components/ProfilePosts';
 import { createMessage, fetchMessages } from '../services/messages';
 import { createNotification, fetchUserDetails } from '../services/user-services';
-// import UserChat from '../components/UserChat';
-// import UserDetails from '../components/UserDetails';
+
 import { motion }from 'framer-motion';
 
 function Profile() {
@@ -34,7 +33,7 @@ function Profile() {
     fetchUserDetails(url).then((response) => setDetailsData(response));
   }, [url]);
 
-  console.log('IDDDD', detailsData);
+
   useEffect(() => {
     
     if (detailsData)
@@ -50,7 +49,7 @@ function Profile() {
     }
   }, [newMessage]);
 
-  console.log('messages were fetched', allMessages);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +67,7 @@ function Profile() {
       },
     };
 
-    console.log('payload', payload);
+   
     const response = await createMessage(payload);
     const notificationPayload = {
       typeof: 'message',
@@ -78,11 +77,7 @@ function Profile() {
 
     await createNotification(notificationPayload);
 
-    console.log('the response', response);
-
     if (response && Object.keys(allMessages).length === 0) {
-      //if first message
-      console.log('inner', allMessages);
       setAllMessages(response);
       setNewMessage(response);
       setMessage('');
@@ -90,12 +85,10 @@ function Profile() {
     }
 
     if (response) {
-      console.log('outer', allMessages);
-      //if first message
       const newMsg = response.chats.messages.pop();
-      console.log('mnee messs', allMessages);
+     
       setNewMessage(newMsg);
-      // console.log('all', allMessages, 'fefefe',allMessages.messages);
+     
       setAllMessages((previousMessages) => {
         return {
           ...previousMessages,
@@ -106,34 +99,13 @@ function Profile() {
       });
     }
 
-    // {
-    //   ...previousMessages,
-    //   chats: { messages: [...previousMessages.chats.messages, newMsg] },
-    // });
-    // setAllMessages((previous) => {
-    //   return { ...previous, chats: { messages: [...previous.messages.chats, newMsg] } };
-    // });
-
-    // [...previous[0].chats.messages]
-    //   members: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    // user: { type: Schema.Types.ObjectId, ref: 'User' },
-    // chats: {
-    //   messages: [
-    //     {
-    //       msg: { type: String, required: true },
-    //       sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    //       receiver: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    //       date: { type: Date },
-    //     },
-    //   ],
-    // },
+    
     setMessage('');
   };
 
-  console.log('detailsData', allMessages);
+  
 
   const handleCurrentPage = (arg) => {
-    // setCategories(prev => {...prev, egef: !categories[arg]})
 
     const currentPageCopy = { ...currentPage };
     for (let i in currentPageCopy) {
@@ -249,10 +221,7 @@ function Profile() {
                     position="top right"
                   />
                 )}
-                {/* <Button secondary>
-                  <Icon name="rocketchat"></Icon>
-                  Message
-                </Button> */}
+               
             </div>
             </div>
             <div
@@ -281,8 +250,6 @@ function Profile() {
                   height: '85%',
                   border: '2px solid gainsboro',
                   display: 'flex',
-                  // alignItems: 'flex-start',
-                  // background: '#fff',
                   opacity: '0.9',
                   justifyContent: 'flex-end',
                   flexDirection: 'column',
@@ -298,20 +265,12 @@ function Profile() {
                 >
                   {allMessages?.chats?.messages?.length > 0 &&
                     allMessages?.chats?.messages.map((msg) => (
-                      // <div style={{ border: '2px green solid' }}>
                       <div
                         ref={scrollRef}
                         style={{
                           display: 'block',
 
-                          // flexDirection: 'column',
-                          // padding: '.1rem',
-                          // marginBottom: '.5rem',
-                          // background: 'gainsboro',
-                          // color: 'black',
-                          // border: '5px solid purple',
-                          // float: 'right',
-                          // marginRight: 'auto',
+                       
                         }}
                       >
                         <Message
@@ -322,7 +281,7 @@ function Profile() {
                               : allMessages.members.find((member) => member._id !== msg.sender)
                           }
                           msgTime={msg.date}
-                          // style={true && 'flex-start'}
+                         
                           style={msg.sender === loginSuccess._id ? 'flex-end' : 'flex-start'}
                         />
                       </div>
@@ -335,10 +294,7 @@ function Profile() {
                   onChange={(e) => setMessage(e.target.value)}
                   style={{
                     height: '10%',
-                    // border: '2px solid red',
                     width: '100%',
-                    // display: 'flex',
-                    // flexDirection: 'row-reverse',
                     marginRight: 'auto',
                   }}
                 />
