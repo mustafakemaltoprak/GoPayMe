@@ -2,7 +2,7 @@
 
 GoPayMe is a web application for people who want to raise funds. It allows users to find & create fundraisers, and stay in touch thanks to the social media aspect of the website.
 
-A preview video of this project can be found [here](https://www.youtube.com/watch?v=dc1ewUAM2iU)
+A preview video of this project can be found [here](https://www.youtube.com/watch?v=y1_2LnxggjM)
 
 #
 
