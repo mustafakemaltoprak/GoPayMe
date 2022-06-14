@@ -18,7 +18,7 @@ This website is built for testing and educational purposes and is not intended t
 
 ## Contributors
 
-[Mustafa](https://github.com/mustafakemaltoprak) LinkedIn: https://www.linkedin.com/in/mustafatoprak1/
+[Mustafa](https://github.com/mustafakemaltoprak) LinkedIn: https://www.linkedin.com/in/mustafakemaltoprak/
 <br>
 [Busayo](https://github.com/damayor12) LinkedIn: https://www.linkedin.com/in/obembe-busayo/
 <br>
