@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { Segment, Form, Button, Container, Grid, Header } from 'semantic-ui-react';
-import { io, Socket } from 'socket.io-client';
 import { FormProvider, useForm } from 'react-hook-form';
 import { emailLogin, googleLogin } from '../services/user-services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -12,8 +11,6 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 const Login = () => {
   const history = useHistory();
-  const socket = useRef(io('ws://localhost:8900'));
-  // const [socket, setSocket] = useState(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const defaultValues = {
