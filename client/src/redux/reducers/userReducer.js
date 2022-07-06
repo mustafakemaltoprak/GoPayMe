@@ -10,7 +10,7 @@ const userReducer = (state = {}, action) => {
     case REGISTER_USER:
       return { ...state, register: action.payload };
     case LOGIN_USER:
-      return { ...state, loginSuccess: action.payload };
+      return { loginSuccess: action.payload };
     case LOGOUT_USER:
       return {};
     case UPDATE_ACCOUNT_DETAILS:
