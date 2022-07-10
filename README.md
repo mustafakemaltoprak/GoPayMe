@@ -4,8 +4,6 @@ GoPayMe is a web application for people who want to raise funds. It allows users
 
 A demo of this project can be viewed [here](https://gopayme.herokuapp.com/login)
 
-#
-
 <br>
 
 ![Screen Recording 2022-05-20 at 18 50 40](https://user-images.githubusercontent.com/96595583/169577311-f04fbaf9-20e5-4d3f-a299-e34d2d543b6b.gif)
